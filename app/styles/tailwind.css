@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+/* Define animation in v4 way */
+@theme {
+  --animate-text-scroll: text-scroll 20s linear infinite;
+  --font-sans: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading: 'Italiana';
+}
+
+@keyframes text-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@font-face {
+  font-family: 'Helvetica Neue LT Std';
+  src:
+    local('Helvetica Neue LT Std'),
+    local('HelveticaNeueLTStd'),
+    url('/fonts/HelveticaNeueLTStd.woff2') format('woff2'),
+    url('/fonts/HelveticaNeueLTStd.woff') format('woff');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src:
+    local('Helvetica Neue'),
+    local('HelveticaNeue'),
+    url('/fonts/HelveticaNeue-Regular.woff2') format('woff2'),
+    url('/fonts/HelveticaNeue-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src:
+    local('Helvetica Neue Bold'),
+    local('HelveticaNeue-Bold'),
+    url('/fonts/HelveticaNeue-Bold.woff2') format('woff2'),
+    url('/fonts/HelveticaNeue-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
