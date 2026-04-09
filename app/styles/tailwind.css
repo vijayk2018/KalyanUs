@@ -4,7 +4,8 @@
 @theme {
   --animate-text-scroll: text-scroll 20s linear infinite;
   --font-sans: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-heading: 'Italiana';
+  --font-serif: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 @keyframes text-scroll {
