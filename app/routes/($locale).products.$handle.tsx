@@ -537,7 +537,7 @@ export default function Product() {
 
               <div className="flex items-center gap-3">
                 <span className="text-3xl font-semibold text-black font-sans">
-                  ₹{selectedVariant?.price.amount}
+                  ${selectedVariant?.price.amount}
                 </span>
 
                 {selectedVariant?.compareAtPrice && (
