@@ -210,6 +210,19 @@ export default function Product() {
       product.tabPriceBreakup?.value,
     ],
   );
+  const summaryStats = useMemo(
+    () =>
+      [
+        {label: 'Metal', value: product.metal?.value},
+        {label: 'Diamond', value: product.diamond?.value},
+        {label: 'Gemstone', value: product.gemstone?.value},
+      ].filter((item) => Boolean(item.value?.trim())),
+    [product.metal?.value, product.diamond?.value, product.gemstone?.value],
+  );
+  const callbackButtonLabel = product.callbackButtonText?.value?.trim() || 'Notify Me';
+  const shouldShowDelivery = product.showDelivery?.value
+    ? product.showDelivery.value.toLowerCase() === 'true'
+    : true;
 
   // ✅ FIRST get variant
   const selectedVariant = useOptimisticVariant(
@@ -316,13 +329,13 @@ export default function Product() {
   return (
     <div className='bg-[#fdfaf5] 2xl:px-[5rem] lg:px-[4rem]'>
       <p className='text-[14px] text-gray-400 px-6 pt-4 font-sans'><a href='/'> Home</a> | <span className='text-black'>{product.title}</span></p>
-      <div className="mx-auto px-6 py-10 w-full flex flex-col lg:flex-row gap-[5rem] items-center">
+      <div className="mx-auto px-6 py-10 w-full flex flex-col lg:flex-row lg:gap-[5rem] items-center">
         
         {/* LEFT SIDE */}
         <div className="flex gap-4 items-center justify-center w-full lg:w-[55%]">
         
           {/* LEFT: Thumbnail Carousel */}
-          <div className="flex flex-col gap-3 max-h-[500px] overflow-y-auto pr-2 justify-items-start">
+          <div className="hidden lg:flex flex-col gap-3 max-h-[500px] overflow-y-auto pr-2 justify-items-start">
             <div className="flex flex-col items-center gap-2">
 
               {/* 🔼 UP ARROW */}
@@ -373,7 +386,7 @@ export default function Product() {
             {/* LEFT ARROW */}
             <button
               onClick={prevImage}
-              className="absolute left-2 opacity-0 group-hover:opacity-100 transition duration-300 bg-white shadow p-2 rounded-full hover:bg-gray-100 disabled:opacity-30"
+              className="hidden lg:block absolute left-2 opacity-0 group-hover:opacity-100 transition duration-300 bg-white shadow p-2 rounded-full hover:bg-gray-100 disabled:opacity-30"
               disabled={currentIndex === 0}
             >
               <ChevronLeft size={20} />
@@ -384,14 +397,57 @@ export default function Product() {
               <img
                 src={images[currentIndex]?.url}
                 onClick={() => setIsOpen(true)}
-                className="max-h-full max-w-full object-contain cursor-pointer"
+                className="hidden lg:block max-h-full max-w-full object-contain cursor-pointer"
+                alt="image"
+              />
+              <img
+                src={images[currentIndex]?.url || images[0]?.url}
+                onClick={() => setIsOpen(true)}
+                className="lg:hidden h-full w-full object-contain cursor-pointer"
+                alt="image"
               />
             </div>
+
+            {/* Mobile carousel controls */}
+            <button
+              onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
+              className="lg:hidden absolute -left-4 top-1/2 -translate-y-1/2 rounded-full p-2 text-gray-400 hover:text-gray-600 disabled:opacity-30"
+              disabled={currentIndex === 0}
+              aria-label="Previous image"
+            >
+              <ChevronLeft size={60} strokeWidth={1.5} />
+            </button>
+            <button
+              onClick={() =>
+                setCurrentIndex((prev) => Math.min(images.length - 1, prev + 1))
+              }
+              className="lg:hidden absolute -right-4 top-1/2 -translate-y-1/2 rounded-full p-2 text-gray-400 hover:text-gray-600 disabled:opacity-30"
+              disabled={currentIndex === images.length - 1}
+              aria-label="Next image"
+            >
+              <ChevronRight size={60} strokeWidth={1.5} />
+            </button>
+
+            {images.length > 1 ? (
+              <div className="lg:hidden absolute -bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                {images.map((_, index) => (
+                  <button
+                    key={`dot-${index}`}
+                    type="button"
+                    onClick={() => setCurrentIndex(index)}
+                    className={`h-2 w-2 rounded-full transition ${
+                      index === currentIndex ? 'bg-[#cf254a]' : 'bg-gray-300'
+                    }`}
+                    aria-label={`Go to image ${index + 1}`}
+                  />
+                ))}
+              </div>
+            ) : null}
 
             {/* RIGHT ARROW */}
             <button
               onClick={nextImage}
-              className="absolute right-2 opacity-0 group-hover:opacity-100 transition duration-300 bg-white shadow p-2 rounded-full hover:bg-gray-100 disabled:opacity-30"
+              className="hidden lg:block absolute right-2 opacity-0 group-hover:opacity-100 transition duration-300 bg-white shadow p-2 rounded-full hover:bg-gray-100 disabled:opacity-30"
               disabled={currentIndex === images.length - 1}
             >
               <ChevronRight size={20} />
@@ -410,57 +466,59 @@ export default function Product() {
             </p>
 
             {/* SKU + Rating + Review */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4 text-[18px] text-black">
-                <span className="font-sans">{selectedVariant?.sku ?? ''}</span>
-                <div
-                  className="flex items-center gap-1 text-2xl"
-                  aria-label={
-                    productRating !== null
-                      ? `Rated ${productRating} out of 5`
-                      : 'No rating yet'
-                  }
-                >
-                  {Array.from({length: 5}).map((_, i) => {
-                    if (productRating === null) {
+            <div className="flex items-start justify-between">
+              <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 text-[18px] text-black">
+                <span className="font-sans">SKU {product.styleNo?.value || selectedVariant?.sku || '—'}</span>
+                <div className="flex items-center gap-3">
+                  <div
+                    className="flex items-center gap-1 text-2xl"
+                    aria-label={
+                      productRating !== null
+                        ? `Rated ${productRating} out of 5`
+                        : 'No rating yet'
+                    }
+                  >
+                    {Array.from({length: 5}).map((_, i) => {
+                      if (productRating === null) {
+                        return (
+                          <span key={`star-${i}`} className="text-gray-300">
+                            ★
+                          </span>
+                        );
+                      }
+                      const starPosition = i + 1;
+                      const isFull = productRating >= starPosition;
+                      const isHalf = !isFull && productRating >= starPosition - 0.5;
+
                       return (
-                        <span key={`star-${i}`} className="text-gray-300">
+                        <span
+                          key={`star-${i}`}
+                          className={
+                            isFull
+                              ? 'text-yellow-400'
+                              : isHalf
+                                ? 'text-yellow-300'
+                                : 'text-gray-300'
+                          }
+                        >
                           ★
                         </span>
                       );
-                    }
-                    const starPosition = i + 1;
-                    const isFull = productRating >= starPosition;
-                    const isHalf = !isFull && productRating >= starPosition - 0.5;
-
-                    return (
-                      <span
-                        key={`star-${i}`}
-                        className={
-                          isFull
-                            ? 'text-yellow-400'
-                            : isHalf
-                              ? 'text-yellow-300'
-                              : 'text-gray-300'
-                        }
-                      >
-                        ★
-                      </span>
-                    );
-                  })}
+                    })}
+                  </div>
+                  {productRating !== null ? (
+                    <span className="text-sm text-gray-600 font-sans">
+                      {productRating.toFixed(1)}
+                    </span>
+                  ) : null}
+                  <button
+                    type="button"
+                    onClick={scrollToReviewForm}
+                    className="hover:underline hover:text-black font-sans cursor-pointer"
+                  >
+                    Write a review
+                  </button>
                 </div>
-                {productRating !== null ? (
-                  <span className="text-sm text-gray-600 font-sans">
-                    {productRating.toFixed(1)}
-                  </span>
-                ) : null}
-                <button
-                  type="button"
-                  onClick={scrollToReviewForm}
-                  className="hover:underline hover:text-black font-sans cursor-pointer"
-                >
-                  Write a review
-                </button>
               </div>
               {product.offerText?.value && (
                 <div className="relative inline-block">
@@ -505,29 +563,23 @@ export default function Product() {
             <div>
               <h3 className="text-2xl font-medium mb-3 font-sans">Product Summary</h3>
 
-              <div className="bg-white rounded-xl p-4 grid grid-cols-3 text-center text-sm divide-x">
-                
-                <div>
-                  <p className="text-gray-500 font-sans">Metal</p>
-                  <p className="font-semibold text-gray-800 font-sans text-lg">
-                    {product.metal?.value || '—'}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-gray-500 font-sans">Diamond</p>
-                  <p className="font-semibold text-gray-800 font-sans text-lg">
-                    {product.diamond?.value || '—'}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-gray-500 font-sans">Gemstone</p>
-                  <p className="font-semibold text-gray-800 font-sans text-lg">
-                    {product.gemstone?.value || '—'}
-                  </p>
-                </div>
-
+              <div
+                className={`bg-white rounded-xl p-4 grid text-center text-sm ${
+                  summaryStats.length === 1
+                    ? 'grid-cols-1'
+                    : summaryStats.length === 2
+                      ? 'grid-cols-2 divide-x'
+                      : 'grid-cols-3 divide-x'
+                }`}
+              >
+                {summaryStats.map((item) => (
+                  <div key={item.label}>
+                    <p className="text-gray-500 font-sans">{item.label}</p>
+                    <p className="font-semibold text-gray-800 font-sans text-lg">
+                      {item.value || '—'}
+                    </p>
+                  </div>
+                ))}
               </div>
 
               {/* View Details */}
@@ -540,12 +592,12 @@ export default function Product() {
                 View Product Details & Price Breakup
               </button>
 
-              <p className="text-lg font-semibold text-gray-500 mt-2">
+              {/* <p className="text-lg font-semibold text-gray-500 mt-2">
                 <div
                   className="text-gray-600 text-lg font-semibold font-sans"
                   dangerouslySetInnerHTML={{__html: product.descriptionHtml}}
                 />
-              </p>
+              </p> */}
             </div>
 
             {/* Variants */}
@@ -555,40 +607,80 @@ export default function Product() {
             /> */}
 
             {/* Delivery Submit */}
-            <form
-              className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_240px]"
-              onSubmit={handleDeliverySubmit}
-            >
-              <div className="flex overflow-hidden rounded-md border border-[#efc4cf] bg-white">
-                <div className="flex  items-center justify-center gap-2 border-r border-[#efc4cf] px-4 text-lg text-gray-700">
-                  <span className="font-sans">Delivery</span>
-                  <MapPin size={18} className="text-black" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="400064"
-                  value={deliveryPincode}
-                  onChange={(event) => setDeliveryPincode(event.target.value)}
-                  className="w-full bg-white px-4 text-center text-lg font-sans text-gray-500 focus:outline-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="py-2 rounded-md bg-[#f6e6ed] text-lg font-medium text-black hover:bg-[#f2dce6]"
+            {shouldShowDelivery ? (
+              <form
+                className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_240px]"
+                onSubmit={handleDeliverySubmit}
               >
-                Submit
-              </button>
-            </form>
+                <div className="flex overflow-hidden rounded-md border border-[#efc4cf] bg-white">
+                  <div className="flex  items-center justify-center gap-2 border-r border-[#efc4cf] px-4 text-lg text-gray-700">
+                    <span className="font-sans">Delivery</span>
+                    <MapPin size={18} className="text-black" />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="400064"
+                    value={deliveryPincode}
+                    onChange={(event) => setDeliveryPincode(event.target.value)}
+                    className="w-full bg-white px-4 text-center text-lg font-sans text-gray-500 focus:outline-none"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="py-2 rounded-md bg-[#f6e6ed] text-lg font-medium text-black hover:bg-[#f2dce6]"
+                >
+                  Submit
+                </button>
+              </form>
+            ) : null}
 
-            {/* Buttons */}
-            <div className="grid grid-cols-2 gap-4">
+            {/* Mobile Buttons */}
+            <div className="flex items-center gap-4 md:hidden justify-center px-[2rem]">
               <button
                 type="button"
                 onClick={() => setIsCallbackOpen(true)}
                 className="flex-1 bg-[#cf254a] text-white py-3 text-lg rounded-lg font-semibold hover:bg-red-700 font-sans cursor-pointer"
               >
-                Notify Me
-                {/* Request Callback */}
+                {callbackButtonLabel}
+              </button>
+
+              <button className="border border-red-300 p-2 rounded-lg text-red-500 hover:bg-red-50 w-[52px] h-[52px] flex items-center justify-center cursor-pointer justify-self-start">
+                <HeartIcon size={18} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 md:hidden">
+              <div className="text-[#000000] flex items-center justify-center gap-2">
+                <VideoIcon size={22} />
+                <span className="text-lg font-semibold font-sans">Live Video Call</span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsVideoCallOpen(true)}
+                className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer"
+              >
+                <span className="text-lg font-medium uppercase font-sans">Schedule a Video Call</span>
+              </button>
+
+              <div className="text-[#000000] flex items-center justify-center gap-2">
+                <StoreIcon size={22} />
+                <span className="text-lg font-semibold font-sans">Store Availablity</span>
+              </div>
+
+              <button className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer">
+                <span className="text-lg font-medium uppercase font-sans">Find in Store</span>
+              </button>
+            </div>
+
+            {/* Desktop Buttons */}
+            <div className="hidden md:grid grid-cols-2 gap-4">
+              <button
+                type="button"
+                onClick={() => setIsCallbackOpen(true)}
+                className="flex-1 bg-[#cf254a] text-white py-3 text-lg rounded-lg font-semibold hover:bg-red-700 font-sans cursor-pointer"
+              >
+                {callbackButtonLabel}
               </button>
 
               <button className="border border-red-300 p-2 rounded-lg text-red-500 hover:bg-red-50 max-w-10 flex items-center justify-center cursor-pointer">
@@ -596,9 +688,7 @@ export default function Product() {
               </button>
             </div>
 
-            {/* Extra Options */}
-            <div className="grid grid-cols-2 gap-4">
-
+            <div className="hidden md:grid grid-cols-2 gap-4">
               <div className="text-[#000000] flex items-center justify-center gap-2 ">
                 <VideoIcon size={22} />
                 <span className="text-lg font-semibold font-sans ">Live Video Call</span>
@@ -608,11 +698,9 @@ export default function Product() {
                 <StoreIcon size={22} />
                 <span className="text-lg font-semibold font-sans">Store Availablity</span>
               </div>
-
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-
+            <div className="hidden md:grid grid-cols-2 gap-4">
               <button
                 type="button"
                 onClick={() => setIsVideoCallOpen(true)}
@@ -624,7 +712,6 @@ export default function Product() {
               <button className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer">
                 <span className="text-lg font-medium uppercase font-sans">Find in Store</span>
               </button>
-
             </div>
 
             
@@ -653,8 +740,8 @@ export default function Product() {
       </div>
       {/* PRODUCT DETAILS + REVIEW SECTION */}
       <div className="bg-white rounded-xl p-6 space-y-6">
-        <div className='grid md:grid-cols-5  gap-16'>
-          <div className="md:col-span-3">
+        <div className='grid lg:grid-cols-5  gap-16'>
+          <div className="lg:col-span-3">
             {/* Header */}
             <div className="space-y-2">
               {/* Heading */}
@@ -677,60 +764,91 @@ export default function Product() {
             <div
               ref={productTabsRef}
               id="product-tabs"
-              className="scroll-mt-64 flex gap-4 py-2 mt-8 text-sm flex-wrap"
+              className="scroll-mt-64 mt-8"
             >
-              <button
-                onClick={() => setActiveTab("summary")}
-                className={`px-4 py-2 rounded-md font-sans font-semibold text-[16px] ${
-                  activeTab === "summary"
-                    ? "bg-[#cf254a] text-white"
-                    : "text-black"
-                }`}
-              >
-                Product Summary
-              </button>
+              {/* Desktop/Tablet tabs */}
+              <div className="hidden lg:flex gap-4 py-2 text-sm flex-wrap">
+                <button
+                  onClick={() => setActiveTab("summary")}
+                  className={`px-4 py-2 rounded-md font-sans font-semibold text-[16px] ${
+                    activeTab === "summary"
+                      ? "bg-[#cf254a] text-white"
+                      : "text-black"
+                  }`}
+                >
+                  Product Summary
+                </button>
 
-              <button
-                onClick={() => setActiveTab("diamond")}
-                className={`px-4 py-2 rounded-md  font-sans font-semibold text-[16px] ${
-                  activeTab === "diamond"
-                    ? "bg-[#cf254a] text-white"
-                    : "text-black"
-                }`}
-              >
-                Diamond / Gemstone Details
-              </button>
+                <button
+                  onClick={() => setActiveTab("diamond")}
+                  className={`px-4 py-2 rounded-md  font-sans font-semibold text-[16px] ${
+                    activeTab === "diamond"
+                      ? "bg-[#cf254a] text-white"
+                      : "text-black"
+                  }`}
+                >
+                  Diamond / Gemstone Details
+                </button>
 
-              <button
-                onClick={() => setActiveTab("metal")}
-                className={`px-4 py-2 rounded-md font-semibold text-[16px] ${
-                  activeTab === "metal"
-                    ? "bg-[#cf254a] text-white"
-                    : "text-black"
-                }`}
-              >
-                Metal Details
-              </button>
+                <button
+                  onClick={() => setActiveTab("metal")}
+                  className={`px-4 py-2 rounded-md font-semibold text-[16px] ${
+                    activeTab === "metal"
+                      ? "bg-[#cf254a] text-white"
+                      : "text-black"
+                  }`}
+                >
+                  Metal Details
+                </button>
 
-              <button
-                onClick={() => setActiveTab("price")}
-                className={`px-4 py-2 rounded-md font-sans font-semibold text-[16px] ${
-                  activeTab === "price"
-                    ? "bg-[#cf254a] text-white"
-                    : "text-black"
-                }`}
-              >
-                Price Breakup
-              </button>
+                <button
+                  onClick={() => setActiveTab("price")}
+                  className={`px-4 py-2 rounded-md font-sans font-semibold text-[16px] ${
+                    activeTab === "price"
+                      ? "bg-[#cf254a] text-white"
+                      : "text-black"
+                  }`}
+                >
+                  Price Breakup
+                </button>
+              </div>
             </div>
 
-            {/* Summary Table */}
-            <TabContent tabData={productTabs[activeTab as keyof typeof productTabs] || []} />
+            {/* Desktop/Tablet tab content */}
+            <div className="hidden lg:block">
+              <TabContent tabData={productTabs[activeTab as keyof typeof productTabs] || []} />
+            </div>
+
+            {/* Mobile tabs */}
+            <div className="lg:hidden space-y-4">
+              <div className="flex flex-col gap-2 text-sm">
+                {[
+                  {key: 'summary', label: 'Product Summary'},
+                  {key: 'diamond', label: 'Diamond / Gemstone Details'},
+                  {key: 'metal', label: 'Metal Details'},
+                  {key: 'price', label: 'Price Breakup'},
+                ].map((tab) => (
+                  <div key={tab.key} className="space-y-2">
+                    <button
+                      onClick={() => setActiveTab(tab.key)}
+                      className={`w-full px-3 py-2 rounded-md text-left font-sans font-semibold text-[16px] ${
+                        activeTab === tab.key ? 'bg-[#cf254a] text-white' : 'text-black'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                    {activeTab === tab.key ? (
+                      <TabContent tabData={productTabs[tab.key as keyof typeof productTabs] || []} />
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* Help Section */}
             <div className="bg-[#fdfaf5] rounded-lg p-4 md:flex flex-1  justify-between items-center text-sm mt-5">
-              <div>
-                <p className="font-medium text-gray-800 font-sans">
+              <div className='space-y-2 md:space-y-0'>
+                <p className="font-medium text-gray-800 font-sans md:whitespace-nowrap">
                   Need help to find the best jewellery for you?
                 </p>
                 <p className="text-gray-500 text-xs font-sans">
@@ -738,7 +856,7 @@ export default function Product() {
                 </p>
               </div>
 
-              <div className="flex gap-4 text-gray-600">
+              <div className="flex flex-col md:flex-row gap-4 text-gray-600 mt-5 md:mt-0 w-full justify-center items-center">
                 <button className="hover:text-black flex items-center gap-1 font-sans">
                   <FaWhatsapp size={24} className='text-gray-500'/>
                   <span>Chat with Experts</span>
@@ -755,13 +873,13 @@ export default function Product() {
           <form
             ref={reviewFormRef}
             id="review-form"
-            className="scroll-mt-46 bg-[#fdfaf5] rounded-xl p-5 space-y-4 md:col-span-2"
+            className="scroll-mt-46 bg-[#fdfaf5] rounded-xl md:p-8 p-8 lg:my-0 my-6 space-y-4 lg:col-span-2"
             onSubmit={handleReviewSubmit}
           >
             <p className="text-lg text-gray-700 pb-4 font-sans">
               You're reviewing:{" "}
               <span className="font-bold text-black font-sans">
-                Radiance Classic Diamond Half Hoop Earrings 18 Karat
+                {product.title}
               </span>
             </p>
 
@@ -809,7 +927,7 @@ export default function Product() {
             <div className='flex justify-center'>
               <button
                 type="submit"
-                className="bg-[#cf254a] text-white px-6 py-2 font-sans hover:bg-red-600"
+                className="bg-[#cf254a] text-white px-6 py-2 font-sans hover:bg-red-600 w-full"
               >
                 Submit Review
               </button>
@@ -819,7 +937,7 @@ export default function Product() {
 
       </div>
       {/* New Section */}
-      <section className="mt-8 2xl:px-[5rem] lg:px-[4rem] py-48 bg-white">
+      <section className="lg:mt-8 2xl:px-[5rem] lg:px-[4rem] lg:py-48 lg:mb-0 mb-6 py-5 mt-0 bg-white">
         <div className="mx-auto relative">
           <div className="absolute 2xl:-top-42 2xl:-left-22 xl:-top-26 xl:-left-28 lg:-top-22 lg:-left-28">
             <img
@@ -1094,6 +1212,12 @@ const PRODUCT_FRAGMENT = `#graphql
       value
     }
     offerText: metafield(namespace: "custom", key: "offer") {
+      value
+    }
+    callbackButtonText: metafield(namespace: "custom", key: "callback_button_text") {
+      value
+    }
+    showDelivery: metafield(namespace: "custom", key: "show_delivery") {
       value
     }
     metal: metafield(namespace: "custom", key: "metal") {
