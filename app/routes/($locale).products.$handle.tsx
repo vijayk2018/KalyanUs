@@ -26,7 +26,7 @@ import { ToastContainer } from '~/components/Toast';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
-    {title: `Hydrogen | ${data?.product.title ?? ''}`},
+    {title: ` ${data?.product.title ?? ''}`},
     {
       rel: 'canonical',
       href: `/products/${data?.product.handle}`,
@@ -547,16 +547,7 @@ export default function Product() {
                 )}
               </div>
 
-              {selectedVariant?.compareAtPrice && (
-                <span className="bg-[#cf254a] text-white text-xs px-4 py-2 rounded-full font-sans">
-                  {Math.round(
-                    ((selectedVariant.compareAtPrice.amount -
-                      selectedVariant.price.amount) /
-                      selectedVariant.compareAtPrice.amount) *
-                      100
-                  )}% off on Diamond prices
-                </span>
-              )}
+              
             </div>
 
             {/* Product Summary */}
@@ -592,12 +583,12 @@ export default function Product() {
                 View Product Details & Price Breakup
               </button>
 
-              {/* <p className="text-lg font-semibold text-gray-500 mt-2">
+              <p className="text-lg font-semibold text-gray-500 mt-2">
                 <div
                   className="text-gray-600 text-lg font-semibold font-sans"
                   dangerouslySetInnerHTML={{__html: product.descriptionHtml}}
                 />
-              </p> */}
+              </p>
             </div>
 
             {/* Variants */}
