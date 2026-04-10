@@ -10,7 +10,7 @@ import banner from '../assets/banner2.jpg'
 import { RiFilterFill } from 'react-icons/ri';
 
 export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
+  return [{title: ` ${data?.collection.title ?? ''} Collection`}];
 };
 
 export async function loader(args: Route.LoaderArgs) {

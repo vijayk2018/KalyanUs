@@ -15,7 +15,7 @@ import { RiFilterFill } from 'react-icons/ri';
 import banner from '../assets/NimahBanner.jpg'
 
 export const meta: Route.MetaFunction = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [{title: ' Home'}];
 };
 
 export async function loader(args: Route.LoaderArgs) {
