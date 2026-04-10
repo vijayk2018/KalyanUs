@@ -47,10 +47,6 @@ export function Header({
     setAuthView('login');
     setIsAuthModalOpen(true);
   };
-  const openRegisterModal = () => {
-    setAuthView('register');
-    setIsAuthModalOpen(true);
-  };
 
   return (
     <>
@@ -357,22 +353,21 @@ function AuthModal({
                 placeholder="Enter E Mail / Mobile number"
                 className="w-full rounded border border-gray-200 placeholder:text-gray-200 px-4 py-3 text-sm outline-none mb-4"
               />
-              <button type="button" className="w-full bg-[#cf254a] py-3 text-sm font-semibold text-white">
+              <a
+                href="/account/login"
+                className="block w-full bg-[#cf254a] py-3 text-center text-sm font-semibold text-white"
+              >
                 CONTINUE
-              </button>
+              </a>
               <p className="my-4 text-center text-xs text-gray-500">OR</p>
               <button type="button" className="flex items-center gap-3 justify-center w-full rounded border border-gray-200 py-3 text-sm text-gray-700">
                 <img src={Google} alt="Login banner" className="h-3 w-3 object-cover" /> <span>Login Using Google</span>
               </button>
               <p className="mt-6 text-center text-sm text-gray-500">
                 Do not have an account?{' '}
-                <button
-                  type="button"
-                  onClick={() => onSwitchView('register')}
-                  className="font-semibold text-[#cf254a]"
-                >
+                <a href="/account/register" className="font-semibold text-[#cf254a]">
                   SIGN UP
-                </button>
+                </a>
               </p>
             </div>
           </div>
@@ -392,18 +387,17 @@ function AuthModal({
                 <input type="checkbox" className="h-4 w-4" />
                 <p>I agree to the <span className='text-[#cf254a]'>Terms of Use</span> & <span className='text-[#cf254a]'>Privacy Policy</span></p>
               </label>
-              <button type="button" className="mt-6 w-full bg-[#cf254a] py-3 text-sm font-semibold text-white">
-                SEND OTP
-              </button>
+              <a
+                href="/account/register"
+                className="mt-6 block w-full bg-[#cf254a] py-3 text-center text-sm font-semibold text-white"
+              >
+                CONTINUE
+              </a>
               <p className="mt-6 text-center text-sm text-gray-500">
                 Already a member with us?{' '}
-                <button
-                  type="button"
-                  onClick={() => onSwitchView('login')}
-                  className="font-semibold text-[#cf254a]"
-                >
+                <a href="/account/login" className="font-semibold text-[#cf254a]">
                   LOGIN
-                </button>
+                </a>
               </p>
             </div>
           </div>
