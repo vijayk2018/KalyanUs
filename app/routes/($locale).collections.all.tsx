@@ -8,7 +8,7 @@ import { Filter, FilterIcon, SlidersHorizontal } from 'lucide-react';
 import { RiFilterFill } from 'react-icons/ri';
 
 export const meta: Route.MetaFunction = () => {
-  return [{title: `Hydrogen | Products`}];
+  return [{title: ` Products`}];
 };
 
 export async function loader(args: Route.LoaderArgs) {
