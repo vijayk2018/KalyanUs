@@ -12,33 +12,21 @@ import { RiFilterFill } from 'react-icons/ri';
 import {useMemo, useState} from 'react';
 
 const SORT_OPTIONS = [
-  {label: 'Featured', value: 'manual'},
-  {label: 'Best selling', value: 'best-selling'},
-  {label: 'Alphabetically, A-Z', value: 'title-asc'},
-  {label: 'Alphabetically, Z-A', value: 'title-desc'},
-  {label: 'Price, low to high', value: 'price-asc'},
-  {label: 'Price, high to low', value: 'price-desc'},
-  {label: 'Date, old to new', value: 'created-asc'},
-  {label: 'Date, new to old', value: 'created-desc'},
+  {label: 'Relevance', value: 'relevance'},
+  {label: "What's new", value: 'whats-new'},
+  {label: 'Price - Low To High', value: 'price-asc'},
+  {label: 'Price - High To Low', value: 'price-desc'},
 ] as const;
 
 function getSortVariables(sortParam: string | null) {
   switch (sortParam) {
-    case 'best-selling':
-      return {sortKey: 'BEST_SELLING', reverse: false};
-    case 'title-asc':
-      return {sortKey: 'TITLE', reverse: false};
-    case 'title-desc':
-      return {sortKey: 'TITLE', reverse: true};
+    case 'whats-new':
+      return {sortKey: 'CREATED', reverse: true};
     case 'price-asc':
       return {sortKey: 'PRICE', reverse: false};
     case 'price-desc':
       return {sortKey: 'PRICE', reverse: true};
-    case 'created-asc':
-      return {sortKey: 'CREATED', reverse: false};
-    case 'created-desc':
-      return {sortKey: 'CREATED', reverse: true};
-    case 'manual':
+    case 'relevance':
     default:
       return {sortKey: 'MANUAL', reverse: false};
   }
@@ -130,7 +118,7 @@ export default function Collection() {
 
   const totalCount = collection.products?.nodes?.length || 0;
   const selectedFilterInputs = searchParams.getAll('filter');
-  const selectedSort = searchParams.get('sort') ?? 'manual';
+  const selectedSort = searchParams.get('sort') ?? 'relevance';
   const availableFilters = collection.products?.filters ?? [];
 
   const selectedFilterLabels = useMemo(() => {
@@ -178,7 +166,7 @@ export default function Collection() {
     setSearchParams(nextParams);
   };
   const selectedSortLabel =
-    SORT_OPTIONS.find((option) => option.value === selectedSort)?.label ?? 'Featured';
+    SORT_OPTIONS.find((option) => option.value === selectedSort)?.label ?? 'Relevance';
 
   const onSortSelect = (value: string) => {
     const nextParams = new URLSearchParams(searchParams);

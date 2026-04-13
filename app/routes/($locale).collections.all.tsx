@@ -9,31 +9,21 @@ import { RiFilterFill } from 'react-icons/ri';
 import {useMemo, useState} from 'react';
 
 const SORT_OPTIONS = [
-  {label: 'Featured', value: 'created-desc'},
-  {label: 'Best selling', value: 'best-selling'},
-  {label: 'Alphabetically, A-Z', value: 'title-asc'},
-  {label: 'Alphabetically, Z-A', value: 'title-desc'},
-  {label: 'Price, low to high', value: 'price-asc'},
-  {label: 'Price, high to low', value: 'price-desc'},
-  {label: 'Date, old to new', value: 'created-asc'},
-  {label: 'Date, new to old', value: 'created-desc'},
+  {label: 'Relevance', value: 'relevance'},
+  {label: "What's new", value: 'whats-new'},
+  {label: 'Price - Low To High', value: 'price-asc'},
+  {label: 'Price - High To Low', value: 'price-desc'},
 ] as const;
 
 function getSortVariables(sortParam: string | null) {
   switch (sortParam) {
-    case 'best-selling':
-      return {sortKey: 'BEST_SELLING', reverse: false};
-    case 'title-asc':
-      return {sortKey: 'TITLE', reverse: false};
-    case 'title-desc':
-      return {sortKey: 'TITLE', reverse: true};
+    case 'whats-new':
+      return {sortKey: 'CREATED_AT', reverse: true};
     case 'price-asc':
       return {sortKey: 'PRICE', reverse: false};
     case 'price-desc':
       return {sortKey: 'PRICE', reverse: true};
-    case 'created-asc':
-      return {sortKey: 'CREATED_AT', reverse: false};
-    case 'created-desc':
+    case 'relevance':
     default:
       return {sortKey: 'CREATED_AT', reverse: true};
   }
@@ -62,15 +52,6 @@ async function loadCriticalData({context, request}: Route.LoaderArgs) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 20,
   });
-  const selectedFilters = Array.from(new URL(request.url).searchParams.getAll('filter'))
-    .map((value) => {
-      try {
-        return JSON.parse(value);
-      } catch {
-        return null;
-      }
-    })
-    .filter(Boolean);
   const sortParam = new URL(request.url).searchParams.get('sort');
   const sortVariables = getSortVariables(sortParam);
 
@@ -78,7 +59,6 @@ async function loadCriticalData({context, request}: Route.LoaderArgs) {
     storefront.query(CATALOG_QUERY, {
       variables: {
         ...paginationVariables,
-        filters: selectedFilters,
         sortKey: sortVariables.sortKey,
         reverse: sortVariables.reverse,
       },
@@ -105,8 +85,12 @@ export default function Collection() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const selectedFilterInputs = searchParams.getAll('filter');
-  const selectedSort = searchParams.get('sort') ?? 'created-desc';
-  const availableFilters = products.filters ?? [];
+  const selectedSort = searchParams.get('sort') ?? 'relevance';
+  const availableFilters: Array<{
+    id: string;
+    label: string;
+    values: Array<{id: string; label: string; count: number; input: string}>;
+  }> = [];
 
   const selectedFilterLabels = useMemo(
     () =>
@@ -155,7 +139,7 @@ export default function Collection() {
     setSearchParams(nextParams);
   };
   const selectedSortLabel =
-    SORT_OPTIONS.find((option) => option.value === selectedSort)?.label ?? 'Featured';
+    SORT_OPTIONS.find((option) => option.value === selectedSort)?.label ?? 'Relevance';
 
   const onSortSelect = (value: string) => {
     const nextParams = new URLSearchParams(searchParams);
@@ -205,7 +189,7 @@ export default function Collection() {
               Collection
             </Link>
             <span aria-hidden>|</span>
-            <span className="text-[16px] transition hover:text-[#333">Bangles</span>
+            <span className="text-[16px] transition hover:text-[#333]">Bangles</span>
           </div>
 
           <div className="relative flex items-center gap-2">
@@ -309,7 +293,6 @@ const CATALOG_QUERY = `#graphql
   query Catalog(
     $country: CountryCode
     $language: LanguageCode
-    $filters: [ProductFilter!]
     $sortKey: ProductSortKeys
     $reverse: Boolean
     $first: Int
@@ -318,7 +301,6 @@ const CATALOG_QUERY = `#graphql
     $endCursor: String
   ) @inContext(country: $country, language: $language) {
     products(
-      filters: $filters
       sortKey: $sortKey
       reverse: $reverse
       first: $first
@@ -326,17 +308,6 @@ const CATALOG_QUERY = `#graphql
       before: $startCursor
       after: $endCursor
     ) {
-      filters {
-        id
-        label
-        type
-        values {
-          id
-          label
-          count
-          input
-        }
-      }
       nodes {
         ...CollectionItem
       }
