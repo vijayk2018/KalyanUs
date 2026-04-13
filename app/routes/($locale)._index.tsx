@@ -8,6 +8,7 @@ import type {
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
 import {ProductItem} from '~/components/ProductItem';
+import {FilterDrawer} from '~/components/FilterDrawer';
 import {MockShopNotice} from '~/components/MockShopNotice';
 import { Home } from 'lucide-react';
 import HomePage from '~/components/HomePage';
@@ -162,6 +163,8 @@ function RecommendedProducts({
 }: {
   products: Promise<RecommendedProductsQuery | null>;
 }) {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   return (
     <>
       <img src={banner} className='w-full h-full object-contained' alt='banner' />
@@ -171,6 +174,7 @@ function RecommendedProducts({
               type="button"
               aria-label="Filters"
               className="p-2 rounded bg-black text-white shadow-sm"
+              onClick={() => setIsFilterOpen(true)}
             >
               <RiFilterFill size={18} aria-hidden />
             </button>
@@ -227,6 +231,15 @@ function RecommendedProducts({
         </Suspense>
         <br />
       </section>
+      <FilterDrawer
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        onClearAll={() => {}}
+        selectedCount={0}
+        seeItemsCount={0}
+        sections={[]}
+        emptyMessage="Home page filter popup is enabled. Hook this to a filtered query for live filtering."
+      />
     </>
   );
 }

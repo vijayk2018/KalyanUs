@@ -23,6 +23,7 @@ import Exchange from '../assets/exchange.svg';
 import ProductInformation from '../assets/search.svg'
 import {useToast} from '~/components/useToast';
 import { ToastContainer } from '~/components/Toast';
+import { addToWishlist, isInWishlist, removeFromWishlist } from '~/lib/wishlist';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
@@ -324,6 +325,32 @@ export default function Product() {
     setVideoCallName('');
     setVideoCallEmail('');
     setVideoCallPhone('');
+  };
+
+  const productId = product.id;
+  const [wishlisted, setWishlisted] = useState(false);
+
+  useEffect(() => {
+    setWishlisted(isInWishlist(productId));
+  }, [productId]);
+
+  const handleWishlist = () => {
+    if (wishlisted) {
+      removeFromWishlist(productId);
+      showSuccess("Removed from wishlist");
+    } else {
+      addToWishlist({
+        id: product.id,
+        title: product.title,
+        handle: product.handle,
+        image: selectedVariant?.image?.url,
+        price: selectedVariant?.price?.amount,
+        variantId: selectedVariant?.id,
+      });
+      showSuccess("Added to wishlist");
+    }
+
+    setWishlisted(!wishlisted);
   };
 
   return (
@@ -635,8 +662,18 @@ export default function Product() {
                 {callbackButtonLabel}
               </button>
 
-              <button className="border border-red-300 p-2 rounded-lg text-red-500 hover:bg-red-50 w-[52px] h-[52px] flex items-center justify-center cursor-pointer justify-self-start">
+              {/* <button className="border border-red-300 p-2 rounded-lg text-red-500 hover:bg-red-50 w-[52px] h-[52px] flex items-center justify-center cursor-pointer justify-self-start">
                 <HeartIcon size={18} />
+              </button> */}
+              <button
+                onClick={handleWishlist}
+                className={`border p-2 rounded-lg  w-[52px] h-[52px] flex items-center justify-center cursor-pointer justify-self-start ${
+                  wishlisted
+                    ? "bg-red-500 text-white"
+                    : "border-red-300 text-red-500 hover:bg-red-50"
+                }`}
+              >
+                <HeartIcon size={18} fill={wishlisted ? "white" : "none"} />
               </button>
             </div>
 
@@ -674,8 +711,18 @@ export default function Product() {
                 {callbackButtonLabel}
               </button>
 
-              <button className="border border-red-300 p-2 rounded-lg text-red-500 hover:bg-red-50 max-w-10 flex items-center justify-center cursor-pointer">
+              {/* <button className="border border-red-300 p-2 rounded-lg text-red-500 hover:bg-red-50 max-w-10 flex items-center justify-center cursor-pointer">
                 <HeartIcon size={18} />
+              </button> */}
+              <button
+                onClick={handleWishlist}
+                className={`border p-2 rounded-lg max-w-15 flex items-center justify-center cursor-pointer ${
+                  wishlisted
+                    ? "bg-red-500 text-white"
+                    : "border-red-300 text-red-500 hover:bg-red-50"
+                }`}
+              >
+                <HeartIcon size={24} fill={wishlisted ? "white" : "none"} />
               </button>
             </div>
 
