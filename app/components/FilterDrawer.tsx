@@ -16,6 +16,18 @@ type FilterDrawerSection = {
   values: FilterDrawerValue[];
 };
 
+
+function mapValueLabel(sectionLabel: string, valueLabel: string) {
+  const section = sectionLabel.trim().toLowerCase();
+  const value = valueLabel.trim().toLowerCase();
+
+  if (section === 'is outofstock') {
+    if (value === 'in stock') return 'Yes';
+    if (value === 'out of stock') return 'No';
+  }
+  return valueLabel;
+}
+
 export function FilterDrawer({
   isOpen,
   onClose,
@@ -79,7 +91,9 @@ export function FilterDrawer({
                 <section key={section.id}>
                   <h3 className="mb-4 text-[20px] font-semibold uppercase text-black">{section.label}</h3>
                   <div className="space-y-4">
-                    {visibleValues.map((value) => (
+                    {visibleValues.map((value) => {
+                      const displayValueLabel = mapValueLabel(section.label, value.label);
+                      return (
                       <label key={value.id} className="flex cursor-pointer items-center gap-4">
                         <input
                           type="checkbox"
@@ -100,14 +114,14 @@ export function FilterDrawer({
                             focus:outline-none
                           "
                         />
-                        <span className="text-[14px] text-[#1f3550]">
-                          {value.label}
+                        <span className="text-[14px] text-[#1f3550] uppercase">
+                          {displayValueLabel}
                           {typeof value.count === 'number' ? (
                             <span className="text-[#cf254a]"> ({value.count})</span>
                           ) : null}
                         </span>
                       </label>
-                    ))}
+                    )})}
                   </div>
                   {hiddenCount > 0 ? (
                     <button
