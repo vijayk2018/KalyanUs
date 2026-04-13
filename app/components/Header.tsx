@@ -1,4 +1,4 @@
-import {Suspense, useState} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import {Await, NavLink, useAsyncValue} from 'react-router';
 import {
   type CartViewPayload,
@@ -13,6 +13,8 @@ import kjLogin from '../assets/Sign-in.jpg';
 import { FaStore } from 'react-icons/fa';
 import Google from '../assets/google.svg';
 import Register from '../assets/regiteer.png'
+import { getWishlist } from '~/lib/wishlist';
+import WishlistDrawer from './WishlistDrawer';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -52,6 +54,25 @@ export function Header({
     setIsAuthModalOpen(true);
   };
 
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+
+  useEffect(() => {
+    const updateWishlistCount = () => {
+      const items = getWishlist();
+      setWishlistCount(items.length);
+    };
+
+    updateWishlistCount();
+
+    window.addEventListener("wishlistUpdated", updateWishlistCount);
+
+    return () => {
+      window.removeEventListener("wishlistUpdated", updateWishlistCount);
+    };
+  }, []);
+
+
   return (
     <>
       {/* Mobile header */}
@@ -67,8 +88,16 @@ export function Header({
               <Search size={28} strokeWidth={1.8} />
               {/* <span className="text-[11px] mt-1">&nbsp;</span> */}
             </button>
-            <button type="button" className="flex flex-col items-center text-[#202020]">
+            <button
+              onClick={() => setIsWishlistOpen(true)}
+              className="flex flex-col items-center text-[#202020] relative"
+            >
               <HeartIcon size={24} strokeWidth={1.8} />
+              {wishlistCount > 0 && (
+                <span className="absolute top-0 right-2 bg-red-500 text-white text-[10px] px-1 rounded-full">
+                  {wishlistCount}
+                </span>
+              )}
               <span className="text-[12px] mt-1 font-serif">Wishlist</span>
             </button>
             <button type="button" className="flex flex-col items-center text-[#202020]">
@@ -177,7 +206,7 @@ export function Header({
           )}
         </NavLink>
         <div className='flex flex-col space-y-6 hidden lg:block '>
-          <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} onProfileClick={openLoginModal} />
+          <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} onProfileClick={openLoginModal} wishlistCount={wishlistCount} setIsWishlistOpen={setIsWishlistOpen}/>
           <HeaderMenu
             menu={menu}
             viewport="desktop"
@@ -187,6 +216,7 @@ export function Header({
         </div>
       </header>
       </div>
+
       {isAuthModalOpen ? (
         <AuthModal
           view={authView}
@@ -194,6 +224,11 @@ export function Header({
           onSwitchView={(nextView) => setAuthView(nextView)}
         />
       ) : null}
+
+      <WishlistDrawer
+        open={isWishlistOpen}
+        onClose={() => setIsWishlistOpen(false)}
+      />
     </>
   );
 }
@@ -257,7 +292,10 @@ function HeaderCtas({
   isLoggedIn,
   cart,
   onProfileClick,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {onProfileClick: () => void}) {
+  wishlistCount,
+  setIsWishlistOpen
+}: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {onProfileClick: () => void; wishlistCount: number; setIsWishlistOpen: (isOpen: boolean) => void}) {
+  
   return (
     // <div className='lg:block hidden'>
       <nav className="header-ctas max-w-[35vw] flex items-center bg-[#e8e4d1] pt-8 2xl:px-8 lg:px-4 2xl:pb-5 xl:pb-4 lg:pb-3 rounded-b-3xl 2xl:mt-8  lg:mt-2" role="navigation">
@@ -282,8 +320,14 @@ function HeaderCtas({
         {/* <CartToggle cart={cart} /> */}
         <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4 ml-auto">
           <div className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition">
-            <div className='flex justify-center mb-1'>
-              <HeartIcon size={24}  className='text-black'/>
+            <div className="relative flex justify-center mb-1" onClick={() => setIsWishlistOpen(true)}>
+              <HeartIcon size={24} className="text-black" />
+
+              {wishlistCount > 0 && (
+                <span className="absolute -top-3 -right-1 bg-red-500 text-white text-[10px] px-2 py-1 rounded-full">
+                  {wishlistCount}
+                </span>
+              )}
             </div>
             <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
           </div>
