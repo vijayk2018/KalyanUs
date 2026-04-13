@@ -1,9 +1,9 @@
-import {ChevronDown, ChevronRight, ChevronUp, Mail, Phone} from 'lucide-react';
-import {Suspense, useState, type ReactNode} from 'react';
-import {FaFacebook, FaInstagram, FaWhatsapp} from 'react-icons/fa';
-import {FaXTwitter} from 'react-icons/fa6';
-import {Await, Link} from 'react-router';
-import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
+import { ChevronDown, ChevronRight, ChevronUp, Mail, Phone } from 'lucide-react';
+import { Suspense, useState, type ReactNode } from 'react';
+import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
+import { Await, Link } from 'react-router';
+import type { FooterQuery, HeaderQuery } from 'storefrontapi.generated';
 
 interface FooterProps {
   footer: Promise<FooterQuery | null>;
@@ -119,7 +119,7 @@ export function Footer({
                         <ul className="space-y-2 text-sm">
                           <li>
                             <Link
-                              to="/pages/about"
+                              to="/about-us"
                               className="font-serif text-[#999] transition hover:text-white"
                             >
                               About Kalyan Jewellers
@@ -169,7 +169,7 @@ export function Footer({
                           Policies
                         </h3>
                         <ul className="flex flex-col space-y-2 text-sm">
-                          {policies.map((item) => {
+                          {/* {policies.map((item) => {
                             if (!item.url || !item.title) return null;
                             const to = policyItemUrl(item.url);
                             const isExternal = to.startsWith('http');
@@ -192,7 +192,11 @@ export function Footer({
                                 )}
                               </li>
                             );
-                          })}
+                          })} */}
+                          <li className="font-serif text-[#999] transition hover:text-white">
+                            Privacy
+                          </li>
+
                         </ul>
                       </div>
 
@@ -362,7 +366,7 @@ function MobileAccordion({
         <ul className="space-y-3">
           <li>
             <Link
-              to="/pages/about"
+              to="/about-us"
               className="block py-0.5 transition hover:text-white"
             >
               About Kalyan Jewellers
