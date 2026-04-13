@@ -1,15 +1,20 @@
-import { Suspense, useState } from 'react';
-import { Await, NavLink, useAsyncValue } from 'react-router';
+import {Suspense, useEffect, useState} from 'react';
+import {Await, NavLink, useAsyncValue} from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
   useOptimisticCart,
 } from '@shopify/hydrogen';
-import type { HeaderQuery, CartApiQueryFragment } from 'storefrontapi.generated';
-import { useAside } from '~/components/Aside';
-import { HeartIcon, Menu, Search, Store, UserIcon, X } from 'lucide-react';
+import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
+import {useAside} from '~/components/Aside';
+import {HeartIcon, Menu, Search, Store, UserIcon, X} from 'lucide-react';
 import kalyanLogo from '../assets/kalyanLogo.svg';
+import kjLogin from '../assets/Sign-in.jpg';
 import { FaStore } from 'react-icons/fa';
+import Google from '../assets/google.svg';
+import Register from '../assets/regiteer.png'
+import { getWishlist } from '~/lib/wishlist';
+import WishlistDrawer from './WishlistDrawer';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -26,18 +31,47 @@ export function Header({
   cart,
   publicStoreDomain,
 }: HeaderProps) {
-  const { shop, menu } = header;
+  const {shop, menu} = header;
   const logoUrl = shop.brand?.logo?.image?.url || kalyanLogo;
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authView, setAuthView] = useState<'login' | 'register'>('login');
 
   const mobileMenuItems = (menu || FALLBACK_HEADER_MENU).items;
   const getItemUrl = (url: string) =>
     url.includes('myshopify.com') ||
-      url.includes(publicStoreDomain) ||
-      url.includes(header.shop.primaryDomain.url)
+    url.includes(publicStoreDomain) ||
+    url.includes(header.shop.primaryDomain.url)
       ? new URL(url).pathname
       : url;
+  const openLoginModal = () => {
+    setAuthView('login');
+    setIsAuthModalOpen(true);
+  };
+  const openRegisterModal = () => {
+    setAuthView('register');
+    setIsAuthModalOpen(true);
+  };
+
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+
+  useEffect(() => {
+    const updateWishlistCount = () => {
+      const items = getWishlist();
+      setWishlistCount(items.length);
+    };
+
+    updateWishlistCount();
+
+    window.addEventListener("wishlistUpdated", updateWishlistCount);
+
+    return () => {
+      window.removeEventListener("wishlistUpdated", updateWishlistCount);
+    };
+  }, []);
+
 
   return (
     <>
@@ -54,22 +88,30 @@ export function Header({
               <Search size={28} strokeWidth={1.8} />
               {/* <span className="text-[11px] mt-1">&nbsp;</span> */}
             </button>
-            <button type="button" className="flex flex-col items-center text-[#202020]">
+            <button
+              onClick={() => setIsWishlistOpen(true)}
+              className="flex flex-col items-center text-[#202020] relative"
+            >
               <HeartIcon size={24} strokeWidth={1.8} />
+              {wishlistCount > 0 && (
+                <span className="absolute top-0 right-2 bg-red-500 text-white text-[10px] px-1 rounded-full">
+                  {wishlistCount}
+                </span>
+              )}
               <span className="text-[12px] mt-1 font-serif">Wishlist</span>
             </button>
             <button type="button" className="flex flex-col items-center text-[#202020]">
               <Store size={22} strokeWidth={1.8} />
               <span className="text-[12px] mt-1 font-serif">Store</span>
             </button>
-            <NavLink
-              prefetch="intent"
-              to="/account"
+            <button
+              type="button"
+              onClick={openLoginModal}
               className="flex flex-col items-center text-[#202020]"
             >
               <UserIcon size={22} strokeWidth={1.8} />
               <span className="text-[12px] mt-1 font-serif">Profile</span>
-            </NavLink>
+            </button>
           </div>
         </div>
 
@@ -151,29 +193,42 @@ export function Header({
 
       {/* Desktop header */}
       <div className='hidden lg:block '>
-        <header className="lg:flex header justify-between 2xl:pb-[8rem] 2xl:px-[4rem] 2xl:pt-[3rem] lg:pb-[8rem] lg:px-[5rem] lg:pt-[3rem]">
-          <NavLink prefetch="intent" to="/" style={activeLinkStyle} end className="2xl:mt-[7rem] lg:mt-[6rem]">
-            {logoUrl ? (
-              <img
-                src={logoUrl}
-                alt={`${shop.name} logo`}
-                className="mx-auto 2xl:h-28 xl:h-24 lg:h-24"
-              />
-            ) : (
-              <span className="font-serif text-2xl text-white">{shop.name}</span>
-            )}
-          </NavLink>
-          <div className='flex flex-col space-y-6 hidden lg:block '>
-            <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-            <HeaderMenu
-              menu={menu}
-              viewport="desktop"
-              primaryDomainUrl={header.shop.primaryDomain.url}
-              publicStoreDomain={publicStoreDomain}
+      <header className="lg:flex header justify-between 2xl:pb-[8rem] 2xl:px-[4rem] 2xl:pt-[3rem] lg:pb-[8rem] lg:px-[5rem] lg:pt-[3rem]">
+        <NavLink prefetch="intent" to="/" style={activeLinkStyle} end className="2xl:mt-[7rem] lg:mt-[6rem]">
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              alt={`${shop.name} logo`}
+              className="mx-auto 2xl:h-28 xl:h-24 lg:h-24"
             />
-          </div>
-        </header>
+          ) : (
+            <span className="font-serif text-2xl text-white">{shop.name}</span>
+          )}
+        </NavLink>
+        <div className='flex flex-col space-y-6 hidden lg:block '>
+          <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} onProfileClick={openLoginModal} wishlistCount={wishlistCount} setIsWishlistOpen={setIsWishlistOpen}/>
+          <HeaderMenu
+            menu={menu}
+            viewport="desktop"
+            primaryDomainUrl={header.shop.primaryDomain.url}
+            publicStoreDomain={publicStoreDomain}
+          />
+        </div>
+      </header>
       </div>
+
+      {isAuthModalOpen ? (
+        <AuthModal
+          view={authView}
+          onClose={() => setIsAuthModalOpen(false)}
+          onSwitchView={(nextView) => setAuthView(nextView)}
+        />
+      ) : null}
+
+      <WishlistDrawer
+        open={isWishlistOpen}
+        onClose={() => setIsWishlistOpen(false)}
+      />
     </>
   );
 }
@@ -190,7 +245,7 @@ export function HeaderMenu({
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
   const className = `header-menu-${viewport} text-white 2xl:space-x-6 xl:space-x-4 lg:space-x-2 2xl:text-[16px] xl:text-[15px] lg:text-[12px] ${viewport === 'mobile' ? 'flex-col space-y-4' : 'flex'}`;
-  const { close } = useAside();
+  const {close} = useAside();
 
   return (
     <nav className={className} role="navigation">
@@ -211,8 +266,8 @@ export function HeaderMenu({
         // if the url is internal, we strip the domain
         const url =
           item.url.includes('myshopify.com') ||
-            item.url.includes(publicStoreDomain) ||
-            item.url.includes(primaryDomainUrl)
+          item.url.includes(publicStoreDomain) ||
+          item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
         return (
@@ -236,61 +291,174 @@ export function HeaderMenu({
 function HeaderCtas({
   isLoggedIn,
   cart,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+  onProfileClick,
+  wishlistCount,
+  setIsWishlistOpen
+}: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {onProfileClick: () => void; wishlistCount: number; setIsWishlistOpen: (isOpen: boolean) => void}) {
+  
   return (
     // <div className='lg:block hidden'>
-    <nav className="header-ctas max-w-[35vw] flex items-center bg-[#e8e4d1] pt-8 2xl:px-8 lg:px-4 2xl:pb-5 xl:pb-4 lg:pb-3 rounded-b-3xl 2xl:mt-8  lg:mt-2" role="navigation">
-      <form action="/search" method="get" className="relative flex items-center mr-4 rounded-full">
-        <input
-          name="q"
-          type="search"
-          placeholder="Search entire store here..."
-          aria-label="Search entire store"
-          className="px-4 py-2  bg-white rounded-full 2xl:w-64  2xl:h-8 xl:h-7 lg:h-6 font-serif"
-        />
-        <button
-          type="submit"
-          aria-label="Search"
-          className="absolute right-1 p-2 text-gray-600 hover:text-black font-serif"
-        >
-          <Search size={18} />
-        </button>
-      </form>
-      <HeaderMenuMobileToggle />
+      <nav className="header-ctas max-w-[35vw] flex items-center bg-[#e8e4d1] pt-8 2xl:px-8 lg:px-4 2xl:pb-5 xl:pb-4 lg:pb-3 rounded-b-3xl 2xl:mt-8  lg:mt-2" role="navigation">
+        <form action="/search" method="get" className="relative flex items-center mr-4 rounded-full">
+          <input
+            name="q"
+            type="search"
+            placeholder="Search entire store here..."
+            aria-label="Search entire store"
+            className="px-4 py-2  bg-white rounded-full 2xl:w-64  2xl:h-8 xl:h-7 lg:h-6 font-serif"
+          />
+          <button
+            type="submit"
+            aria-label="Search"
+            className="absolute right-1 p-2 text-gray-600 hover:text-black font-serif"
+          >
+            <Search size={18} />
+          </button>
+        </form>
+        <HeaderMenuMobileToggle />
+        
+        {/* <CartToggle cart={cart} /> */}
+        <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4 ml-auto">
+          <div className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition">
+            <div className="relative flex justify-center mb-1" onClick={() => setIsWishlistOpen(true)}>
+              <HeartIcon size={24} className="text-black" />
 
-      {/* <CartToggle cart={cart} /> */}
-      <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4 ml-auto">
-        <div className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition">
-          <div className='flex justify-center mb-1'>
-            <HeartIcon size={24} className='text-black' />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-3 -right-1 bg-red-500 text-white text-[10px] px-2 py-1 rounded-full">
+                  {wishlistCount}
+                </span>
+              )}
+            </div>
+            <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
           </div>
-          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
-        </div>
-        <div className="flex flex-col items-center space-x-2 text-center transition">
-          <div className='flex justify-center mb-1'>
-            <FaStore size={24} className='text-black' />
+          <div className="flex flex-col items-center space-x-2 text-center transition">
+            <div className='flex justify-center mb-1'>
+              <FaStore size={24} className='text-black' />
+            </div>
+            <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Store</p>
           </div>
-          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Store</p>
+          <div className="flex flex-col items-center space-x-2  text-center transition">
+            <button type="button" onClick={onProfileClick} className="mb-1">
+              <Suspense fallback="Sign in">
+                <Await resolve={isLoggedIn} errorElement="Sign in">
+                  {(isLoggedIn) => (isLoggedIn ? 'Account' : <UserIcon className='text-black' size={24} />)}
+                </Await>
+              </Suspense>
+            </button>
+            <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
+          </div>
+          
         </div>
-        <div className="flex flex-col items-center space-x-2  text-center transition">
-          <NavLink prefetch="intent" to="/account" style={activeLinkStyle} className={'mb-1'}>
-            <Suspense fallback="Sign in">
-              <Await resolve={isLoggedIn} errorElement="Sign in">
-                {(isLoggedIn) => (isLoggedIn ? 'Account' : <UserIcon className='text-black' size={24} />)}
-              </Await>
-            </Suspense>
-          </NavLink>
-          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
-        </div>
-
-      </div>
-    </nav>
+      </nav>
     // </div>
   );
 }
 
+function AuthModal({
+  view,
+  onClose,
+  onSwitchView,
+}: {
+  view: 'login' | 'register';
+  onClose: () => void;
+  onSwitchView: (view: 'login' | 'register') => void;
+}) {
+  return (
+    <div className="fixed flex justify-center items-center inset-0 z-[100] bg-black/50 p-4" onClick={onClose}>
+      <div
+        className="mx-auto  w-full max-w-2xl overflow-hidden rounded-lg bg-white shadow-2xl relative"
+        onClick={(event) => event.stopPropagation()}
+      >
+
+        {/* CLOSE BUTTON */}
+        <div className="absolute top-0 right-0 p-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-[#8aa1d8]"
+            aria-label="Close auth popup"
+          >
+            <X size={26} />
+          </button>
+        </div>
+
+
+        {view === 'login' ? (
+          <div className="grid md:grid-cols-2">
+            <div className="hidden md:block">
+              <img src={kjLogin} alt="Login banner" className="h-full w-full object-cover" />
+            </div>
+            
+            <div className="px-6 pb-8 md:px-10  pt-8">
+              <h2 className="text-3xl text-[#b80f47] font-light mb-5">Login</h2>
+              <p className="text-[12px] text-gray-500 mb-6 pb-3">
+                To enjoy a seamless experience while shopping
+                <div className='px-5 border-b border-[#b80f47] w-[6rem] mt-3 '></div>
+              </p>
+              
+              <input
+                type="text"
+                placeholder="Enter E Mail / Mobile number"
+                className="w-full rounded border border-gray-200 placeholder:text-gray-200 px-4 py-3 text-sm outline-none mb-4"
+              />
+              <button type="button" className="w-full bg-[#cf254a] py-3 text-sm font-semibold text-white">
+                CONTINUE
+              </button>
+              <p className="my-4 text-center text-xs text-gray-500">OR</p>
+              <button type="button" className="flex items-center gap-3 justify-center w-full rounded border border-gray-200 py-3 text-sm text-gray-700">
+                <img src={Google} alt="Login banner" className="h-3 w-3 object-cover" /> <span>Login Using Google</span>
+              </button>
+              <p className="mt-6 text-center text-sm text-gray-500">
+                Do not have an account?{' '}
+                <button
+                  type="button"
+                  onClick={() => onSwitchView('register')}
+                  className="font-semibold text-[#cf254a]"
+                >
+                  SIGN UP
+                </button>
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2">
+            <div className="hidden md:block">
+              <img src={Register} alt="Signup banner" className="h-full w-full object-contain" />
+            </div>
+            <div className="px-6 pb-8 md:px-10 pt-8 mt-8">
+             
+              <div className="space-y-4">
+                <input type="text" placeholder="Enter Full Name" className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
+                <input type="email" placeholder="Email" className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
+                <input type="tel" placeholder="Phone" className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
+              </div>
+              <label className="mt-5 flex items-center gap-2 text-[12px] text-gray-600">
+                <input type="checkbox" className="h-4 w-4" />
+                <p>I agree to the <span className='text-[#cf254a]'>Terms of Use</span> & <span className='text-[#cf254a]'>Privacy Policy</span></p>
+              </label>
+              <button type="button" className="mt-6 w-full bg-[#cf254a] py-3 text-sm font-semibold text-white">
+                SEND OTP
+              </button>
+              <p className="mt-6 text-center text-sm text-gray-500">
+                Already a member with us?{' '}
+                <button
+                  type="button"
+                  onClick={() => onSwitchView('login')}
+                  className="font-semibold text-[#cf254a]"
+                >
+                  LOGIN
+                </button>
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function HeaderMenuMobileToggle() {
-  const { open } = useAside();
+  const {open} = useAside();
   return (
     <button
       className="header-menu-mobile-toggle reset"
@@ -302,7 +470,7 @@ function HeaderMenuMobileToggle() {
 }
 
 function SearchToggle() {
-  const { open } = useAside();
+  const {open} = useAside();
   return (
     <button className="reset" onClick={() => open('search')}>
       Search
@@ -310,9 +478,9 @@ function SearchToggle() {
   );
 }
 
-function CartBadge({ count }: { count: number }) {
-  const { open } = useAside();
-  const { publish, shop, cart, prevCart } = useAnalytics();
+function CartBadge({count}: {count: number}) {
+  const {open} = useAside();
+  const {publish, shop, cart, prevCart} = useAnalytics();
 
   return (
     <a
@@ -333,7 +501,7 @@ function CartBadge({ count }: { count: number }) {
   );
 }
 
-function CartToggle({ cart }: Pick<HeaderProps, 'cart'>) {
+function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
   return (
     <Suspense fallback={<CartBadge count={0} />}>
       <Await resolve={cart}>
@@ -352,17 +520,17 @@ function CartBanner() {
 const FALLBACK_HEADER_MENU = {
   id: 'gid://shopify/Menu/199655587896',
   items: [
-    { id: '1', title: 'Jewelry', type: 'HTTP', url: '/collections/jewelry', items: [] },
-    { id: '2', title: 'Gold', type: 'HTTP', url: '/collections/gold', items: [] },
-    { id: '3', title: 'Diamond', type: 'HTTP', url: '/collections/diamond', items: [] },
-    { id: '4', title: 'Earrings', type: 'HTTP', url: '/collections/earrings', items: [] },
-    { id: '5', title: 'Rings', type: 'HTTP', url: '/collections/rings', items: [] },
-    { id: '6', title: 'Necklace', type: 'HTTP', url: '/collections/necklace', items: [] },
-    { id: '7', title: 'Muhurat', type: 'HTTP', url: '/muhurat', items: [] },
-    { id: '8', title: 'Collection', type: 'HTTP', url: '/collections', items: [] },
-    { id: '9', title: 'Occasion', type: 'HTTP', url: '/collections/occasion', items: [] },
-    { id: '10', title: 'Price Range', type: 'HTTP', url: '/search?price_range=all', items: [] },
-    { id: '11', title: 'More', type: 'HTTP', url: '/#more', items: [] },
+    {id: '1', title: 'Jewelry', type: 'HTTP', url: '/collections/jewelry', items: []},
+    {id: '2', title: 'Gold', type: 'HTTP', url: '/collections/gold', items: []},
+    {id: '3', title: 'Diamond', type: 'HTTP', url: '/collections/diamond', items: []},
+    {id: '4', title: 'Earrings', type: 'HTTP', url: '/collections/earrings', items: []},
+    {id: '5', title: 'Rings', type: 'HTTP', url: '/collections/rings', items: []},
+    {id: '6', title: 'Necklace', type: 'HTTP', url: '/collections/necklace', items: []},
+    {id: '7', title: 'Muhurat', type: 'HTTP', url: '/muhurat', items: []},
+    {id: '8', title: 'Collection', type: 'HTTP', url: '/collections', items: []},
+    {id: '9', title: 'Occasion', type: 'HTTP', url: '/collections/occasion', items: []},
+    {id: '10', title: 'Price Range', type: 'HTTP', url: '/search?price_range=all', items: []},
+    {id: '11', title: 'More', type: 'HTTP', url: '/#more', items: []},
   ],
 };
 
