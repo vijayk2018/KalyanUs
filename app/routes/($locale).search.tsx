@@ -310,19 +310,13 @@ async function regularSearch({
   const sortParam = url.searchParams.get('sort');
 
   const sortVariables =
-    sortParam === 'title-asc'
-      ? {productSortKey: 'TITLE', productReverse: false}
-      : sortParam === 'title-desc'
-        ? {productSortKey: 'TITLE', productReverse: true}
-        : sortParam === 'price-asc'
-          ? {productSortKey: 'PRICE', productReverse: false}
-          : sortParam === 'price-desc'
-            ? {productSortKey: 'PRICE', productReverse: true}
-            : sortParam === 'created-asc'
-              ? {productSortKey: 'CREATED_AT', productReverse: false}
-              : sortParam === 'created-desc'
-                ? {productSortKey: 'CREATED_AT', productReverse: true}
-                : {productSortKey: 'RELEVANCE', productReverse: false};
+    sortParam === 'price-asc'
+      ? {productSortKey: 'PRICE', productReverse: false}
+      : sortParam === 'price-desc'
+        ? {productSortKey: 'PRICE', productReverse: true}
+        : sortParam === 'whats-new'
+          ? {productSortKey: 'RELEVANCE', productReverse: false}
+          : {productSortKey: 'RELEVANCE', productReverse: false};
 
   // Search articles, pages, and products for the `q` term
   const {

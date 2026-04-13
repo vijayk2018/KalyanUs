@@ -9,13 +9,10 @@ import { RiFilterFill } from 'react-icons/ri';
 import {useMemo, useState} from 'react';
 
 const SORT_OPTIONS = [
-  {label: 'Most relevant', value: 'relevance'},
-  {label: 'Alphabetically, A-Z', value: 'title-asc'},
-  {label: 'Alphabetically, Z-A', value: 'title-desc'},
-  {label: 'Price, low to high', value: 'price-asc'},
-  {label: 'Price, high to low', value: 'price-desc'},
-  {label: 'Date, old to new', value: 'created-asc'},
-  {label: 'Date, new to old', value: 'created-desc'},
+  {label: 'Relevance', value: 'relevance'},
+  {label: "What's new", value: 'whats-new'},
+  {label: 'Price - Low To High', value: 'price-asc'},
+  {label: 'Price - High To Low', value: 'price-desc'},
 ] as const;
 
 type SearchItems = RegularSearchReturn['result']['items'];
@@ -184,7 +181,7 @@ function SearchResultsProducts({
   const availableFilters =
     (products as unknown as {productFilters?: Array<any>}).productFilters ?? [];
   const selectedSortLabel =
-    SORT_OPTIONS.find((option) => option.value === selectedSort)?.label ?? 'Most relevant';
+    SORT_OPTIONS.find((option) => option.value === selectedSort)?.label ?? 'Relevance';
 
   const toggleFilter = (filterInput: string) => {
     const nextParams = new URLSearchParams(searchParams);
