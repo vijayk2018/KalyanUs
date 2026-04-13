@@ -42,7 +42,7 @@ export default function SearchPage() {
 
   return (
     <div className="search">
-      <h1>Search</h1>
+      {/* <h1>Search</h1>
       <SearchForm>
         {({inputRef}) => (
           <>
@@ -57,7 +57,7 @@ export default function SearchPage() {
             <button type="submit">Search</button>
           </>
         )}
-      </SearchForm>
+      </SearchForm> */}
       {error && <p style={{color: 'red'}}>{error}</p>}
       {!term || !result?.total ? (
         <SearchResults.Empty />
@@ -81,6 +81,47 @@ export default function SearchPage() {
  * Regular search query and fragments
  * (adjust as needed)
  */
+// const SEARCH_PRODUCT_FRAGMENT = `#graphql
+//   fragment SearchProduct on Product {
+//     __typename
+//     handle
+//     id
+//     publishedAt
+//     title
+//     trackingParameters
+//     vendor
+//     selectedOrFirstAvailableVariant(
+//       selectedOptions: []
+//       ignoreUnknownOptions: true
+//       caseInsensitiveMatch: true
+//     ) {
+//       id
+//       image {
+//         url
+//         altText
+//         width
+//         height
+//       }
+//       price {
+//         amount
+//         currencyCode
+//       }
+//       compareAtPrice {
+//         amount
+//         currencyCode
+//       }
+//       selectedOptions {
+//         name
+//         value
+//       }
+//       product {
+//         handle
+//         title
+//       }
+//     }
+//   }
+// ` as const;
+
 const SEARCH_PRODUCT_FRAGMENT = `#graphql
   fragment SearchProduct on Product {
     __typename
@@ -90,6 +131,23 @@ const SEARCH_PRODUCT_FRAGMENT = `#graphql
     title
     trackingParameters
     vendor
+
+    # ✅ ADD THIS (for ProductItem)
+    featuredImage {
+      url
+      altText
+      width
+      height
+    }
+
+    # ✅ ADD THIS (IMPORTANT FIX)
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+
     selectedOrFirstAvailableVariant(
       selectedOptions: []
       ignoreUnknownOptions: true
@@ -161,6 +219,9 @@ export const SEARCH_QUERY = `#graphql
     $last: Int
     $term: String!
     $startCursor: String
+    $productFilters: [ProductFilter!]
+    $productSortKey: SearchSortKeys
+    $productReverse: Boolean
   ) @inContext(country: $country, language: $language) {
     articles: search(
       query: $term,
@@ -190,10 +251,23 @@ export const SEARCH_QUERY = `#graphql
       first: $first,
       last: $last,
       query: $term,
-      sortKey: RELEVANCE,
+      sortKey: $productSortKey,
+      reverse: $productReverse,
+      productFilters: $productFilters,
       types: [PRODUCT],
       unavailableProducts: HIDE,
     ) {
+      productFilters {
+        id
+        label
+        type
+        values {
+          id
+          label
+          count
+          input
+        }
+      }
       nodes {
         ...on Product {
           ...SearchProduct
@@ -224,6 +298,25 @@ async function regularSearch({
   const url = new URL(request.url);
   const variables = getPaginationVariables(request, {pageBy: 8});
   const term = String(url.searchParams.get('q') || '');
+  const selectedFilters = Array.from(url.searchParams.getAll('filter'))
+    .map((value) => {
+      try {
+        return JSON.parse(value);
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
+  const sortParam = url.searchParams.get('sort');
+
+  const sortVariables =
+    sortParam === 'price-asc'
+      ? {productSortKey: 'PRICE', productReverse: false}
+      : sortParam === 'price-desc'
+        ? {productSortKey: 'PRICE', productReverse: true}
+        : sortParam === 'whats-new'
+          ? {productSortKey: 'RELEVANCE', productReverse: false}
+          : {productSortKey: 'RELEVANCE', productReverse: false};
 
   // Search articles, pages, and products for the `q` term
   const {
@@ -231,7 +324,13 @@ async function regularSearch({
     ...items
   }: {errors?: Array<{message: string}>} & RegularSearchQuery =
     await storefront.query(SEARCH_QUERY, {
-      variables: {...variables, term},
+      variables: {
+        ...variables,
+        term,
+        productFilters: selectedFilters,
+        productSortKey: sortVariables.productSortKey,
+        productReverse: sortVariables.productReverse,
+      },
     });
 
   if (!items) {
