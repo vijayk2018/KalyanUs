@@ -149,8 +149,13 @@ export function Footer({
                           Let us help you?
                         </h3>
                         <ul className="flex flex-col space-y-2 text-sm">
-                          <li className="font-serif text-[#999] transition hover:text-white">
-                            Diamond Guide
+                          <li>
+                            <Link
+                              to="/diamond-guide"
+                              className="font-serif text-[#999] transition hover:text-white"
+                            >
+                              Diamond Guide
+                            </Link>
                           </li>
                           <li className="font-serif text-[#999] transition hover:text-white">
                             Metal Guide
@@ -158,8 +163,10 @@ export function Footer({
                           <li className="font-serif text-[#999] transition hover:text-white">
                             Gemstone Guide
                           </li>
-                          <li className="font-serif text-[#999] transition hover:text-white">
-                            Size guide
+                          <li>
+                            <Link to="/size-guide" className="font-serif text-[#999] transition hover:text-white">
+                              Size guide
+                            </Link>
                           </li>
                         </ul>
                       </div>
@@ -193,10 +200,11 @@ export function Footer({
                               </li>
                             );
                           })} */}
-                          <li className="font-serif text-[#999] transition hover:text-white">
-                            Privacy
+                          <li>
+                            <Link to="/privacy" className="font-serif text-[#999] transition hover:text-white">
+                              Privacy
+                            </Link>
                           </li>
-
                         </ul>
                       </div>
 
@@ -205,11 +213,21 @@ export function Footer({
                           Useful links
                         </h3>
                         <ul className="flex flex-col space-y-2 text-sm">
-                          <li className="font-serif text-[#999] transition hover:text-white">
-                            Book appointment
+                          <li>
+                            <Link
+                              to="/book-appointment"
+                              className="font-serif text-[#999] transition hover:text-white"
+                            >
+                              Book appointment
+                            </Link>
                           </li>
-                          <li className="font-serif text-[#999] transition hover:text-white">
-                            Contact Us
+                          <li>
+                            <Link
+                              to="/contact-us"
+                              className="font-serif text-[#999] transition hover:text-white"
+                            >
+                              Contact Us
+                            </Link>
                           </li>
                         </ul>
                       </div>
@@ -391,17 +409,25 @@ function MobileAccordion({
         'help',
         'Let us help you?',
         <ul className="space-y-3">
-          <li className="py-0.5">Diamond Guide</li>
+          <li>
+            <Link to="/diamond-guide" className="block py-0.5 transition hover:text-white">
+              Diamond Guide
+            </Link>
+          </li>
           <li className="py-0.5">Metal Guide</li>
           <li className="py-0.5">Gemstone Guide</li>
-          <li className="py-0.5">Size guide</li>
+          <li>
+            <Link to="/size-guide" className="block py-0.5 transition hover:text-white">
+              Size guide
+            </Link>
+          </li>
         </ul>,
       )}
       {row(
         'policies',
         'Policies',
         <ul className="space-y-3">
-          {policies.map((item) => {
+          {/* {policies.map((item) => {
             if (!item.url || !item.title) return null;
             const to = policyItemUrl(item.url);
             const isExternal = to.startsWith('http');
@@ -418,15 +444,34 @@ function MobileAccordion({
                 )}
               </li>
             );
-          })}
+          })} */}
+          <li>
+            <Link to="/privacy" className="block py-0.5 transition hover:text-white">
+              Privacy
+            </Link>
+          </li>
         </ul>,
       )}
       {row(
         'useful',
         'Useful links',
         <ul className="space-y-3">
-          <li className="py-0.5">Book appointment</li>
-          <li className="py-0.5">Contact Us</li>
+          <li>
+            <Link
+              to="/book-appointment"
+              className="block py-0.5 transition hover:text-white"
+            >
+              Book appointment
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/contact-us"
+              className="block py-0.5 transition hover:text-white"
+            >
+              Contact Us
+            </Link>
+          </li>
         </ul>,
       )}
       {row(

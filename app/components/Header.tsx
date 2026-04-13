@@ -1,13 +1,13 @@
-import {Suspense, useState} from 'react';
-import {Await, NavLink, useAsyncValue} from 'react-router';
+import { Suspense, useState } from 'react';
+import { Await, NavLink, useAsyncValue } from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
   useOptimisticCart,
 } from '@shopify/hydrogen';
-import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
-import {useAside} from '~/components/Aside';
-import {HeartIcon, Menu, Search, Store, UserIcon, X} from 'lucide-react';
+import type { HeaderQuery, CartApiQueryFragment } from 'storefrontapi.generated';
+import { useAside } from '~/components/Aside';
+import { HeartIcon, Menu, Search, Store, UserIcon, X } from 'lucide-react';
 import kalyanLogo from '../assets/kalyanLogo.svg';
 import { FaStore } from 'react-icons/fa';
 
@@ -26,7 +26,7 @@ export function Header({
   cart,
   publicStoreDomain,
 }: HeaderProps) {
-  const {shop, menu} = header;
+  const { shop, menu } = header;
   const logoUrl = shop.brand?.logo?.image?.url || kalyanLogo;
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -34,8 +34,8 @@ export function Header({
   const mobileMenuItems = (menu || FALLBACK_HEADER_MENU).items;
   const getItemUrl = (url: string) =>
     url.includes('myshopify.com') ||
-    url.includes(publicStoreDomain) ||
-    url.includes(header.shop.primaryDomain.url)
+      url.includes(publicStoreDomain) ||
+      url.includes(header.shop.primaryDomain.url)
       ? new URL(url).pathname
       : url;
 
@@ -151,28 +151,28 @@ export function Header({
 
       {/* Desktop header */}
       <div className='hidden lg:block '>
-      <header className="lg:flex header justify-between 2xl:pb-[8rem] 2xl:px-[4rem] 2xl:pt-[3rem] lg:pb-[8rem] lg:px-[5rem] lg:pt-[3rem]">
-        <NavLink prefetch="intent" to="/" style={activeLinkStyle} end className="2xl:mt-[7rem] lg:mt-[6rem]">
-          {logoUrl ? (
-            <img
-              src={logoUrl}
-              alt={`${shop.name} logo`}
-              className="mx-auto 2xl:h-28 xl:h-24 lg:h-24"
+        <header className="lg:flex header justify-between 2xl:pb-[8rem] 2xl:px-[4rem] 2xl:pt-[3rem] lg:pb-[8rem] lg:px-[5rem] lg:pt-[3rem]">
+          <NavLink prefetch="intent" to="/" style={activeLinkStyle} end className="2xl:mt-[7rem] lg:mt-[6rem]">
+            {logoUrl ? (
+              <img
+                src={logoUrl}
+                alt={`${shop.name} logo`}
+                className="mx-auto 2xl:h-28 xl:h-24 lg:h-24"
+              />
+            ) : (
+              <span className="font-serif text-2xl text-white">{shop.name}</span>
+            )}
+          </NavLink>
+          <div className='flex flex-col space-y-6 hidden lg:block '>
+            <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+            <HeaderMenu
+              menu={menu}
+              viewport="desktop"
+              primaryDomainUrl={header.shop.primaryDomain.url}
+              publicStoreDomain={publicStoreDomain}
             />
-          ) : (
-            <span className="font-serif text-2xl text-white">{shop.name}</span>
-          )}
-        </NavLink>
-        <div className='flex flex-col space-y-6 hidden lg:block '>
-          <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-          <HeaderMenu
-            menu={menu}
-            viewport="desktop"
-            primaryDomainUrl={header.shop.primaryDomain.url}
-            publicStoreDomain={publicStoreDomain}
-          />
-        </div>
-      </header>
+          </div>
+        </header>
       </div>
     </>
   );
@@ -190,7 +190,7 @@ export function HeaderMenu({
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
   const className = `header-menu-${viewport} text-white 2xl:space-x-6 xl:space-x-4 lg:space-x-2 2xl:text-[16px] xl:text-[15px] lg:text-[12px] ${viewport === 'mobile' ? 'flex-col space-y-4' : 'flex'}`;
-  const {close} = useAside();
+  const { close } = useAside();
 
   return (
     <nav className={className} role="navigation">
@@ -211,8 +211,8 @@ export function HeaderMenu({
         // if the url is internal, we strip the domain
         const url =
           item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
+            item.url.includes(publicStoreDomain) ||
+            item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
         return (
@@ -239,58 +239,58 @@ function HeaderCtas({
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
     // <div className='lg:block hidden'>
-      <nav className="header-ctas max-w-[35vw] flex items-center bg-[#e8e4d1] pt-8 2xl:px-8 lg:px-4 2xl:pb-5 xl:pb-4 lg:pb-3 rounded-b-3xl 2xl:mt-8  lg:mt-2" role="navigation">
-        <form action="/search" method="get" className="relative flex items-center mr-4 rounded-full">
-          <input
-            name="q"
-            type="search"
-            placeholder="Search entire store here..."
-            aria-label="Search entire store"
-            className="px-4 py-2  bg-white rounded-full 2xl:w-64  2xl:h-8 xl:h-7 lg:h-6 font-serif"
-          />
-          <button
-            type="submit"
-            aria-label="Search"
-            className="absolute right-1 p-2 text-gray-600 hover:text-black font-serif"
-          >
-            <Search size={18} />
-          </button>
-        </form>
-        <HeaderMenuMobileToggle />
-        
-        {/* <CartToggle cart={cart} /> */}
-        <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4 ml-auto">
-          <div className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition">
-            <div className='flex justify-center mb-1'>
-              <HeartIcon size={24}  className='text-black'/>
-            </div>
-            <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
+    <nav className="header-ctas max-w-[35vw] flex items-center bg-[#e8e4d1] pt-8 2xl:px-8 lg:px-4 2xl:pb-5 xl:pb-4 lg:pb-3 rounded-b-3xl 2xl:mt-8  lg:mt-2" role="navigation">
+      <form action="/search" method="get" className="relative flex items-center mr-4 rounded-full">
+        <input
+          name="q"
+          type="search"
+          placeholder="Search entire store here..."
+          aria-label="Search entire store"
+          className="px-4 py-2  bg-white rounded-full 2xl:w-64  2xl:h-8 xl:h-7 lg:h-6 font-serif"
+        />
+        <button
+          type="submit"
+          aria-label="Search"
+          className="absolute right-1 p-2 text-gray-600 hover:text-black font-serif"
+        >
+          <Search size={18} />
+        </button>
+      </form>
+      <HeaderMenuMobileToggle />
+
+      {/* <CartToggle cart={cart} /> */}
+      <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4 ml-auto">
+        <div className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition">
+          <div className='flex justify-center mb-1'>
+            <HeartIcon size={24} className='text-black' />
           </div>
-          <div className="flex flex-col items-center space-x-2 text-center transition">
-            <div className='flex justify-center mb-1'>
-              <FaStore size={24} className='text-black' />
-            </div>
-            <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Store</p>
-          </div>
-          <div className="flex flex-col items-center space-x-2  text-center transition">
-            <NavLink prefetch="intent" to="/account" style={activeLinkStyle} className={'mb-1'}>
-              <Suspense fallback="Sign in">
-                <Await resolve={isLoggedIn} errorElement="Sign in">
-                  {(isLoggedIn) => (isLoggedIn ? 'Account' : <UserIcon className='text-black' size={24} />)}
-                </Await>
-              </Suspense>
-            </NavLink>
-            <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
-          </div>
-          
+          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
         </div>
-      </nav>
+        <div className="flex flex-col items-center space-x-2 text-center transition">
+          <div className='flex justify-center mb-1'>
+            <FaStore size={24} className='text-black' />
+          </div>
+          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Store</p>
+        </div>
+        <div className="flex flex-col items-center space-x-2  text-center transition">
+          <NavLink prefetch="intent" to="/account" style={activeLinkStyle} className={'mb-1'}>
+            <Suspense fallback="Sign in">
+              <Await resolve={isLoggedIn} errorElement="Sign in">
+                {(isLoggedIn) => (isLoggedIn ? 'Account' : <UserIcon className='text-black' size={24} />)}
+              </Await>
+            </Suspense>
+          </NavLink>
+          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
+        </div>
+
+      </div>
+    </nav>
     // </div>
   );
 }
 
 function HeaderMenuMobileToggle() {
-  const {open} = useAside();
+  const { open } = useAside();
   return (
     <button
       className="header-menu-mobile-toggle reset"
@@ -302,7 +302,7 @@ function HeaderMenuMobileToggle() {
 }
 
 function SearchToggle() {
-  const {open} = useAside();
+  const { open } = useAside();
   return (
     <button className="reset" onClick={() => open('search')}>
       Search
@@ -310,9 +310,9 @@ function SearchToggle() {
   );
 }
 
-function CartBadge({count}: {count: number}) {
-  const {open} = useAside();
-  const {publish, shop, cart, prevCart} = useAnalytics();
+function CartBadge({ count }: { count: number }) {
+  const { open } = useAside();
+  const { publish, shop, cart, prevCart } = useAnalytics();
 
   return (
     <a
@@ -333,7 +333,7 @@ function CartBadge({count}: {count: number}) {
   );
 }
 
-function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
+function CartToggle({ cart }: Pick<HeaderProps, 'cart'>) {
   return (
     <Suspense fallback={<CartBadge count={0} />}>
       <Await resolve={cart}>
@@ -352,17 +352,17 @@ function CartBanner() {
 const FALLBACK_HEADER_MENU = {
   id: 'gid://shopify/Menu/199655587896',
   items: [
-    {id: '1', title: 'Jewelry', type: 'HTTP', url: '/collections/jewelry', items: []},
-    {id: '2', title: 'Gold', type: 'HTTP', url: '/collections/gold', items: []},
-    {id: '3', title: 'Diamond', type: 'HTTP', url: '/collections/diamond', items: []},
-    {id: '4', title: 'Earrings', type: 'HTTP', url: '/collections/earrings', items: []},
-    {id: '5', title: 'Rings', type: 'HTTP', url: '/collections/rings', items: []},
-    {id: '6', title: 'Necklace', type: 'HTTP', url: '/collections/necklace', items: []},
-    {id: '7', title: 'Muhurat', type: 'HTTP', url: '/muhurat', items: []},
-    {id: '8', title: 'Collection', type: 'HTTP', url: '/collections', items: []},
-    {id: '9', title: 'Occasion', type: 'HTTP', url: '/collections/occasion', items: []},
-    {id: '10', title: 'Price Range', type: 'HTTP', url: '/search?price_range=all', items: []},
-    {id: '11', title: 'More', type: 'HTTP', url: '/#more', items: []},
+    { id: '1', title: 'Jewelry', type: 'HTTP', url: '/collections/jewelry', items: [] },
+    { id: '2', title: 'Gold', type: 'HTTP', url: '/collections/gold', items: [] },
+    { id: '3', title: 'Diamond', type: 'HTTP', url: '/collections/diamond', items: [] },
+    { id: '4', title: 'Earrings', type: 'HTTP', url: '/collections/earrings', items: [] },
+    { id: '5', title: 'Rings', type: 'HTTP', url: '/collections/rings', items: [] },
+    { id: '6', title: 'Necklace', type: 'HTTP', url: '/collections/necklace', items: [] },
+    { id: '7', title: 'Muhurat', type: 'HTTP', url: '/muhurat', items: [] },
+    { id: '8', title: 'Collection', type: 'HTTP', url: '/collections', items: [] },
+    { id: '9', title: 'Occasion', type: 'HTTP', url: '/collections/occasion', items: [] },
+    { id: '10', title: 'Price Range', type: 'HTTP', url: '/search?price_range=all', items: [] },
+    { id: '11', title: 'More', type: 'HTTP', url: '/#more', items: [] },
   ],
 };
 
