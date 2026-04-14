@@ -10,6 +10,7 @@ import {useAside} from '~/components/Aside';
 import {HeartIcon, Menu, Search, Store, UserIcon, X} from 'lucide-react';
 import kalyanLogo from '../assets/kalyanLogo.svg';
 import kjLogin from '../assets/Sign-in.jpg';
+import jewelryMegaMenuPromo from '../assets/menuJewellery.jpg';
 import { FaStore } from 'react-icons/fa';
 import Google from '../assets/google.svg';
 import Register from '../assets/regiteer.png'
@@ -246,6 +247,27 @@ export function HeaderMenu({
 }) {
   const className = `header-menu-${viewport} text-white 2xl:space-x-6 xl:space-x-4 lg:space-x-2 2xl:text-[16px] xl:text-[15px] lg:text-[12px] ${viewport === 'mobile' ? 'flex-col space-y-4' : 'flex'}`;
   const {close} = useAside();
+  const [activeDesktopMenuId, setActiveDesktopMenuId] = useState<string | null>(
+    null,
+  );
+  const [desktopMenuLeftOffset, setDesktopMenuLeftOffset] = useState(0);
+  const [desktopMenuWidth, setDesktopMenuWidth] = useState(0);
+  const menuItems = (menu || FALLBACK_HEADER_MENU).items;
+  const getItemUrl = (url: string) =>
+    url.includes('myshopify.com') ||
+    url.includes(publicStoreDomain) ||
+    url.includes(primaryDomainUrl)
+      ? new URL(url).pathname
+      : url;
+  const getDisplayTitle = (title: string) => title.toUpperCase();
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const syncViewportWidth = () => setDesktopMenuWidth(window.innerWidth);
+    syncViewportWidth();
+    window.addEventListener('resize', syncViewportWidth);
+    return () => window.removeEventListener('resize', syncViewportWidth);
+  }, []);
 
   return (
     <nav className={className} role="navigation">
@@ -260,16 +282,132 @@ export function HeaderMenu({
           Home
         </NavLink>
       )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
+      {menuItems.map((item) => {
         if (!item.url) return null;
 
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
+        const url = getItemUrl(item.url);
+        const hasSubmenu = viewport === 'desktop' && item.items?.length > 0;
+        const isJewelry =
+          item.title.trim().toLowerCase() === 'jewelry' ||
+          item.title.trim().toLowerCase() === 'jewellery';
+
+        if (hasSubmenu && isJewelry) {
+          const viewAllItem = item.items.find((group) =>
+            group.title.trim().toLowerCase().includes('view all'),
+          );
+          const groupedItems = item.items.filter(
+            (group) => group.id !== viewAllItem?.id,
+          );
+
+          const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
+            menuUrl ? getItemUrl(menuUrl) : fallback;
+
+          return (
+            <div
+              key={item.id}
+              className="group relative"
+              onMouseEnter={(event) => {
+                setActiveDesktopMenuId(item.id);
+                setDesktopMenuLeftOffset(event.currentTarget.getBoundingClientRect().left);
+                if (typeof window !== 'undefined') {
+                  setDesktopMenuWidth(window.innerWidth);
+                }
+              }}
+              onMouseLeave={() => setActiveDesktopMenuId(null)}
+            >
+              <NavLink
+                className="text-white font-serif"
+                end
+                onClick={close}
+                prefetch="intent"
+                style={activeLinkStyle}
+                to={url}
+              >
+                {item.title}
+              </NavLink>
+
+              <div
+                className={`absolute top-full z-50 pt-2 ${
+                  activeDesktopMenuId === item.id ? 'block' : 'hidden'
+                }`}
+                style={{
+                  left: `${-desktopMenuLeftOffset}px`,
+                  width: desktopMenuWidth ? `${desktopMenuWidth}px` : '100vw',
+                }}
+                onMouseEnter={() => setActiveDesktopMenuId(item.id)}
+                onMouseLeave={() => setActiveDesktopMenuId(null)}
+              >
+                <div className="rounded-b-md bg-white px-8 py-6 text-[#202020] shadow-2xl">
+                  <div className="mx-auto grid w-full grid-cols-[1fr_320px] gap-8">
+                    <div className="grid grid-cols-4 gap-6">
+                      {groupedItems.map((group) => {
+                        const normalizedGroupTitle = group.title
+                          .trim()
+                          .toLowerCase();
+                        const isCategory = normalizedGroupTitle === 'category';
+                        const items = group.items ?? [];
+                        const splitIndex = Math.ceil(items.length / 2);
+                        const columnA = isCategory ? items.slice(0, splitIndex) : items;
+                        const columnB = isCategory ? items.slice(splitIndex) : [];
+
+                        return (
+                        <div key={group.id} className="space-y-3">
+                          <p className="font-semibold tracking-[0.08em] text-[13px] w-30 underline decoration-[#cf254a] underline-offset-4">
+                            {getDisplayTitle(group.title)}
+                          </p>
+                          <div className={isCategory ? 'grid grid-cols-2 gap-x-6 gap-y-2' : 'space-y-2'}>
+                            {columnA.map((subItem) => {
+                              const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
+                              return (
+                                <NavLink
+                                  key={subItem.id}
+                                  to={subUrl}
+                                  prefetch="intent"
+                                  className="block text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35]"
+                                >
+                                  {subItem.title}
+                                </NavLink>
+                              );
+                            })}
+                            {columnB.map((subItem) => {
+                              const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
+                              return (
+                                <NavLink
+                                  key={subItem.id}
+                                  to={subUrl}
+                                  prefetch="intent"
+                                  className="block text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35]"
+                                >
+                                  {subItem.title}
+                                </NavLink>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )})}
+                    </div>
+
+                    <NavLink
+                      to={resolveMenuUrl(viewAllItem?.url, url)}
+                      prefetch="intent"
+                      className="block overflow-hidden rounded-md"
+                    >
+                      <img
+                        src={jewelryMegaMenuPromo}
+                        alt="Jewelry collection"
+                        className="h-[340px] w-full rounded-md object-cover"
+                      />
+                      <span className="mt-3 inline-block text-[13px] font-semibold uppercase tracking-[0.08em] text-[#202020] border-t border-[#cf254a] pt-1">
+                        View All Designs
+                      </span>
+                    </NavLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
         return (
           <NavLink
             className="text-white font-serif"
@@ -520,7 +658,70 @@ function CartBanner() {
 const FALLBACK_HEADER_MENU = {
   id: 'gid://shopify/Menu/199655587896',
   items: [
-    {id: '1', title: 'Jewelry', type: 'HTTP', url: '/collections/jewelry', items: []},
+    {
+      id: '1',
+      title: 'Jewelry',
+      type: 'HTTP',
+      url: '/collections/jewelry',
+      items: [
+        {
+          id: '1-1',
+          title: 'All Jewelry',
+          type: 'HTTP',
+          url: '/collections/jewelry',
+          items: [
+            {id: '1-1-1', title: 'Gold', type: 'HTTP', url: '/collections/gold', items: []},
+            {id: '1-1-2', title: 'Diamond', type: 'HTTP', url: '/collections/diamond', items: []},
+            {id: '1-1-3', title: 'Rose Gold', type: 'HTTP', url: '/collections/rose-gold', items: []},
+            {id: '1-1-4', title: 'Two Tone', type: 'HTTP', url: '/collections/two-tone', items: []},
+            {id: '1-1-5', title: 'Tri Tone', type: 'HTTP', url: '/collections/tri-tone', items: []},
+          ],
+        },
+        {
+          id: '1-2',
+          title: 'Category',
+          type: 'HTTP',
+          url: '/collections/category',
+          items: [
+            {id: '1-2-1', title: 'Earrings', type: 'HTTP', url: '/collections/earrings', items: []},
+            {id: '1-2-2', title: 'Pendants', type: 'HTTP', url: '/collections/pendants', items: []},
+            {id: '1-2-3', title: 'Bangles', type: 'HTTP', url: '/collections/bangles', items: []},
+            {id: '1-2-4', title: 'Mangalsutras', type: 'HTTP', url: '/collections/mangalsutras', items: []},
+            {id: '1-2-5', title: 'Maang Tikka', type: 'HTTP', url: '/collections/maang-tikka', items: []},
+            {id: '1-2-6', title: 'Pendant With Chain', type: 'HTTP', url: '/collections/pendant-with-chain', items: []},
+          ],
+        },
+        {
+          id: '1-3',
+          title: 'Curated Shop',
+          type: 'HTTP',
+          url: '/collections/curated-shop',
+          items: [
+            {id: '1-3-1', title: 'Necklaces', type: 'HTTP', url: '/collections/necklaces', items: []},
+            {id: '1-3-2', title: 'Rings', type: 'HTTP', url: '/collections/rings', items: []},
+            {id: '1-3-3', title: 'Bracelets', type: 'HTTP', url: '/collections/bracelets', items: []},
+            {id: '1-3-4', title: 'Chains', type: 'HTTP', url: '/collections/chains', items: []},
+            {id: '1-3-5', title: 'Anklet', type: 'HTTP', url: '/collections/anklets', items: []},
+            {id: '1-3-6', title: 'Waist Chain', type: 'HTTP', url: '/collections/waist-chain', items: []},
+          ],
+        },
+        {
+          id: '1-4',
+          title: 'Shop For',
+          type: 'HTTP',
+          url: '/collections/shop-for',
+          items: [
+            {id: '1-4-1', title: 'Bridal Jewelry', type: 'HTTP', url: '/collections/bridal-jewelry', items: []},
+            {id: '1-4-2', title: 'Groom Jewelry', type: 'HTTP', url: '/collections/groom-jewelry', items: []},
+            {id: '1-4-3', title: 'Gifts', type: 'HTTP', url: '/collections/gifts', items: []},
+            {id: '1-4-4', title: 'Women', type: 'HTTP', url: '/collections/women', items: []},
+            {id: '1-4-5', title: 'Men', type: 'HTTP', url: '/collections/men', items: []},
+            {id: '1-4-6', title: 'Kids', type: 'HTTP', url: '/collections/kids', items: []},
+            {id: '1-4-7', title: 'Unisex', type: 'HTTP', url: '/collections/unisex', items: []},
+          ],
+        },
+      ],
+    },
     {id: '2', title: 'Gold', type: 'HTTP', url: '/collections/gold', items: []},
     {id: '3', title: 'Diamond', type: 'HTTP', url: '/collections/diamond', items: []},
     {id: '4', title: 'Earrings', type: 'HTTP', url: '/collections/earrings', items: []},
