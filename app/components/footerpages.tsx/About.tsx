@@ -17,9 +17,9 @@ export default function About() {
     const [expandedRamesh, setExpandedRamesh] = useState(false);
 
     return (
-        <div className="about-page font-serif text-[#333] px-4 md:px-8 lg:px-[4rem] 2xl:px-[5rem]">
+        <div className="about-page font-serif text-[#333] px-4 sm:px-5 md:px-8 lg:px-[4rem] 2xl:px-[5rem]">
             {/* Hero Section */}
-            <section className="relative h-[50vh] w-full overflow-hidden">
+            <section className="relative h-[32vh] sm:h-[40vh] md:h-[50vh] w-full overflow-hidden">
                 <img
                     src={aboutBanner}
                     alt="A Global Story of Shine"
@@ -28,7 +28,7 @@ export default function About() {
             </section>
 
             {/* About Kalyan Jewellers Section */}
-            <section className="pb-32 lg:pb-40 pt-0">
+            <section className="pb-16 sm:pb-20 md:pb-32 lg:pb-40 pt-0">
                 <div className="grid gap-10 md:grid-cols-5 lg:gap-16">
                     <div className="md:col-span-2 overflow-hidden bg-gray-50">
                         <img
@@ -38,30 +38,30 @@ export default function About() {
                         />
                     </div>
                     <div className="md:col-span-3 flex flex-col justify-start">
-                        <h2 className="text-4xl font-bold text-[#333] mt-6 mb-3 font-serif leading-tight">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#333] mt-4 sm:mt-6 mb-3 font-serif leading-tight">
                             About Kalyan Jewellers
                         </h2>
-                        <div className="space-y-10 text-[14px] leading-relaxed  font-serif">
+                        <div className="space-y-6 sm:space-y-8 md:space-y-10 text-[13px] sm:text-[14px] leading-relaxed font-serif">
                             <div>
-                                <h3 className="m-0.5 text-[22px] font-semibold text-[#333]">Founding Vision</h3>
+                                <h3 className="m-0.5 text-[18px] sm:text-[20px] md:text-[22px] font-semibold text-[#333]">Founding Vision</h3>
                                 <p>
                                     Kalyan Jewellers was established in 1993 by visionary entrepreneur Mr. T.S. Kalyanaraman, with a mission to redefine jewelry retail in India. Built on the principles of trust, transparency, and customer-first values, the brand quickly grew into one of the country&apos;s most respected and iconic names in the jewelry industry. What began as a single showroom has now evolved into a global presence, with a strong footprint across India, the Middle East, and the USA.
                                 </p>
                             </div>
                             <div>
-                                <h3 className="m-0.5 text-[22px] font-semibold text-[#333]">Celebrating Cultural Diversity</h3>
+                                <h3 className="m-0.5 text-[18px] sm:text-[20px] md:text-[22px] font-semibold text-[#333]">Celebrating Cultural Diversity</h3>
                                 <p>
                                     At Kalyan Jewellers, jewelry is more than a product—it&apos;s a celebration of India&apos;s rich cultural tapestry. Our designs are inspired by the traditions, artistry, and craftsmanship unique to every region, blending them with contemporary aesthetics to cater to modern sensibilities. From intricate bridal collections to everyday elegance, each piece embodies timeless beauty and craftsmanship, making us a part of our customers&apos; most cherished moments.
                                 </p>
                             </div>
                             <div>
-                                <h3 className="m-0.5 text-[20px] font-semibold text-[#333]">Pioneering Excellence</h3>
+                                <h3 className="m-0.5 text-[18px] sm:text-[19px] md:text-[20px] font-semibold text-[#333]">Pioneering Excellence</h3>
                                 <p>
                                     Kalyan Jewellers has consistently set the standard in the jewelry industry through ethical practices, innovation, and quality assurance. As pioneers in introducing BIS Hallmarked gold and transparency in pricing, we have transformed the way jewelry is purchased in India. Our 4-Level Assurance Certification, which includes rigorous quality checks, transparent pricing, ethically sourced materials, and reliable certifications, ensures that every piece upholds the highest standards. This meticulous attention to detail and commitment to authenticity have solidified our reputation as a trusted brand for generations.
                                 </p>
                             </div>
                             <div>
-                                <h3 className="m-0.5 text-[20px] font-semibold text-[#333]">A Trusted Brand</h3>
+                                <h3 className="m-0.5 text-[18px] sm:text-[19px] md:text-[20px] font-semibold text-[#333]">A Trusted Brand</h3>
                                 <p>
                                     With the unwavering trust of millions, Kalyan Jewellers continues to lead the jewelry industry. Our expanding network of showrooms offers a personalized shopping experience, thoughtfully tailored to meet the unique preferences of our customers. Whether celebrating milestones or embracing everyday moments, Kalyan Jewellers adds lasting significance to every experience.
                                 </p>
@@ -72,8 +72,8 @@ export default function About() {
             </section>
 
             {/* Leadership Section */}
-            <section className="bg-[#f8f5f2] pb-16 pt-0 mt-20 md:mt-32">
-                <div className="-mt-[8rem] md:-mt-[11rem] relative z-10">
+            <section className="bg-[#f8f5f2] pb-12 sm:pb-14 md:pb-16 pt-0 mt-14 sm:mt-20 md:mt-32">
+                <div className="-mt-[4rem] sm:-mt-[6rem] md:-mt-[11rem] relative z-10">
                     <div className="grid gap-8 md:grid-cols-3 items-start">
                         {/* T.S. Kalyanaraman */}
                         <div className="group flex flex-col bg-white transition-shadow duration-300 hover:shadow-2xl">
@@ -84,7 +84,7 @@ export default function About() {
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
                             </div>
-                            <div className="p-8">
+                            <div className="p-5 sm:p-6 md:p-8">
                                 <h3 className="text-2xl font-bold text-[#333]">T.S. Kalyanaraman</h3>
                                 <p className="mt-2 mb-2 text-sm text-[#666] ">
                                     Chief Managing Director
@@ -122,7 +122,7 @@ export default function About() {
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
                             </div>
-                            <div className="p-8">
+                            <div className="p-5 sm:p-6 md:p-8">
                                 <h3 className="text-2xl font-bold text-[#333]">Rajesh Kalyanaraman</h3>
                                 {/* <p className="mb-6 text-sm font-semibold uppercase tracking-wider text-gray-400">
                                  */}
@@ -163,7 +163,7 @@ export default function About() {
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
                             </div>
-                            <div className="p-8">
+                            <div className="p-5 sm:p-6 md:p-8">
                                 <h3 className="text-2xl font-bold text-[#333]">Ramesh Kalyanaraman</h3>
                                 {/* <p className="mb-6 text-sm font-semibold uppercase tracking-wider text-gray-400"> */}
                                 <p className="mt-2 mb-2 text-sm text-[#666] ">
@@ -198,16 +198,16 @@ export default function About() {
             </section >
 
             {/* Vision & Mission Section */}
-            <section className="flex flex-col md:flex-row min-h-[600px] items-stretch">
+            <section className="flex flex-col md:flex-row min-h-[500px] md:min-h-[600px] items-stretch">
                 <div className="w-full md:w-1/2 flex items-start justify-center bg-white pt-4 pb-12 overflow-hidden">
                     <img src={compassImg} alt="Vision Compass" className="max-w-full h-auto drop-shadow-2xl" />
                 </div>
-                <div className="w-full md:w-1/2 bg-[#cf254a] text-white p-12 md:p-24 flex flex-col justify-center gap-16">
+                <div className="w-full md:w-1/2 bg-[#cf254a] text-white p-8 sm:p-10 md:p-16 lg:p-24 flex flex-col justify-center gap-10 sm:gap-12 md:gap-16">
                     <div className="text-center group">
                         <div className="mx-auto mb-4 flex items-center justify-center transition-transform group-hover:scale-105">
                             <img src={visionIcon} alt="Vision Icon" className="w-7 h-7 object-contain invert brightness-0" />
                         </div>
-                        <h2 className="text-4xl mb-4 font-serif tracking-wide opacity-90">Our Vision</h2>
+                        <h2 className="text-3xl sm:text-4xl mb-4 font-serif tracking-wide opacity-90">Our Vision</h2>
                         <p className="text-[15px] leading-relaxed max-w-lg mx-auto font-light opacity-90 px-4">
                             To understand and delight the world, translating everyone&apos;s dream and personality into fine Indian jewellery, and spread the happiness from it to all.
                         </p>
@@ -216,7 +216,7 @@ export default function About() {
                         <div className="mx-auto mb-4 flex items-center justify-center transition-transform group-hover:scale-105">
                             <img src={missionIcon} alt="Mission Icon" className="w-7 h-7 object-contain invert brightness-0" />
                         </div>
-                        <h2 className="text-4xl mb-4 font-serif tracking-wide opacity-90">Our Mission</h2>
+                        <h2 className="text-3xl sm:text-4xl mb-4 font-serif tracking-wide opacity-90">Our Mission</h2>
                         <p className="text-[15px] leading-relaxed max-w-md mx-auto font-light opacity-90 px-4">
                             To give every customer much more than what he/she asks for in terms of quality, selection, value for money and customer service, by understanding local tastes and preferences and innovating constantly to eventually provide an unmatched experience in Indian jewellery shopping.
                         </p>
@@ -226,36 +226,36 @@ export default function About() {
 
             {/* Network Section */}
             <section className="pt-16 pb-24">
-                <h2 className="text-[36px] font-normal font-serif text-center mb-12 text-[#333]">Our Network</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 px-0 lg:px-8">
-                    <div className="bg-[#f8f5f2] p-8 text-center transition-transform hover:-translate-y-1">
-                        <div className="h-40 flex items-center justify-center mb-6">
+                <h2 className="text-[34px] md:text-[36px] font-normal font-serif text-center mb-10 md:mb-12 text-[#333]">Our Network</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-0 lg:px-8 max-w-[1080px] mx-auto">
+                    <div className="bg-[#f8f5f2] p-6 text-center transition-transform hover:-translate-y-1">
+                        <div className="h-32 md:h-36 flex items-center justify-center mb-5">
                             <img src={indiaMap} alt="India Map" className="max-h-full object-contain" />
                         </div>
-                        <h3 className="text-3xl font-semibold text-[#cf2d4c] mb-1">400+</h3>
-                        <p className="text-[15px] mb-3 text-[#333]">Showroom in India</p>
+                        <h3 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">400+</h3>
+                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] leading-tight">Showroom in India</p>
                         <p className="text-[13px] text-[#666] leading-relaxed">
                             We have a strong presence across 21 states and union territories, and our 278-plus network of showrooms cover all major cities.
                         </p>
                     </div>
 
-                    <div className="bg-[#f8f5f2] p-8 text-center transition-transform hover:-translate-y-1">
-                        <div className="h-40 flex items-center justify-center mb-6">
+                    <div className="bg-[#f8f5f2] p-6 text-center transition-transform hover:-translate-y-1">
+                        <div className="h-32 md:h-36 flex items-center justify-center mb-5">
                             <img src={middleEastMap} alt="Middle East Map" className="max-h-full object-contain" />
                         </div>
-                        <h3 className="text-3xl font-semibold text-[#cf2d4c] mb-1">36+</h3>
-                        <p className="text-[15px] mb-3 text-[#333]">Showroom in Middle East</p>
+                        <h3 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">36+</h3>
+                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] leading-tight">Showroom in Middle East</p>
                         <p className="text-[13px] text-[#666] leading-relaxed">
                             We have 36 showrooms in the GCC spread across UAE, Qatar, Kuwait and Oman.
                         </p>
                     </div>
 
-                    <div className="bg-[#f8f5f2] p-8 text-center transition-transform hover:-translate-y-1">
-                        <div className="h-40 flex items-center justify-center mb-6">
+                    <div className="bg-[#f8f5f2] p-6 text-center transition-transform hover:-translate-y-1">
+                        <div className="h-32 md:h-36 flex items-center justify-center mb-5">
                             <img src={usaMap} alt="USA Map" className="max-h-full object-contain" />
                         </div>
-                        <h3 className="text-3xl font-semibold text-[#cf2d4c] mb-1">02</h3>
-                        <p className="text-[15px] mb-3 text-[#333]">Showroom in USA</p>
+                        <h3 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">02</h3>
+                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] leading-tight">Showroom in USA</p>
                         <p className="text-[13px] text-[#666] leading-relaxed">
                             We have 2 showrooms in the USA (New Jersey and Chicago).
                         </p>
@@ -263,26 +263,26 @@ export default function About() {
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mt-16 pt-12 border-t border-gray-100">
-                    <div className="text-center px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-1/4 after:h-1/2 after:w-px after:bg-gray-200">
-                        <p className="text-2xl font-medium text-[#cf2d4c] mb-1">32 <span className="text-[15px] font-normal text-[#333]">Years</span></p>
-                        <p className="text-sm text-[#666] font-normal">Since Formation</p>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-5 md:gap-8 mt-12 md:mt-16 pt-8 md:pt-12 border-t border-gray-100 max-w-[1080px] mx-auto">
+                    <div className="text-center px-2 md:px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[18%] after:h-[64%] after:w-px after:bg-gray-200">
+                        <p className="text-[34px] md:text-[36px] font-medium text-[#cf2d4c] mb-1 leading-none">32 <span className="text-[16px] md:text-[17px] font-normal text-[#333]">Years</span></p>
+                        <p className="text-[22px] md:text-[24px] leading-tight text-[#666] font-normal">Since Formation</p>
                     </div>
-                    <div className="text-center px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-1/4 after:h-1/2 after:w-px after:bg-gray-200">
-                        <p className="text-2xl font-medium text-[#cf2d4c] mb-1">1K+ <span className="text-[15px] font-normal text-[#333]">My Kalyan</span></p>
-                        <p className="text-sm text-[#666] font-normal">Grassroots Stores</p>
+                    <div className="text-center px-2 md:px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[18%] after:h-[64%] after:w-px after:bg-gray-200">
+                        <p className="text-[34px] md:text-[36px] font-medium text-[#cf2d4c] mb-1 leading-none">1K+ <span className="text-[16px] md:text-[17px] font-normal text-[#333]">My Kalyan</span></p>
+                        <p className="text-[22px] md:text-[24px] leading-tight text-[#666] font-normal">Grassroots Stores</p>
                     </div>
-                    <div className="text-center px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-1/4 after:h-1/2 after:w-px after:bg-gray-200">
-                        <p className="text-2xl font-medium text-[#cf2d4c] mb-1">21 <span className="text-[15px] font-normal text-[#333]">States</span></p>
-                        <p className="text-sm text-[#666] font-normal">&amp; Union Territories in India</p>
+                    <div className="text-center px-2 md:px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[18%] after:h-[64%] after:w-px after:bg-gray-200">
+                        <p className="text-[34px] md:text-[36px] font-medium text-[#cf2d4c] mb-1 leading-none">21 <span className="text-[16px] md:text-[17px] font-normal text-[#333]">States</span></p>
+                        <p className="text-[22px] md:text-[24px] leading-tight text-[#666] font-normal">&amp; Union Territories in India</p>
                     </div>
-                    <div className="text-center px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-1/4 after:h-1/2 after:w-px after:bg-gray-200">
-                        <p className="text-2xl font-medium text-[#cf2d4c] mb-1">6</p>
-                        <p className="text-sm text-[#666] font-normal">Countries</p>
+                    <div className="text-center px-2 md:px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[18%] after:h-[64%] after:w-px after:bg-gray-200">
+                        <p className="text-[34px] md:text-[36px] font-medium text-[#cf2d4c] mb-1 leading-none">6</p>
+                        <p className="text-[22px] md:text-[24px] leading-tight text-[#666] font-normal">Countries</p>
                     </div>
-                    <div className="text-center px-4">
-                        <p className="text-2xl font-medium text-[#cf2d4c] mb-1">13K+</p>
-                        <p className="text-sm text-[#666] font-normal">Employees</p>
+                    <div className="text-center px-2 md:px-4">
+                        <p className="text-[34px] md:text-[36px] font-medium text-[#cf2d4c] mb-1 leading-none">13K+</p>
+                        <p className="text-[22px] md:text-[24px] leading-tight text-[#666] font-normal">Employees</p>
                     </div>
                 </div>
             </section >
