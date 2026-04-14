@@ -55,10 +55,10 @@ import blogTwo from '~/assets/blog-two.jpg';
 import blogThree from '~/assets/blog-three.jpg';
 
 export default function DiamondGuide() {
-    const [cutSlider, setCutSlider] = useState(1);
-    const [caratSlider, setCaratSlider] = useState(2);
+    const [cutSlider, setCutSlider] = useState(0);
+    const [caratSlider, setCaratSlider] = useState(0);
     const [colorSlider, setColorSlider] = useState(0);
-    const [claritySlider, setClaritySlider] = useState(1);
+    const [claritySlider, setClaritySlider] = useState(0);
     const [selectedShape, setSelectedShape] = useState(3);
     const [activeTab, setActiveTab] = useState('DIAMOND SHAPE');
 
@@ -244,7 +244,7 @@ export default function DiamondGuide() {
                 </section>
 
                 {/* SHAPES SECTION */}
-                <section id="shapes" className="mb-20 sm:mb-28 md:mb-36 lg:mb-44">
+                <section id="shapes" className="mb-12 sm:mb-16 md:mb-20">
                     <h3 className="text-xl sm:text-2xl md:text-3xl font-serif font-semibold mb-8 md:mb-10 text-neutral-800">
                         Shapes
                     </h3>
@@ -277,7 +277,7 @@ export default function DiamondGuide() {
                             <h4 className="text-2xl sm:text-3xl md:text-4xl font-serif font-semibold mb-5 md:mb-6 text-neutral-800">
                                 {shapes[selectedShape].name}
                             </h4>
-                            <p className="font-serif text-[#757575] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85]">
+                            <p className="font-serif text-black text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85]">
                                 {shapes[selectedShape].desc}
                             </p>
                         </div>
@@ -292,24 +292,24 @@ export default function DiamondGuide() {
                 </section>
 
                 {/* CUT — large diagram (no fixed-height cage) */}
-                <section id="cut" className="mb-24 sm:mb-32 md:mb-40 flex flex-col md:flex-row md:items-start gap-10 md:gap-14 lg:gap-16">
+                <section id="cut" className="mb-12 sm:mb-16 md:mb-20 flex flex-col md:flex-row md:items-start gap-10 md:gap-14 lg:gap-16">
                     <div className="md:w-1/2 w-full">
-                        <h3 className="text-2xl sm:text-3xl font-bold mb-6 md:mb-8 text-[#003E52] tracking-[0.12em] uppercase">
+                        <h3 className="text-2xl sm:text-3xl font-bold mb-6 md:mb-8 text-black tracking-[0.12em] uppercase">
                             CUT
                         </h3>
-                        <p className="text-[#5c6e76] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] mb-6 md:mb-7 font-normal">
+                        <p className="text-black text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] mb-2 md:mb-3 font-normal">
                             The cut is a diamond&apos;s most crucial &apos;C&apos;. A lot depends on the cut since a diamond&apos;s cut can increase or decrease its value. The precision and craftsmanship of a cut makes all the difference in the brilliance of a diamond.
                         </p>
-                        <p className="text-[#5c6e76] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] font-normal">
+                        <p className="text-black text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] font-normal">
                             In an ideal cut or perfectly cut diamond the light is reflected back to the observer from the top of the stone emitting maximum brilliance.
                         </p>
                     </div>
-                    <div className="md:w-1/2 w-full flex flex-col">
-                        <div className="w-full flex justify-center md:justify-end mb-8 md:mb-10">
+                    <div className="md:w-1/2 w-full flex flex-col items-center">
+                        <div className="w-full flex justify-center mb-8 md:mb-10">
                             <img
                                 src={cutData[cutSlider].image}
                                 alt={cutData[cutSlider].label}
-                                className="w-full h-auto object-contain max-w-[min(100%,520px)] md:max-w-[min(100%,560px)] md:max-h-[420px] transition-opacity duration-500"
+                                className="w-full h-auto object-contain max-w-[min(100%,390px)] md:max-w-[min(100%,420px)] md:max-h-[315px] transition-opacity duration-500"
                             />
                         </div>
                         <div className="w-full mt-auto">
@@ -330,15 +330,15 @@ export default function DiamondGuide() {
                 </section>
 
                 {/* CARAT */}
-                <section id="carat" className="mb-24 sm:mb-32 md:mb-40 flex flex-col md:flex-row md:items-start gap-10 md:gap-14 lg:gap-16">
+                <section id="carat" className="mb-12 sm:mb-16 md:mb-20 flex flex-col md:flex-row md:items-start gap-10 md:gap-14 lg:gap-16">
                     <div className="md:w-1/2 w-full">
-                        <h3 className="text-2xl sm:text-3xl font-bold mb-6 md:mb-8 text-[#003E52] tracking-[0.12em] uppercase">
+                        <h3 className="text-2xl sm:text-3xl font-bold mb-6 md:mb-8 text-black tracking-[0.12em] uppercase">
                             CARAT
                         </h3>
-                        <p className="text-[#5c6e76] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] mb-6 md:mb-7 font-normal">
+                        <p className="text-black text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] mb-2 md:mb-3 font-normal">
                             The Carat Weight of a diamond is a huge contributing factor and the most visible feature that is considered when comparing its price. A slight difference in weight can make a significant difference in price.
                         </p>
-                        <p className="text-[#5c6e76] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] font-normal">
+                        <p className="text-black text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] font-normal">
                             &quot;Carat&quot; (ct.) is a measurement unit representing the weight of a diamond; the price of a diamond is directly proportional to its weight. The cut off weights are 0.50ct, 0.75ct, 1.00ct so on and so forth.
                         </p>
 
@@ -346,16 +346,16 @@ export default function DiamondGuide() {
                             <img
                                 src={caratLeftImg}
                                 alt="Carat size comparison"
-                                className="w-full max-w-[420px] h-auto object-contain"
+                                className="w-full max-w-[525px] h-auto object-contain"
                             />
                         </div>
                     </div>
-                    <div className="md:w-1/2 w-full flex flex-col">
-                        <div className="w-full flex justify-center md:justify-end mb-8 md:mb-10">
+                    <div className="md:w-1/2 w-full flex flex-col items-center">
+                        <div className="w-full flex justify-center mb-8 md:mb-10">
                             <img
                                 src={caratData[caratSlider].image}
                                 alt={caratData[caratSlider].label}
-                                className="w-full h-auto object-contain max-w-[min(100%,640px)] md:max-w-[min(100%,700px)] transition-opacity duration-500"
+                                className="w-full h-auto object-contain max-w-[min(100%,576px)] md:max-w-[min(100%,630px)] transition-opacity duration-500"
                             />
                         </div>
                         <div className="w-full mt-auto">
@@ -381,24 +381,24 @@ export default function DiamondGuide() {
                 </section>
 
                 {/* COLOR */}
-                <section id="color" className="mb-24 sm:mb-32 md:mb-40 flex flex-col md:flex-row md:items-start gap-10 md:gap-14 lg:gap-16">
+                <section id="color" className="mb-12 sm:mb-16 md:mb-20 flex flex-col md:flex-row md:items-start gap-10 md:gap-14 lg:gap-16">
                     <div className="md:w-1/2 w-full">
-                        <h3 className="text-2xl sm:text-3xl font-bold mb-6 md:mb-8 text-[#003E52] tracking-[0.12em] uppercase">
+                        <h3 className="text-2xl sm:text-3xl font-bold mb-6 md:mb-8 text-black tracking-[0.12em] uppercase">
                             COLOR
                         </h3>
-                        <p className="text-[#5c6e76] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] mb-6 md:mb-7 font-normal">
+                        <p className="text-black text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] mb-2 md:mb-3 font-normal">
                             Diamond colors really go the far distance beyond the literal &quot;color&quot;. There are some dazzling diamonds carrying a higher price tag. While these are limitedly in-demand gems retaining a completely colorless feature.
                         </p>
-                        <p className="text-[#5c6e76] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] font-normal">
+                        <p className="text-black text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] font-normal">
                             A typical diamond is completely colorless with loose or zero hues. That&apos;s why colors on a diamond are completely and absolutely terrible. Any type freely ensures a completely representable choice.
                         </p>
                     </div>
-                    <div className="md:w-1/2 w-full flex flex-col">
-                        <div className="w-full flex justify-center md:justify-end mb-8 md:mb-10">
+                    <div className="md:w-1/2 w-full flex flex-col items-center">
+                        <div className="w-full flex justify-center mb-8 md:mb-10">
                             <img
                                 src={colorData[colorSlider].image}
                                 alt={colorData[colorSlider].label}
-                                className="w-full h-auto object-contain max-w-[min(100%,520px)] md:max-w-[min(100%,560px)] md:max-h-[420px]"
+                                className="w-full h-auto object-contain max-w-[min(100%,390px)] md:max-w-[min(100%,420px)] md:max-h-[315px]"
                             />
                         </div>
                         <div className="w-full mt-auto">
@@ -419,24 +419,24 @@ export default function DiamondGuide() {
                 </section>
 
                 {/* CLARITY */}
-                <section id="clarity" className="mb-24 sm:mb-32 md:mb-40 flex flex-col md:flex-row md:items-start gap-10 md:gap-14 lg:gap-16">
+                <section id="clarity" className="mb-12 sm:mb-16 md:mb-20 flex flex-col md:flex-row md:items-start gap-10 md:gap-14 lg:gap-16">
                     <div className="md:w-1/2 w-full">
-                        <h3 className="text-2xl sm:text-3xl font-bold mb-6 md:mb-8 text-[#003E52] tracking-[0.12em] uppercase">
+                        <h3 className="text-2xl sm:text-3xl font-bold mb-6 md:mb-8 text-black tracking-[0.12em] uppercase">
                             CLARITY
                         </h3>
-                        <p className="text-[#5c6e76] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] mb-6 md:mb-7 font-normal">
+                        <p className="text-black text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] mb-2 md:mb-3 font-normal">
                             In reality, a completely clear or flawless Diamond is basically impossible to find and is extremely rare and an abnormal inclusion that usually develops in a creation.
                         </p>
-                        <p className="text-[#5c6e76] text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] font-normal">
+                        <p className="text-black text-[15px] sm:text-[16px] md:text-[17px] leading-[1.85] font-normal">
                             Although simple location of ordinary typical mineral elements inside a diamond&apos;s pretty internal structure is normal, there is literally a visible minimal imperfection in any flawless or absolutely clear literal diamond.
                         </p>
                     </div>
-                    <div className="md:w-1/2 w-full flex flex-col">
-                        <div className="w-full flex justify-center md:justify-end mb-8 md:mb-10">
+                    <div className="md:w-1/2 w-full flex flex-col items-center">
+                        <div className="w-full flex justify-center mb-8 md:mb-10">
                             <img
                                 src={clarityData[claritySlider].image}
                                 alt={clarityData[claritySlider].label}
-                                className="w-full h-auto object-contain max-w-[min(100%,640px)] md:max-w-[min(100%,700px)]"
+                                className="w-full h-auto object-contain max-w-[min(100%,576px)] md:max-w-[min(100%,630px)]"
                             />
                         </div>
                         <div className="w-full mt-auto">
@@ -456,89 +456,85 @@ export default function DiamondGuide() {
                     </div>
                 </section>
 
-                {/* BLOG SECTION — light gray band + cards (match reference) */}
-                <div className="mt-24 md:mt-32 pt-14 md:pt-20 border-t border-gray-200">
-                    <div className="rounded-2xl bg-[#ECECEC] px-4 py-10 sm:px-6 sm:py-12 md:px-10 md:py-14">
-                        <h2 className="text-2xl sm:text-3xl md:text-[2.25rem] font-serif text-center mb-10 md:mb-14 text-[#003E52] font-normal tracking-tight">
+                {/* BLOG SECTION — Matching Staging */}
+                <div className="mt-24 md:mt-32 pt-14 pb-20 border-t border-gray-100">
+                    <div className="px-4 sm:px-6 md:px-0">
+                        <h2 className="text-2xl sm:text-3xl md:text-[2rem] font-serif text-center mb-12 text-black font-normal tracking-tight">
                             Checkout Out Our Latest Blogs
                         </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 lg:gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
                             {/* Blog 1 */}
-                            <article className="bg-white p-5 sm:p-6 border border-gray-300/80 rounded-lg flex flex-col sm:flex-row gap-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-                                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden flex-shrink-0 mx-auto sm:mx-0 border border-gray-200">
+                            <article className="bg-[#fcfcfc] p-6 border border-gray-100 rounded-xl flex items-center gap-6 shadow-sm hover:shadow-md transition-shadow">
+                                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden flex-shrink-0 border border-gray-50 bg-white">
                                     <img src={blogOne} alt="" className="w-full h-full object-cover" />
                                 </div>
                                 <div className="min-w-0 flex-1 flex flex-col">
-                                    <h4 className="text-[15px] sm:text-[16px] font-semibold text-[#003E52] mb-2 leading-snug">
-                                        A Quick Guide On Ring Sizing
+                                    <h4 className="text-[14px] sm:text-[15px] font-bold text-black mb-1.5 leading-snug">
+                                        5 Genius Hacks for the Ultimate Jewellery
                                     </h4>
-                                    <p className="text-[12px] sm:text-[13px] text-gray-500 mb-3 line-clamp-3 flex-1 leading-relaxed">
-                                        Finding yours or someone else&apos;s ring size can be an uphill task...
+                                    <p className="text-[11px] text-gray-400 mb-2 line-clamp-3 leading-relaxed">
+                                        Jewellery is fun, fashionable and fabulous. But you know what else jewellery is? Difficult to put on at times which... <span className="text-blue-500 font-medium cursor-pointer">Read More</span>
                                     </p>
-                                    <a href="#" className="text-[12px] sm:text-[13px] font-semibold text-[#1d4ed8] hover:underline mb-4">
-                                        Read More
-                                    </a>
-                                    <p className="text-[11px] text-gray-400 mt-auto flex items-center gap-2">
-                                        <span className="inline-block w-5 h-5 rounded-full bg-gray-200 shrink-0" aria-hidden />
-                                        <span className="text-gray-500">Admin</span>
-                                        <span className="text-gray-300">|</span>
-                                        <span>Apr 12, 2026</span>
-                                    </p>
+                                    <div className="flex items-center gap-2 mt-auto">
+                                        <div className="w-6 h-6 rounded-full bg-gray-100 flex-shrink-0" />
+                                        <div>
+                                            <p className="text-[10px] font-bold text-black">Azra</p>
+                                            <p className="text-[9px] text-gray-400 uppercase">December 15, 2026</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </article>
+
                             {/* Blog 2 */}
-                            <article className="bg-white p-5 sm:p-6 border border-gray-300/80 rounded-lg flex flex-col sm:flex-row gap-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-                                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden flex-shrink-0 mx-auto sm:mx-0 border border-gray-200">
+                            <article className="bg-[#fcfcfc] p-6 border border-gray-100 rounded-xl flex items-center gap-6 shadow-sm hover:shadow-md transition-shadow">
+                                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden flex-shrink-0 border border-gray-50 bg-white">
                                     <img src={blogTwo} alt="" className="w-full h-full object-cover" />
                                 </div>
                                 <div className="min-w-0 flex-1 flex flex-col">
-                                    <h4 className="text-[15px] sm:text-[16px] font-semibold text-[#003E52] mb-2 leading-snug">
-                                        Are Classic Wedding Rings Still In ...
+                                    <h4 className="text-[14px] sm:text-[15px] font-bold text-black mb-1.5 leading-snug">
+                                        An Ultimate Guide to Buying Solitaires
                                     </h4>
-                                    <p className="text-[12px] sm:text-[13px] text-gray-500 mb-3 line-clamp-3 flex-1 leading-relaxed">
-                                        When a picture pops up in your head when you hear the word...
+                                    <p className="text-[11px] text-gray-400 mb-2 line-clamp-3 leading-relaxed">
+                                        You may have seen it in movies or read it in books. That perfect moment when a man gets on his knee holding... <span className="text-blue-500 font-medium cursor-pointer">Read More</span>
                                     </p>
-                                    <a href="#" className="text-[12px] sm:text-[13px] font-semibold text-[#1d4ed8] hover:underline mb-4">
-                                        Read More
-                                    </a>
-                                    <p className="text-[11px] text-gray-400 mt-auto flex items-center gap-2">
-                                        <span className="inline-block w-5 h-5 rounded-full bg-gray-200 shrink-0" aria-hidden />
-                                        <span className="text-gray-500">Admin</span>
-                                        <span className="text-gray-300">|</span>
-                                        <span>Apr 10, 2026</span>
-                                    </p>
+                                    <div className="flex items-center gap-2 mt-auto">
+                                        <div className="w-6 h-6 rounded-full bg-gray-100 flex-shrink-0" />
+                                        <div>
+                                            <p className="text-[10px] font-bold text-black">Azra</p>
+                                            <p className="text-[9px] text-gray-400 uppercase">March 18, 2026</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </article>
+
                             {/* Blog 3 */}
-                            <article className="bg-white p-5 sm:p-6 border border-gray-300/80 rounded-lg flex flex-col sm:flex-row gap-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-                                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden flex-shrink-0 mx-auto sm:mx-0 border border-gray-200">
+                            <article className="bg-[#fcfcfc] p-6 border border-gray-100 rounded-xl flex items-center gap-6 shadow-sm hover:shadow-md transition-shadow">
+                                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden flex-shrink-0 border border-gray-50 bg-white">
                                     <img src={blogThree} alt="" className="w-full h-full object-cover" />
                                 </div>
                                 <div className="min-w-0 flex-1 flex flex-col">
-                                    <h4 className="text-[15px] sm:text-[16px] font-semibold text-[#003E52] mb-2 leading-snug">
-                                        How Diamond Bracelets Make The ...
+                                    <h4 className="text-[14px] sm:text-[15px] font-bold text-black mb-1.5 leading-snug">
+                                        Waves Diamond Stackable Solitaire rings
                                     </h4>
-                                    <p className="text-[12px] sm:text-[13px] text-gray-500 mb-3 line-clamp-3 flex-1 leading-relaxed">
-                                        As there are such a wide array of diamond bracelets variations...
+                                    <p className="text-[11px] text-gray-400 mb-2 line-clamp-3 leading-relaxed">
+                                        A solitaire is not only a timeless symbol of love, but also an undeniably elegant piece of jewellery. Whether you&apos;re... <span className="text-blue-500 font-medium cursor-pointer">Read More</span>
                                     </p>
-                                    <a href="#" className="text-[12px] sm:text-[13px] font-semibold text-[#1d4ed8] hover:underline mb-4">
-                                        Read More
-                                    </a>
-                                    <p className="text-[11px] text-gray-400 mt-auto flex items-center gap-2">
-                                        <span className="inline-block w-5 h-5 rounded-full bg-gray-200 shrink-0" aria-hidden />
-                                        <span className="text-gray-500">Admin</span>
-                                        <span className="text-gray-300">|</span>
-                                        <span>Apr 08, 2026</span>
-                                    </p>
+                                    <div className="flex items-center gap-2 mt-auto">
+                                        <div className="w-6 h-6 rounded-full bg-gray-100 flex-shrink-0" />
+                                        <div>
+                                            <p className="text-[10px] font-bold text-black">Azra</p>
+                                            <p className="text-[9px] text-gray-400 uppercase">March 20, 2026</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </article>
                         </div>
-                        <div className="mt-10 md:mt-12 flex justify-center">
+                        <div className="mt-16 flex justify-center">
                             <button
                                 type="button"
-                                className="bg-[#BF1C47] text-white px-12 sm:px-16 md:px-20 py-3.5 md:py-4 rounded-md text-[12px] sm:text-[13px] md:text-[14px] font-bold tracking-[0.2em] uppercase hover:bg-[#9a1539] transition-colors shadow-md"
+                                className="bg-[#BF1C47] text-white px-10 md:px-14 py-3.5 rounded-md text-[13px] font-bold tracking-[0.1em] uppercase hover:bg-[#9a1539] transition-colors shadow-sm"
                             >
-                                VIEW ALL ARTICLES
+                                CONTINUE SHOPPING
                             </button>
                         </div>
                     </div>
