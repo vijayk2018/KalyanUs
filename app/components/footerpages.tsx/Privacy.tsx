@@ -1,19 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 export default function Privacy() {
     return (
-        <div className="bg-white min-h-screen pt-16 pb-24 font-sans text-[#333]">
-            <div className="max-w-[1240px] mx-auto px-4 md:px-8">
+        <div className="bg-white min-h-screen pt-8 pb-16 sm:pt-10 sm:pb-20 md:pt-12 md:pb-24 font-sans text-[#222]">
+            <div className="w-[80%] mx-auto">
+                <div className="mb-6 text-[12px] sm:text-[13px] text-[#666]">
+                    <Link to="/" className="hover:underline text-[#555]">
+                        Home
+                    </Link>
+                    <span className="mx-2">{'>'}</span>
+                    <span className="text-[#222]">KALYAN JEWELLERS PRIVACY POLICY</span>
+                </div>
+
                 {/* Header */}
-                <h1 className="text-[20px] md:text-[24px] font-semibold text-center uppercase tracking-wide mb-2">
+                <h1 className="text-[17px] sm:text-[19px] md:text-[21px] font-medium text-center uppercase tracking-wide mb-2">
                     KALYAN JEWELLERS PRIVACY POLICY
                 </h1>
-                <p className="text-center text-[14px] text-[#666] mb-8">
+                <p className="text-center text-[12px] sm:text-[13px] text-[#666] mb-8">
                     Last Updated Version: 25.10.2024
                 </p>
 
                 {/* Intro Paragraph */}
-                <div className="text-[14px] md:text-[15px] leading-relaxed mb-6 space-y-4">
+                <div className="text-[12px] sm:text-[13px] md:text-[14px] leading-[1.7] mb-6 space-y-4 break-words">
                     <p>
                         This Privacy Policy of Kalyan Jewellers INC (herein after referred to as “Kalyan”, “we”, “our” or “us”) applies to all visitors, users, and others who reside in the State of California or accessing through our United States portal (hereinafter “Consumers” or “you”) and we adopt this policy to comply with the California Privacy Rights Act (“CPRA”), which amended the California Consumer Privacy Act of 2018 (“CCPA”) alongside other applicable United States Federal & State Privacy Laws. Any terms defined in CPRA, CCPA & or in our standard privacy policy will have the same meaning when used in this policy.
                     </p>
@@ -24,16 +33,16 @@ export default function Privacy() {
 
                 {/* Section 1 */}
                 <div className="mb-8">
-                    <h2 className="text-[16px] md:text-[18px] font-bold mb-4">
+                    <h2 className="text-[15px] md:text-[17px] font-bold mb-4">
                         1. Notice at Collection of Personal Information
                     </h2>
-                    <p className="text-[14px] md:text-[15px] leading-relaxed mb-6">
+                    <p className="text-[12px] sm:text-[13px] md:text-[14px] leading-[1.7] mb-6">
                         We do not sell Personal Information. We collect the following categories of Personal Information from consumers. However, please note that all specific pieces of Personal information are not always collected about all consumers.
                     </p>
 
                     {/* Table */}
                     <div className="overflow-x-auto mb-6">
-                        <table className="w-full border-collapse border border-gray-300 text-[13px] md:text-[14px]">
+                        <table className="w-full border-collapse border border-gray-300 text-[12px] sm:text-[12.5px] md:text-[13px] leading-[1.6]">
                             <thead>
                                 <tr className="bg-gray-50 border-b border-gray-300">
                                     <th className="font-bold text-left p-4 border-r border-gray-300 w-[50%] align-top">
@@ -53,89 +62,89 @@ export default function Privacy() {
                                         <p className="font-bold mb-1">Identifiers</p>
                                         <p className="text-[#555]">(e.g., name, alias, address, unique personal identifier, online identifier, IP address, email address, account name, SSN, driver&apos;s license number, passport number, or similar identifiers)</p>
                                     </td>
-                                    <td className="p-4 border-r border-gray-300 align-top text-center md:text-left">Yes,<br />collected from consumers</td>
-                                    <td className="p-4 align-top text-center md:text-left">No,<br />however they are shared to service providers</td>
+                                    <td className="p-4 border-r border-gray-300 align-top">• Yes, collected from consumers.</td>
+                                    <td className="p-4 align-top">• No, however they are shared to service providers.</td>
                                 </tr>
                                 <tr className="border-b border-gray-300">
                                     <td className="p-4 border-r border-gray-300 align-top">
                                         <p className="font-bold mb-1">Personal information categories listed in California Customer Records statute (Cal. Civ. Code § 1798.80(e))</p>
                                         <p className="text-[#555]">(e.g., Name, signature, SSN, physical characteristics or description, address, telephone number, passport number, driver&apos;s license or state identification card number, insurance policy number, education, employment, employment history, bank account number, credit card number, debit card number, or any other financial information, medical information, or health insurance information)</p>
                                     </td>
-                                    <td className="p-4 border-r border-gray-300 align-top text-center md:text-left">Yes,<br />collected from consumers/applications/enquiries.</td>
-                                    <td className="p-4 align-top text-center md:text-left">No</td>
+                                    <td className="p-4 border-r border-gray-300 align-top">• Yes, collected from consumers/applications/enquiries.</td>
+                                    <td className="p-4 align-top">• No.</td>
                                 </tr>
                                 <tr className="border-b border-gray-300">
                                     <td className="p-4 border-r border-gray-300 align-top">
                                         <p className="font-bold">Characteristics of protected classifications under California or federal law</p>
                                     </td>
-                                    <td className="p-4 border-r border-gray-300 align-top text-center md:text-left">No</td>
-                                    <td className="p-4 align-top text-center md:text-left">No</td>
+                                    <td className="p-4 border-r border-gray-300 align-top">• No.</td>
+                                    <td className="p-4 align-top">• No.</td>
                                 </tr>
                                 <tr className="border-b border-gray-300">
                                     <td className="p-4 border-r border-gray-300 align-top">
                                         <p className="font-bold mb-1">Commercial information</p>
                                         <p className="text-[#555]">(e.g., records of personal property, products or services purchased, obtained, or considered, or other purchasing or consuming histories or tendencies)</p>
                                     </td>
-                                    <td className="p-4 border-r border-gray-300 align-top text-center md:text-left">Yes,<br />collected from consumers.</td>
-                                    <td className="p-4 align-top text-center md:text-left">No,<br />however they are shared to service providers.</td>
+                                    <td className="p-4 border-r border-gray-300 align-top">• Yes, collected from consumers.</td>
+                                    <td className="p-4 align-top">• No, however they are shared to service providers.</td>
                                 </tr>
                                 <tr className="border-b border-gray-300">
                                     <td className="p-4 border-r border-gray-300 align-top">
                                         <p className="font-bold">Biometric information</p>
                                     </td>
-                                    <td className="p-4 border-r border-gray-300 align-top text-center md:text-left">No</td>
-                                    <td className="p-4 align-top text-center md:text-left">No</td>
+                                    <td className="p-4 border-r border-gray-300 align-top">• No.</td>
+                                    <td className="p-4 align-top">• No.</td>
                                 </tr>
                                 <tr className="border-b border-gray-300">
                                     <td className="p-4 border-r border-gray-300 align-top">
                                         <p className="font-bold mb-1">Internet or other similar network activity</p>
                                         <p className="text-[#555]">(e.g., browsing history, search history, and information regarding a consumer&apos;s interaction with an internet website, application, or advertisement)</p>
                                     </td>
-                                    <td className="p-4 border-r border-gray-300 align-top text-center md:text-left">Yes,<br />collected from consumers&apos; devices.</td>
-                                    <td className="p-4 align-top text-center md:text-left">No</td>
+                                    <td className="p-4 border-r border-gray-300 align-top">• Yes, collected from consumers&apos; devices.</td>
+                                    <td className="p-4 align-top">• No.</td>
                                 </tr>
                                 <tr className="border-b border-gray-300">
                                     <td className="p-4 border-r border-gray-300 align-top">
                                         <p className="font-bold">Geolocation data</p>
                                     </td>
-                                    <td className="p-4 border-r border-gray-300 align-top text-center md:text-left">Yes,<br />collected from consumers&apos; devices.</td>
-                                    <td className="p-4 align-top text-center md:text-left">No</td>
+                                    <td className="p-4 border-r border-gray-300 align-top">• Yes, collected from consumers&apos; devices.</td>
+                                    <td className="p-4 align-top">• No.</td>
                                 </tr>
                                 <tr className="border-b border-gray-300">
                                     <td className="p-4 border-r border-gray-300 align-top">
                                         <p className="font-bold mb-1">Sensory data</p>
                                         <p className="text-[#555]">Audio, electronic, visual, thermal, olfactory, or similar information</p>
                                     </td>
-                                    <td className="p-4 border-r border-gray-300 align-top text-center md:text-left">No</td>
-                                    <td className="p-4 align-top text-center md:text-left">No</td>
+                                    <td className="p-4 border-r border-gray-300 align-top">• No.</td>
+                                    <td className="p-4 align-top">• No.</td>
                                 </tr>
                                 <tr className="border-b border-gray-300">
                                     <td className="p-4 border-r border-gray-300 align-top">
                                         <p className="font-bold">Professional or employment-related information</p>
                                     </td>
-                                    <td className="p-4 border-r border-gray-300 align-top text-center md:text-left">No</td>
-                                    <td className="p-4 align-top text-center md:text-left">No</td>
+                                    <td className="p-4 border-r border-gray-300 align-top">• No.</td>
+                                    <td className="p-4 align-top">• No.</td>
                                 </tr>
                                 <tr className="border-b border-gray-300">
                                     <td className="p-4 border-r border-gray-300 align-top">
                                         <p className="font-bold">Non-public education information (per the Family Educational Rights and Privacy Act (20 U.S.C. Section 1232g, 34 C.F.R. Part 99))</p>
                                     </td>
-                                    <td className="p-4 border-r border-gray-300 align-top text-center md:text-left">No</td>
-                                    <td className="p-4 align-top text-center md:text-left">No</td>
+                                    <td className="p-4 border-r border-gray-300 align-top">• No.</td>
+                                    <td className="p-4 align-top">• No.</td>
                                 </tr>
                                 <tr className="border-b border-gray-300">
                                     <td className="p-4 border-r border-gray-300 align-top">
                                         <p className="font-bold mb-1">Inferences drawn from other personal information</p>
                                         <p className="text-[#555]">(Profile reflecting a person&apos;s preferences, characteristics, psychological trends, predispositions, behavior, attitudes, intelligence, abilities, and aptitudes)</p>
                                     </td>
-                                    <td className="p-4 border-r border-gray-300 align-top text-center md:text-left">Yes,<br />collected from consumers&apos; interaction with our website/application.</td>
-                                    <td className="p-4 align-top text-center md:text-left">No,<br />however they are shared to service providers.</td>
+                                    <td className="p-4 border-r border-gray-300 align-top">• Yes, collected from consumers&apos; interaction with our website/application.</td>
+                                    <td className="p-4 align-top">• No, however they are shared to service providers.</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <div className="text-[14px] md:text-[15px] leading-relaxed mb-6">
+                    <div className="text-[12px] sm:text-[13px] md:text-[14px] leading-[1.7] mb-6">
                         <p className="mb-2">* Exclusions:</p>
                         <p>
                             Personal Information does not include information that is publicly available from government records or de-identified or aggregated consumer information. Personal Information also does not include information excluded from the scope of CCPA/CPRA, including but not limited to health or medical information covered by the Health Insurance Portability and Accountability Act of 1996 (HIPAA) and the California Medical Information Act (CMIA) or clinical trial data, or personal information covered by certain sector-specific privacy laws, including the Fair Credit Reporting Act (FRCA), the Gramm-Leach-Bliley Act (GLBA) or California Financial Information Privacy Act (FIPA), and the Driver&apos;s Privacy Protection Act of 1994.
@@ -144,10 +153,10 @@ export default function Privacy() {
                 </div>
 
                 {/* Remaining sections */}
-                <div className="space-y-8 text-[14px] md:text-[15px] leading-relaxed">
+                <div className="space-y-8 text-[12px] sm:text-[13px] md:text-[14px] leading-[1.7] break-words">
                     {/* Section 2 */}
                     <section>
-                        <h2 className="text-[16px] md:text-[18px] font-bold mb-3 uppercase">2. METHODS OF INFORMATION COLLECTION</h2>
+                        <h2 className="text-[15px] md:text-[17px] font-bold mb-3 uppercase">2. METHODS OF INFORMATION COLLECTION</h2>
                         <p className="mb-4">We may collect personal information directly from you when you provide it to us, automatically as you navigate through our website/app, or from third parties. Our methods of information collection may include (but not limited to)</p>
                         <ul className="list-disc pl-6 space-y-4 mb-4 marker:text-[#333]">
                             <li>
@@ -172,13 +181,13 @@ export default function Privacy() {
 
                     {/* Section 3 */}
                     <section>
-                        <h2 className="text-[16px] md:text-[18px] font-bold mb-3 uppercase">3. HOW WE USE YOUR PERSONAL INFORMATION</h2>
+                        <h2 className="text-[15px] md:text-[17px] font-bold mb-3 uppercase">3. HOW WE USE YOUR PERSONAL INFORMATION</h2>
                         <p className="mb-4">We may use the personal information collected for the following business purposes:</p>
                         <ul className="list-disc pl-6 space-y-2 mb-4 marker:text-[#333]">
                             <li><span className="font-bold">To Fulfil your Requests:</span> Process orders, deliver products, handle returns, process payments, and provide requested services or information.</li>
                             <li><span className="font-bold">Customer support:</span> Respond to your inquiries, concerns, or requests, and provide effective customer support.</li>
                             <li><span className="font-bold">Improve our Services:</span> Analyze user behavior and feedback to enhance the functionality, design, and user experience of our website/app.</li>
-                            <li><span className="font-bold">Marketing and promotions:</span> Send you marketing communications, newsletters, promotions, and tailored offers. You possess the option to opt-out of these communications according to our <a href="#" className="text-blue-500 hover:underline">marketing/cookie policy</a>.</li>
+                            <li><span className="font-bold">Marketing and promotions:</span> Send you marketing communications, newsletters, promotions, and tailored offers. You possess the option to opt-out of these communications according to our <a href="#" className="text-[#1e5aa8] underline underline-offset-2 hover:text-[#163f77]">marketing/cookie policy</a>.</li>
                             <li><span className="font-bold">Personalization:</span> Customize your website/app experience, recommend products based on your preferences, and display relevant content or advertisements.</li>
                             <li><span className="font-bold">Legal Compliance:</span> Comply with applicable legal requirements, enforce our terms of service, and protect our rights, privacy, safety, or property, and that of our users or others.</li>
                         </ul>
@@ -189,13 +198,13 @@ export default function Privacy() {
                             We do not collect sensitive personal information. In case we collect your sensitive personal information, we only use it to provide our core services, not for inferring characteristics or targeted advertising. Thus, we don’t offer a specific tool to &quot;limit the use of my sensitive personal information&quot; beyond general opt-outs.
                         </p>
                         <p>
-                            To opt out of the &quot;sale&quot; or &quot;sharing&quot; of your data (e.g., via cookies and trackers), click on the <a href="#" className="text-blue-500 hover:underline">“Do Not Sell or Share My Personal Information”</a> link in the website footer. We also process Global Privacy Control (GPC) signals as valid opt-out requests.
+                            To opt out of the &quot;sale&quot; or &quot;sharing&quot; of your data (e.g., via cookies and trackers), click on the <a href="#" className="text-[#1e5aa8] underline underline-offset-2 hover:text-[#163f77]">“Do Not Sell or Share My Personal Information”</a> link in the website footer. We also process Global Privacy Control (GPC) signals as valid opt-out requests.
                         </p>
                     </section>
 
                     {/* Section 4 */}
                     <section>
-                        <h2 className="text-[16px] md:text-[18px] font-bold mb-3 uppercase">4. SHARING AND DISCLOSURE OF INFORMATION</h2>
+                        <h2 className="text-[15px] md:text-[17px] font-bold mb-3 uppercase">4. SHARING AND DISCLOSURE OF INFORMATION</h2>
                         <p className="mb-4">We may share your Personal Information with third parties in the following circumstances:</p>
                         <ul className="list-disc pl-6 space-y-2 mb-4 marker:text-[#333]">
                             <li><span className="font-bold">Service providers:</span> We may share your information with trusted third-party service providers who assist us in operating our business, delivering orders, processing payments, analysing data, or conducting marketing activities. They are contractually obligated to keep your information secure and are only authorized to use it for designated services.</li>
@@ -210,7 +219,7 @@ export default function Privacy() {
 
                     {/* Section 5 */}
                     <section>
-                        <h2 className="text-[16px] md:text-[18px] font-bold mb-3 uppercase">5. SECURITY MEASURES</h2>
+                        <h2 className="text-[15px] md:text-[17px] font-bold mb-3 uppercase">5. SECURITY MEASURES</h2>
                         <p>
                             We implement reasonable and appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. We regularly review and upgrade our security protocols. However, it&apos;s essential to understand that no data transmission over the internet or electronic storage system is completely secure. We cannot guarantee absolute security.
                         </p>
@@ -218,7 +227,7 @@ export default function Privacy() {
 
                     {/* Section 6 */}
                     <section>
-                        <h2 className="text-[16px] md:text-[18px] font-bold mb-3 uppercase">6. RETENTION OF PERSONAL INFORMATION</h2>
+                        <h2 className="text-[15px] md:text-[17px] font-bold mb-3 uppercase">6. RETENTION OF PERSONAL INFORMATION</h2>
                         <p className="mb-4">We retain your personal information only for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law. Our retention periods are determined by:</p>
                         <ul className="list-disc pl-6 space-y-2 mb-4 marker:text-[#333]">
                             <li>The length of time we have an ongoing relationship with you and provide you with our services.</li>
@@ -232,7 +241,7 @@ export default function Privacy() {
 
                     {/* Section 7 - Rights */}
                     <section>
-                        <h2 className="text-[16px] md:text-[18px] font-bold mb-3 uppercase">7. YOUR CPRA/ CCPA RIGHTS</h2>
+                        <h2 className="text-[15px] md:text-[17px] font-bold mb-3 uppercase">7. YOUR CPRA/ CCPA RIGHTS</h2>
                         <p className="mb-4">Under CPRA/CCPA, consumers in California/USA have specific rights regarding their Personal Information. We endeavour to uphold following rights for our consumers:</p>
 
                         <div className="space-y-4">
@@ -271,7 +280,7 @@ export default function Privacy() {
 
                     {/* Section 7 - Minors (Numbering as per screenshot) */}
                     <section>
-                        <h2 className="text-[16px] md:text-[18px] font-bold mb-3 uppercase">7. MINORS</h2>
+                        <h2 className="text-[15px] md:text-[17px] font-bold mb-3 uppercase">7. MINORS</h2>
                         <p>
                             Our website/app is not intended for consumers under the age of 16. We do not knowingly collect personal information from consumers under sixteen (16) years of age.
                         </p>
@@ -279,9 +288,9 @@ export default function Privacy() {
 
                     {/* Section 8 */}
                     <section>
-                        <h2 className="text-[16px] md:text-[18px] font-bold mb-3 uppercase">8. EXERCISING YOUR CPRA RIGHTS</h2>
+                        <h2 className="text-[15px] md:text-[17px] font-bold mb-3 uppercase">8. EXERCISING YOUR CPRA RIGHTS</h2>
                         <p className="mb-4">
-                            To exercise your right to access, delete, or opt-out, please submit a verifiable consumer request to us by either emailing us at <a href="mailto:usa@kalyanjewellers.net" className="text-blue-500 hover:underline font-bold">usa@kalyanjewellers.net</a>, or sending us post on &apos;Kalyan Jewellers, 9070 Irvine Centre Drive, #195, Irvine, CA - 92618&apos;. Or You can also do it yourself by changing privacy settings on web site.
+                            To exercise your right to access, delete, or opt-out, please submit a verifiable consumer request to us by either emailing us at <a href="mailto:usa@kalyanjewellers.net" className="text-[#1e5aa8] underline underline-offset-2 hover:text-[#163f77] font-semibold">usa@kalyanjewellers.net</a>, or sending us post on &apos;Kalyan Jewellers, 9070 Irvine Centre Drive, #195, Irvine, CA - 92618&apos;. Or You can also do it yourself by changing privacy settings on web site.
                         </p>
                         <p className="mb-4">
                             Only you or your authorized agent can make a verifiable consumer request related to your Personal Information.<br />
@@ -302,7 +311,7 @@ export default function Privacy() {
 
                     {/* Section 9 */}
                     <section>
-                        <h2 className="text-[16px] md:text-[18px] font-bold mb-3 uppercase">9. CHANGES TO PRIVACY POLICY</h2>
+                        <h2 className="text-[15px] md:text-[17px] font-bold mb-3 uppercase">9. CHANGES TO PRIVACY POLICY</h2>
                         <p>
                             We reserve the right to amend this Policy at our discretion and at any time. When we make changes, we will post the updated notice on our website and update the effective date.
                         </p>
@@ -310,9 +319,9 @@ export default function Privacy() {
 
                     {/* Section 10 */}
                     <section>
-                        <h2 className="text-[16px] md:text-[18px] font-bold mb-3 uppercase">10. CONTACT INFORMATION</h2>
+                        <h2 className="text-[15px] md:text-[17px] font-bold mb-3 uppercase">10. CONTACT INFORMATION</h2>
                         <p>
-                            If you have any questions or comments about this Privacy Policy, the ways in which we collect and use your Personal Information, your choices and rights regarding such use, or wish to exercise your rights under CPRA/CCPA, please do not hesitate to contact us at: Email: <a href="mailto:usa@kalyanjewellers.net" className="text-blue-500 hover:underline font-bold">usa@kalyanjewellers.net</a>, Address: Kalyan Jewellers INC, 9070 Irvine Center Drive, #195, Irvine, CA-92618.
+                            If you have any questions or comments about this Privacy Policy, the ways in which we collect and use your Personal Information, your choices and rights regarding such use, or wish to exercise your rights under CPRA/CCPA, please do not hesitate to contact us at: Email: <a href="mailto:usa@kalyanjewellers.net" className="text-[#1e5aa8] underline underline-offset-2 hover:text-[#163f77] font-semibold">usa@kalyanjewellers.net</a>, Address: Kalyan Jewellers INC, 9070 Irvine Center Drive, #195, Irvine, CA-92618.
                         </p>
                     </section>
                 </div>
