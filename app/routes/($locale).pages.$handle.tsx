@@ -1,6 +1,7 @@
 import { useLoaderData } from 'react-router';
 import type { Route } from './+types/pages.$handle';
 import { redirectIfHandleIsLocalized } from '~/lib/redirect';
+import DiamondGuide from '~/components/footerpages.tsx/Diamond_guide';
 
 export const meta: Route.MetaFunction = ({ data }) => {
   return [{ title: ` ${data?.page.title ?? ''}` }];
@@ -23,6 +24,18 @@ export async function loader(args: Route.LoaderArgs) {
 async function loadCriticalData({ context, request, params }: Route.LoaderArgs) {
   if (!params.handle) {
     throw new Error('Missing page handle');
+  }
+
+  const normalizedHandle = params.handle.toLowerCase();
+  if (normalizedHandle === 'diamond-guide' || normalizedHandle === 'diamond guide') {
+    return {
+      page: {
+        handle: params.handle,
+        id: 'local-diamond-guide-page',
+        title: 'Diamond Guide',
+        body: '',
+      },
+    };
   }
 
   const [{ page }] = await Promise.all([
@@ -61,6 +74,10 @@ export default function Page() {
 
   if (page.handle === 'about' || page.handle === 'about-us') {
     return <About />;
+  }
+
+  if (page.handle === 'diamond-guide' || page.handle === 'diamond guide') {
+    return <DiamondGuide />;
   }
 
   return (
