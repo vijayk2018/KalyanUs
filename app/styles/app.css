@@ -270,6 +270,19 @@ button.reset:hover:not(:has(> *)) {
   min-width: fit-content;
 }
 
+.header-search-input::-webkit-search-cancel-button,
+.header-search-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.header-search-input::-ms-clear,
+.header-search-input::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 /*
 * --------------------------------------------------
 * components/Footer

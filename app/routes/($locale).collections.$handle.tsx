@@ -18,6 +18,15 @@ const SORT_OPTIONS = [
   {label: 'Price - High To Low', value: 'price-desc'},
 ] as const;
 
+function isAvailabilityFilterInput(filterInput: string) {
+  try {
+    const parsed = JSON.parse(filterInput) as {available?: boolean};
+    return typeof parsed.available === 'boolean';
+  } catch {
+    return false;
+  }
+}
+
 function getSortVariables(sortParam: string | null) {
   switch (sortParam) {
     case 'whats-new':
@@ -152,6 +161,11 @@ export default function Collection() {
       nextParams.delete('filter');
       remaining.forEach((value) => nextParams.append('filter', value));
     } else {
+      const nextExisting = isAvailabilityFilterInput(filterInput)
+        ? existing.filter((value) => !isAvailabilityFilterInput(value))
+        : existing;
+      nextParams.delete('filter');
+      nextExisting.forEach((value) => nextParams.append('filter', value));
       nextParams.append('filter', filterInput);
     }
 
