@@ -148,7 +148,7 @@ export function Header({
             </button>
             <NavLink prefetch="intent" to="/" end>
               {logoUrl ? (
-                <img src={logoUrl} alt={`${shop.name} logo`} className="h-24 mx-auto" />
+                <img src={logoUrl} alt={`${shop.name} logo`} className="h-[86px] mx-auto" />
               ) : (
                 <span className="font-serif text-2xl text-white">{shop.name}</span>
               )}
@@ -159,7 +159,7 @@ export function Header({
         {isMobileMenuOpen ? (
           <div className="bg-[#f5f5f5] border-t border-[#ececec] px-4 pb-4">
             <div className="flex items-center justify-between pt-5 pb-4">
-              <img src={logoUrl} alt="Menu logo" className="h-10" />
+              <img src={logoUrl} alt="Menu logo" className="h-9" />
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(false)}
@@ -194,12 +194,12 @@ export function Header({
       {/* Desktop header */}
       <div className='hidden lg:block '>
         <header className="lg:flex header justify-between 2xl:pb-[8rem] 2xl:px-[4rem] 2xl:pt-[3rem] lg:pb-[8rem] lg:px-[5rem] lg:pt-[3rem]">
-          <NavLink prefetch="intent" to="/" style={activeLinkStyle} end className="2xl:mt-[7rem] lg:mt-[6rem]">
+          <NavLink prefetch="intent" to="/" style={activeLinkStyle} end className="2xl:mt-[7rem] lg:mt-[6rem] ml-[2.5vw]">
             {logoUrl ? (
               <img
                 src={logoUrl}
                 alt={`${shop.name} logo`}
-                className="mx-auto 2xl:h-28 xl:h-24 lg:h-24"
+                className="mx-auto 2xl:h-[101px] xl:h-[86px] lg:h-[86px] translate-x-[2px] translate-y-[2px]"
               />
             ) : (
               <span className="font-serif text-2xl text-white">{shop.name}</span>
@@ -298,14 +298,14 @@ function HeaderCtas({
 
   return (
     // <div className='lg:block hidden'>
-    <nav className="header-ctas max-w-[35vw] flex items-center bg-[#e8e4d1] pt-8 2xl:px-8 lg:px-4 2xl:pb-5 xl:pb-4 lg:pb-3 rounded-b-3xl 2xl:mt-8  lg:mt-2" role="navigation">
-      <form action="/search" method="get" className="relative flex items-center mr-4 rounded-full">
+    <nav className="header-ctas max-w-[35vw] flex items-center bg-[#e8e4d1] pt-4 2xl:px-8 lg:px-4 2xl:pb-[10px] xl:pb-2 lg:pb-[5px] rounded-b-3xl mt-4" role="navigation">
+      <form action="/search" method="get" className="relative flex-1 flex items-center mr-8 rounded-full">
         <input
           name="q"
           type="search"
           placeholder="Search entire store here..."
           aria-label="Search entire store"
-          className="header-search-input px-4 py-2 pr-10 bg-white rounded-full 2xl:w-64  2xl:h-8 xl:h-7 lg:h-6 font-serif"
+          className="header-search-input px-4 py-2 pr-10 bg-white rounded-full w-full 2xl:h-[30px] xl:h-[25px] lg:h-[20px] font-serif font-normal text-[14px] outline-none placeholder:text-gray-300"
         />
         <button
           type="submit"
@@ -318,7 +318,7 @@ function HeaderCtas({
       <HeaderMenuMobileToggle />
 
       {/* <CartToggle cart={cart} /> */}
-      <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4 ml-auto">
+      <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4">
         <div className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition">
           <div className="relative flex justify-center mb-1" onClick={() => setIsWishlistOpen(true)}>
             <HeartIcon size={24} className="text-black" />

@@ -59,7 +59,7 @@ export async function loader(args: Route.LoaderArgs) {
 async function loadCriticalData({context, request}: Route.LoaderArgs) {
   const {storefront} = context;
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 20,
+    pageBy: 16,
   });
   const sortParam = new URL(request.url).searchParams.get('sort');
   const sortVariables = getSortVariables(sortParam);
