@@ -100,12 +100,17 @@ const TrendingCarousel: React.FC = () => {
 
         {/* RIGHT - TEXT SECTION */}
         <div className="lg:col-span-1 md:text-center lg:text-left p-6 lg:p-0">
-          <h2 className="text-4xl font-serif mb-4 lg:block hidden">
+          {/* <h2 className="text-4xl font-serif mb-4 lg:block hidden">
             Trending <br /> Collections
-          </h2>
-          <h2 className="text-4xl font-serif mb-4 lg:hidden">
+          </h2> */}
+          {/* <h2 className="text-4xl font-serif mb-4 lg:hidden">
             Trending Collections
-          </h2>
+          </h2> */}
+
+                <p className="heading-font mb-4 text-6xl">
+  Trending Collections
+</p>
+
           <p className="text-gray-600 mb-6 font-serif">
             Explore this season's trending collection.
           </p>
