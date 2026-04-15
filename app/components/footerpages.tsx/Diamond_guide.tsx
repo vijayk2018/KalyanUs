@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DiamondguideMain from '~/assets/diamondguide_main.jpg';
-import fourCBanner from '~/assets/4C-banner-transparent.png';
+import fourCBanner from '~/assets/4C-banner-2-transparent.png';
 
 // Shape Icons
 import roundIcon from '~/assets/Round.png';
@@ -222,15 +222,15 @@ export default function DiamondGuide() {
                 </div>
             </div>
 
-            <div className={`${contentMax} py-8 sm:py-10 md:py-12 lg:py-14`}>
+            <div className={`${contentMax} py-12 sm:py-[3.75rem] md:py-[4.5rem] lg:py-[5.25rem]`}>
 
                 {/* 4 C'S */}
-                <section className="mb-12 sm:mb-14 md:mb-16 lg:mb-20 flex flex-col md:flex-row md:items-center gap-8 md:gap-10 lg:gap-12">
-                    <div className="w-full md:w-1/2 shrink-0 flex justify-center md:justify-start md:pl-[10%]">
+                <section className="mb-[4.5rem] sm:mb-[5.25rem] md:mb-24 lg:mb-[7.5rem] flex flex-col md:flex-row md:items-center gap-1.5 md:gap-[0.47rem] lg:gap-[0.56rem]">
+                    <div className="w-full md:w-1/2 shrink-0 flex justify-center md:justify-start md:pl-[calc(18.75%+0.9375rem)] lg:pl-[calc(18.75%+1.125rem)]">
                         <img
                             src={fourCBanner}
                             alt="The 4 C's"
-                            className="w-[220px] sm:w-[280px] md:w-[360px] lg:w-[420px] h-auto object-contain"
+                            className="w-[150px] sm:w-[190px] md:w-[245px] lg:w-[286px] h-auto object-contain"
                         />
                     </div>
                     <div className="w-full md:w-1/2 md:min-w-0 flex flex-col justify-center">
