@@ -183,11 +183,11 @@ export default function DiamondGuide() {
     return (
         <div className="bg-white min-h-screen text-[#252627] overflow-x-clip font-sans">
             {/* HERO SECTION */}
-            <div className="relative w-full h-[220px] sm:h-[300px] md:h-[420px] lg:h-[500px] overflow-hidden">
+            <div className="relative w-full h-[250px] sm:h-[350px] md:h-[480px] lg:h-[600px] xl:h-[650px] overflow-hidden">
                 <img
                     src={DiamondguideMain}
                     alt="Diamond Education"
-                    className="w-full h-full object-cover object-[center_35%]"
+                    className="w-full h-full object-cover object-[center_45%]"
                 />
                 <div className="absolute inset-0 bg-black/10">
                     <div className={`${contentMax} h-full flex items-center justify-end`}>
@@ -285,7 +285,7 @@ export default function DiamondGuide() {
                             <img
                                 src={shapes[selectedShape].image}
                                 alt={shapes[selectedShape].name}
-                                className="w-full h-auto object-contain max-w-[min(100%,560px)] md:max-w-[min(100%,640px)] md:min-h-[320px]"
+                                className="w-full h-auto object-contain max-w-[min(100%,560px)] md:max-w-[min(100%,640px)] md:min-h-[400px] lg:min-h-[450px]"
                             />
                         </div>
                     </div>
@@ -309,7 +309,7 @@ export default function DiamondGuide() {
                             <img
                                 src={cutData[cutSlider].image}
                                 alt={cutData[cutSlider].label}
-                                className="w-full h-auto object-contain max-w-[min(100%,390px)] md:max-w-[min(100%,420px)] md:max-h-[315px] transition-opacity duration-500"
+                                className="w-full h-auto object-contain max-w-[min(100%,390px)] md:max-w-[min(100%,480px)] md:max-h-[400px] lg:max-h-[450px] transition-opacity duration-500"
                             />
                         </div>
                         <div className="w-full mt-auto">
@@ -342,11 +342,11 @@ export default function DiamondGuide() {
                             &quot;Carat&quot; (ct.) is a measurement unit representing the weight of a diamond; the price of a diamond is directly proportional to its weight. The cut off weights are 0.50ct, 0.75ct, 1.00ct so on and so forth.
                         </p>
 
-                        <div className="mt-7 sm:mt-8 hidden md:block">
+                        <div className="mt-8 sm:mt-10 hidden md:block">
                             <img
                                 src={caratLeftImg}
                                 alt="Carat size comparison"
-                                className="w-full max-w-[525px] h-auto object-contain"
+                                className="w-full max-w-[600px] lg:max-w-[650px] h-auto object-contain shadow-sm rounded-lg"
                             />
                         </div>
                     </div>
@@ -355,7 +355,7 @@ export default function DiamondGuide() {
                             <img
                                 src={caratData[caratSlider].image}
                                 alt={caratData[caratSlider].label}
-                                className="w-full h-auto object-contain max-w-[min(100%,576px)] md:max-w-[min(100%,630px)] transition-opacity duration-500"
+                                className="w-full h-auto object-contain max-w-[min(100%,576px)] md:max-w-[min(100%,680px)] md:max-h-[450px] transition-opacity duration-500"
                             />
                         </div>
                         <div className="w-full mt-auto">
@@ -398,7 +398,7 @@ export default function DiamondGuide() {
                             <img
                                 src={colorData[colorSlider].image}
                                 alt={colorData[colorSlider].label}
-                                className="w-full h-auto object-contain max-w-[min(100%,390px)] md:max-w-[min(100%,420px)] md:max-h-[315px]"
+                                className="w-full h-auto object-contain max-w-[min(100%,230px)] md:max-w-[min(100%,280px)] md:max-h-[230px] lg:max-h-[260px]"
                             />
                         </div>
                         <div className="w-full mt-auto">
@@ -436,7 +436,7 @@ export default function DiamondGuide() {
                             <img
                                 src={clarityData[claritySlider].image}
                                 alt={clarityData[claritySlider].label}
-                                className="w-full h-auto object-contain max-w-[min(100%,576px)] md:max-w-[min(100%,630px)]"
+                                className="w-full h-auto object-contain max-w-[min(100%,576px)] md:max-w-[min(100%,680px)] md:max-h-[450px]"
                             />
                         </div>
                         <div className="w-full mt-auto">

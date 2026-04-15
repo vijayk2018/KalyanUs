@@ -15,15 +15,8 @@ export default function About() {
     const [expandedTS, setExpandedTS] = useState(false);
     const [expandedRajesh, setExpandedRajesh] = useState(false);
     const [expandedRamesh, setExpandedRamesh] = useState(false);
-    const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
     const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
+    const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
 
     const testimonials = [
         { name: "Anita", location: "New Jersey", text: "We are very satisfied with the service provided by Mr. Raymond. And we are very happy to purchase in Kalyan. Thank you for the good service." },
@@ -38,6 +31,46 @@ export default function About() {
         { name: "Priya", location: "Singapore", text: "Wonderful experience. The staff was very patient and explained everything in detail. Will definitely come back." }
     ];
 
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    const [isAnimating, setIsAnimating] = useState(true);
+
+    const tripledTestimonials = [...testimonials, ...testimonials, ...testimonials];
+
+    const handleNext = () => {
+        if (!isAnimating) return;
+        setCurrentReviewIndex(prev => prev + 1);
+    };
+
+    const handlePrev = () => {
+        if (!isAnimating) return;
+        setCurrentReviewIndex(prev => prev - 1);
+    };
+
+    useEffect(() => {
+        const count = testimonials.length;
+        if (currentReviewIndex >= count) {
+            const timer = setTimeout(() => {
+                setIsAnimating(false);
+                setCurrentReviewIndex(0);
+            }, 500);
+            return () => clearTimeout(timer);
+        }
+        if (currentReviewIndex < 0) {
+            const timer = setTimeout(() => {
+                setIsAnimating(false);
+                setCurrentReviewIndex(count - 1);
+            }, 500);
+            return () => clearTimeout(timer);
+        }
+        setIsAnimating(true);
+    }, [currentReviewIndex, testimonials.length]);
+
     return (
         <div className="about-page font-serif text-[#333] px-4 sm:px-5 md:px-8 lg:px-[4rem] 2xl:px-[5rem]">
             {/* Hero Section */}
@@ -51,16 +84,16 @@ export default function About() {
 
             {/* About Kalyan Jewellers Section */}
             <section className="pb-16 sm:pb-20 md:pb-32 lg:pb-40 pt-0">
-                <div className="grid gap-10 md:grid-cols-5 lg:gap-16">
-                    <div className="md:col-span-2 overflow-hidden bg-gray-50">
+                <div className="grid gap-10 md:grid-cols-[2.2fr_2.8fr] lg:gap-16">
+                    <div className="overflow-hidden bg-gray-50">
                         <img
                             src={kalyan3ppls}
                             alt="Kalyan Leadership"
                             className="h-full w-full object-cover"
                         />
                     </div>
-                    <div className="md:col-span-3 flex flex-col justify-start">
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#333] mt-4 sm:mt-6 mb-3 font-serif leading-tight">
+                    <div className="flex flex-col justify-start">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#333] mt-[21px] sm:mt-[29px] mb-3 font-serif leading-tight">
                             About Kalyan Jewellers
                         </h2>
                         <div className="space-y-6 sm:space-y-8 md:space-y-10 text-[13px] sm:text-[14px] leading-relaxed font-serif">
@@ -310,47 +343,50 @@ export default function About() {
             </section >
 
             {/* Customer Stories Carousel Section */}
-            <section className="bg-[#f8f5f2] py-20 relative overflow-hidden">
-                <div className="w-full max-w-full px-[5%] relative mx-auto">
+            <section className="bg-[#f8f5f2] py-20 relative overflow-hidden -mx-4 sm:-mx-5 md:-mx-8 lg:-mx-[4rem] 2xl:-mx-[5rem] px-4 sm:px-5 md:px-8 lg:px-[4rem] 2xl:px-[5rem]">
+                <div className="w-full max-w-full relative mx-auto">
                     <h2 className="text-[34px] md:text-[36px] font-normal font-serif text-center mb-12 text-[#333]">Customer Stories</h2>
 
-                    <div className="relative group">
+                    <div className="relative group px-10 md:px-16 lg:px-20">
                         {/* Navigation Arrows */}
                         <button
-                            onClick={() => setCurrentReviewIndex(prev => (prev === 0 ? testimonials.length - 1 : prev - 1))}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 text-gray-400 hover:text-[#cf2d4c] transition-colors"
+                            onClick={handlePrev}
+                            className="absolute left-0 lg:left-4 top-1/2 -translate-y-1/2 z-10 p-2 text-gray-400 hover:text-[#cf2d4c] transition-colors"
                             type="button"
                         >
-                            <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M15 19l-7-7 7-7" />
+                            <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
 
                         <button
-                            onClick={() => setCurrentReviewIndex(prev => (prev === testimonials.length - 1 ? 0 : prev + 1))}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 text-gray-400 hover:text-[#cf2d4c] transition-colors"
+                            onClick={handleNext}
+                            className="absolute right-0 lg:right-4 top-1/2 -translate-y-1/2 z-10 p-2 text-gray-400 hover:text-[#cf2d4c] transition-colors"
                             type="button"
                         >
-                            <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 5l7 7-7 7" />
+                            <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5l7 7-7 7" />
                             </svg>
                         </button>
 
                         {/* Carousel Content */}
-                        <div className="overflow-hidden px-16 md:px-24">
+                        <div className="overflow-hidden">
                             <div
-                                className="flex transition-transform duration-500 ease-in-out"
-                                style={{ transform: `translateX(-${currentReviewIndex * (100 / (isMobile ? 1 : 3))}%)` }}
+                                className="flex transition-transform ease-in-out"
+                                style={{
+                                    transform: `translateX(-${(currentReviewIndex + testimonials.length) * (100 / (isMobile ? 1 : 3))}%)`,
+                                    transitionDuration: isAnimating ? '500ms' : '0ms'
+                                }}
                             >
-                                {testimonials.map((item, idx) => (
-                                    <div key={idx} className="w-full md:w-1/3 flex-shrink-0 px-1">
-                                        <div className="bg-white p-6 md:p-8 shadow-sm rounded-sm text-center h-full flex flex-col justify-between">
-                                            <p className="text-[14px] leading-relaxed text-[#666] italic mb-6">
+                                {tripledTestimonials.map((item, idx) => (
+                                    <div key={idx} className="w-full md:w-1/3 flex-shrink-0 px-2 md:px-3">
+                                        <div className="bg-white p-5 md:p-6 shadow-sm rounded-sm text-center h-full flex flex-col justify-between">
+                                            <p className="text-[13px] leading-relaxed text-[#666] italic mb-5">
                                                 &quot;{item.text}&quot;
                                             </p>
                                             <div>
-                                                <p className="font-bold text-[#333] text-[15px] mb-1">{item.name},</p>
-                                                <p className="text-[12px] uppercase tracking-wider text-gray-400">{item.location}</p>
+                                                <p className="font-bold text-[#333] text-[14px] mb-0.5">{item.name},</p>
+                                                <p className="text-[11px] uppercase tracking-wider text-gray-400">{item.location}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -361,12 +397,15 @@ export default function About() {
 
                     {/* Indicators */}
                     <div className="flex justify-center gap-3 mt-12">
-                        {testimonials.slice(0, testimonials.length - (isMobile ? 0 : 2)).map((_, idx) => (
+                        {testimonials.map((_, idx) => (
                             <button
                                 key={idx}
-                                onClick={() => setCurrentReviewIndex(idx)}
-                                className={`transition-all duration-300 ${currentReviewIndex === idx ? 'w-8 bg-black' : 'w-4 bg-gray-300'
-                                    } h-[3px] rounded-full`}
+                                onClick={() => {
+                                    setIsAnimating(true);
+                                    setCurrentReviewIndex(idx);
+                                }}
+                                className={`transition-all duration-300 ${((currentReviewIndex % testimonials.length) + testimonials.length) % testimonials.length === idx ? 'w-10 bg-[#cf2d4c]' : 'w-6 bg-gray-300 opacity-50'
+                                    } h-[2px]`}
                                 type="button"
                                 aria-label={`Go to slide ${idx + 1}`}
                             />
