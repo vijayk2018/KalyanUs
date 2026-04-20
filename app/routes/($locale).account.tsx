@@ -92,6 +92,7 @@ function AccountMenu() {
     {to: '/account/orders',    label: 'Orders', },
     {to: '/account/profile',   label: 'Profile', },
     {to: '/account/addresses', label: 'Addresses', },
+    {to: '/account/logout', label: 'Sign Out', },
   ];
   const activeItem =
     navItems.find(
@@ -100,9 +101,7 @@ function AccountMenu() {
 
   return (
     <nav role="navigation" className="flex flex-col">
-      <p className="text-[10px] tracking-[0.2em] uppercase text-[#a09890] font-sans mb-3 pl-2 mt-0">
-        Navigation
-      </p>
+     
 
       <div className="relative">
         <button
@@ -148,10 +147,7 @@ function AccountMenu() {
         ) : null}
       </div>
 
-      {/* Sign out */}
-      <div className="mt-4 pt-4 border-t border-[#f0ede9]">
-        <Logout variant="sidebar" />
-      </div>
+      
     </nav>
   );
 }
