@@ -468,7 +468,7 @@ function HeaderCtas({
   setIsStoreModalOpen: (isOpen: boolean) => void;
 }) {
 
-  const loginUrl = '/account/login?return_to=/';
+  const loginUrl = 'https://shopify.com/authentication/66607317088/login?client_id=75cf9cb3-801b-43c1-bec9-869a248b99d0&locale=en-US&redirect_uri=%2Fauthentication%2F66607317088%2Foauth%2Fauthorize%3F_cs%3D3.AMPS_INTN___lSUkbw-3RXCrtzwpLVaA6Q%26client_id%3D75cf9cb3-801b-43c1-bec9-869a248b99d0%26locale%3Den-US%26nonce%3D1a360a6b-66a6-4e6c-b1a5-47fd5c6449ea%26redirect_uri%3Dhttps%253A%252F%252Fshopify.com%252F66607317088%252Faccount%252Fcallback%26response_type%3Dcode%26scope%3Dopenid%2Bemail%2Bcustomer-account-api%253Afull%26state%3DhWNBFNpomiktuNQs35hp0c7e';
 
   
   return (
