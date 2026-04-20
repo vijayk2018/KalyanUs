@@ -287,17 +287,15 @@ export function HeaderMenu({
 
         const url = getItemUrl(item.url);
         const hasSubmenu = viewport === 'desktop' && item.items?.length > 0;
-        const isJewelry =
-          item.title.trim().toLowerCase() === 'jewelry' ||
-          item.title.trim().toLowerCase() === 'jewellery';
 
-        if (hasSubmenu && isJewelry) {
+        if (hasSubmenu) {
           const viewAllItem = item.items.find((group) =>
             group.title.trim().toLowerCase().includes('view all'),
           );
           const groupedItems = item.items.filter(
             (group) => group.id !== viewAllItem?.id,
           );
+          const shouldShowPromoCard = Boolean(viewAllItem);
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
             menuUrl ? getItemUrl(menuUrl) : fallback;
@@ -338,8 +336,22 @@ export function HeaderMenu({
                 onMouseLeave={() => setActiveDesktopMenuId(null)}
               >
                 <div className="rounded-b-md bg-white px-8 py-6 text-[#202020] shadow-2xl">
-                  <div className="mx-auto grid w-full grid-cols-[1fr_320px] gap-8">
-                    <div className="grid grid-cols-4 gap-6">
+                  <div
+                    className={`mx-auto grid w-full gap-8 ${
+                      shouldShowPromoCard ? 'grid-cols-[1fr_320px]' : 'grid-cols-1'
+                    }`}
+                  >
+                    <div
+                      className={`grid gap-6 ${
+                        groupedItems.length >= 4
+                          ? 'grid-cols-4'
+                          : groupedItems.length === 3
+                            ? 'grid-cols-3'
+                            : groupedItems.length === 2
+                              ? 'grid-cols-2'
+                              : 'grid-cols-1'
+                      }`}
+                    >
                       {groupedItems.map((group) => {
                         const normalizedGroupTitle = group.title
                           .trim()
@@ -356,7 +368,7 @@ export function HeaderMenu({
                             {getDisplayTitle(group.title)}
                           </p>
                           <div className={isCategory ? 'grid grid-cols-2 gap-x-6 gap-y-2' : 'space-y-2'}>
-                            {columnA.map((subItem) => {
+                            {(columnA.length ? columnA : [group]).map((subItem) => {
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               return (
                                 <NavLink
@@ -387,20 +399,22 @@ export function HeaderMenu({
                       )})}
                     </div>
 
-                    <NavLink
-                      to={resolveMenuUrl(viewAllItem?.url, url)}
-                      prefetch="intent"
-                      className="block overflow-hidden rounded-md"
-                    >
-                      <img
-                        src={jewelryMegaMenuPromo}
-                        alt="Jewelry collection"
-                        className="h-[340px] w-full rounded-md object-cover"
-                      />
-                      <span className="mt-3 inline-block text-[13px] font-semibold uppercase tracking-[0.08em] text-[#202020] border-t border-[#cf254a] pt-1">
-                        View All Designs
-                      </span>
-                    </NavLink>
+                    {shouldShowPromoCard ? (
+                      <NavLink
+                        to={resolveMenuUrl(viewAllItem?.url, url)}
+                        prefetch="intent"
+                        className="block overflow-hidden rounded-md"
+                      >
+                        <img
+                          src={jewelryMegaMenuPromo}
+                          alt={`${item.title} collection`}
+                          className="h-[340px] w-full rounded-md object-cover"
+                        />
+                        <span className="mt-3 inline-block text-[13px] font-semibold uppercase tracking-[0.08em] text-[#202020] border-t border-[#cf254a] pt-1">
+                          View All Designs
+                        </span>
+                      </NavLink>
+                    ) : null}
                   </div>
                 </div>
               </div>
