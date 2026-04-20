@@ -442,6 +442,9 @@ function HeaderCtas({
   setIsWishlistOpen: (isOpen: boolean) => void;
   setIsStoreModalOpen: (isOpen: boolean) => void;
 }) {
+
+  const loginUrl = `https://shopify.com/authentication/66607317088/login?client_id=75cf9cb3-801b-43c1-bec9-869a248b99d0&locale=en-IN&redirect_uri=%2Fauthentication%2F66607317088%2Foauth%2Fauthorize%3F_cs%3D3.AMPS_INTN___jvpgITzSTd2Ku8bf2qWjLw%26client_id%3D75cf9cb3-801b-43c1-bec9-869a248b99d0%26locale%3Den-IN%26nonce%3D56de9da1-3bd1-42a4-a8ee-5c3734cc02c5%26redirect_uri%3Dhttps%253A%252F%252Fshopify.com%252F66607317088%252Faccount%252Fcallback%26response_type%3Dcode%26scope%3Dopenid%2Bemail%2Bcustomer-account-api%253Afull%26state%3DhWNBEumRedHHHa0knu8V1PLW`;
+
   
   return (
     // <div className='lg:block hidden'>
@@ -494,7 +497,7 @@ function HeaderCtas({
                 <Await resolve={isLoggedIn} errorElement="Sign in">
                   {(isLoggedIn) => (
                     // <a href={isLoggedIn ? '/account' : '/account/login'}>
-                   <a href={isLoggedIn ? '/account' : 'https://shopify.com/66607317088/account/login'}> 
+                   <a href={isLoggedIn ? '/account' : loginUrl}> 
                       {isLoggedIn ? <UserIcon className='text-black' size={24} /> : <UserIcon className='text-black' size={24} />}
                     </a>
                   )}
