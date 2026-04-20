@@ -1,8 +1,10 @@
 import {redirect} from 'react-router';
-import type {Route} from './+types/account.callback';
 
-export async function loader({context}: Route.LoaderArgs) {
+export async function loader({context, request}: {context: any; request: Request}) {
   await context.customerAccount.handleAuthStatus();
+  const url = new URL(request.url);
+  const returnTo = url.searchParams.get('return_to') || '/';
+  const safeReturnTo = returnTo.includes('://') ? '/' : returnTo;
 
-  return redirect('/');
+  return redirect(safeReturnTo);
 }
