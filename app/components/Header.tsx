@@ -32,7 +32,7 @@ export function Header({
 }: HeaderProps) {
   const {shop, menu} = header;
   const logoUrl = shop.brand?.logo?.image?.url || kalyanLogo;
-  const loginUrl = 'https://shopify.com/66607317088/account'
+  const loginUrl = 'https://shopify.com/66607317088/account?return_to=%2F'
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -468,7 +468,7 @@ function HeaderCtas({
   setIsStoreModalOpen: (isOpen: boolean) => void;
 }) {
 
-  const loginUrl = 'https://shopify.com/66607317088/account'
+  const loginUrl = 'https://shopify.com/66607317088/account?return_to=%2F'
 
   
   return (
