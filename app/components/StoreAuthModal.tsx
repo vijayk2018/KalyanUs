@@ -40,7 +40,7 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
 
   useEffect(() => {
     if (!open || typeof window === 'undefined') return;
-    setReturnTo(`${window.location.origin}/`);
+    setReturnTo('/');
     const params = new URLSearchParams(window.location.search);
     const authError =
       params.get('error_description') ||
