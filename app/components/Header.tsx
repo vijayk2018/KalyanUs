@@ -32,7 +32,7 @@ export function Header({
 }: HeaderProps) {
   const {shop, menu} = header;
   const logoUrl = shop.brand?.logo?.image?.url || kalyanLogo;
-  const loginUrl = '/account/login?return_to=/';
+  const loginUrl = 'https://shopify.com/66607317088/account'
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -118,7 +118,7 @@ export function Header({
               >
                 {(loggedIn) => (
                   <a
-                    href={loggedIn ? '/account' : loginUrl}
+                    href={loggedIn ? '/account/orders' : loginUrl}
                     className="flex flex-col items-center text-[#202020]"
                   >
                     <UserIcon size={22} strokeWidth={1.8} />
@@ -521,7 +521,7 @@ function HeaderCtas({
               <Suspense fallback="Sign in">
                 <Await resolve={isLoggedIn} errorElement="Sign in">
                   {(isLoggedIn) => (
-                   <a href={isLoggedIn ? '/account' : loginUrl}>
+                   <a href={isLoggedIn ? '/account/orders' : loginUrl}>
                       {isLoggedIn ? <UserIcon className='text-black' size={24} /> : <UserIcon className='text-black' size={24} />}
                     </a>
                   )}
