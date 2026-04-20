@@ -19,10 +19,9 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPhone, setSignupPhone] = useState('');
   const [inlineError, setInlineError] = useState('');
+  const [returnTo, setReturnTo] = useState('/');
 
   const normalizedLoginHint = loginHint.trim();
-  const isPhoneHint = /^\+?\d[\d\s-]{7,}$/.test(normalizedLoginHint);
-  const inferredLoginHintMode = isPhoneHint ? 'phone' : 'email';
 
   useEffect(() => {
     if (!open) return;
@@ -41,6 +40,7 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
 
   useEffect(() => {
     if (!open || typeof window === 'undefined') return;
+    setReturnTo(`${window.location.origin}/`);
     const params = new URLSearchParams(window.location.search);
     const authError =
       params.get('error_description') ||
@@ -112,7 +112,12 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                   <input
                     type="hidden"
                     name="login_hint_mode"
-                    value={inferredLoginHintMode}
+                    value="submit"
+                  />
+                  <input
+                    type="hidden"
+                    name="return_to"
+                    value={returnTo}
                   />
                   <button
                     type="submit"
@@ -135,7 +140,7 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                 </div>
 
                 <a
-                  href="/account/login"
+                  href={`/account/login?acr_values=provider:google&return_to=${encodeURIComponent(returnTo)}`}
                   className="h-14 w-full flex items-center justify-center rounded-md border border-[#d8dceb] text-[20px] text-[#6e7596] no-underline"
                 >
                   <img src={GoogleImg} alt="Google" className="mr-2" />
@@ -206,7 +211,12 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                   <input
                     type="hidden"
                     name="login_hint_mode"
-                    value={signupEmail.trim() ? 'email' : 'phone'}
+                    value="submit"
+                  />
+                  <input
+                    type="hidden"
+                    name="return_to"
+                    value={returnTo}
                   />
                   <button
                     type="submit"
