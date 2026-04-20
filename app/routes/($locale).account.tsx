@@ -53,8 +53,8 @@ export default function AccountLayout() {
           <span className="text-[11px] tracking-[0.2em] uppercase text-[#a09890] font-sans">
             My Account
           </span>
-          <Logout variant="topbar" />
-          <div className="w-[200px] shrink-0 bg-white border border-[#e5e2de] rounded shadow-sm p-4">
+          {/* <Logout variant="topbar" /> */}
+          <div className="w-[200px] shrink-0  p-4">
             <AccountMenu />
           </div>
         </div>

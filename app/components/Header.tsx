@@ -32,6 +32,7 @@ export function Header({
 }: HeaderProps) {
   const {shop, menu} = header;
   const logoUrl = shop.brand?.logo?.image?.url || kalyanLogo;
+  const loginUrl = '/account/login?return_to=/';
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -90,18 +91,42 @@ export function Header({
               )}
               <span className="text-[12px] mt-1 font-serif">Wishlist</span>
             </button>
-            <button type="button" className="flex flex-col items-center text-[#202020]">
+            <button
+              type="button"
+              onClick={() => setIsStoreModalOpen(true)}
+              className="flex flex-col items-center text-[#202020] cursor-pointer hover:text-[#650827]"
+            >
               <Store size={22} strokeWidth={1.8} />
               <span className="text-[12px] mt-1 font-serif">Store</span>
             </button>
-            <button
-              type="button"
-              onClick={() => '/account/login'}
-              className="flex flex-col items-center text-[#202020]"
+            <Suspense
+              fallback={
+                <a href={loginUrl} className="flex flex-col items-center text-[#202020]">
+                  <UserIcon size={22} strokeWidth={1.8} />
+                  <span className="text-[12px] mt-1 font-serif">Profile</span>
+                </a>
+              }
             >
-              <UserIcon size={22} strokeWidth={1.8} />
-              <span className="text-[12px] mt-1 font-serif">Profile</span>
-            </button>
+              <Await
+                resolve={isLoggedIn}
+                errorElement={
+                  <a href={loginUrl} className="flex flex-col items-center text-[#202020]">
+                    <UserIcon size={22} strokeWidth={1.8} />
+                    <span className="text-[12px] mt-1 font-serif">Profile</span>
+                  </a>
+                }
+              >
+                {(loggedIn) => (
+                  <a
+                    href={loggedIn ? '/account' : loginUrl}
+                    className="flex flex-col items-center text-[#202020]"
+                  >
+                    <UserIcon size={22} strokeWidth={1.8} />
+                    <span className="text-[12px] mt-1 font-serif">Profile</span>
+                  </a>
+                )}
+              </Await>
+            </Suspense>
           </div>
         </div>
 
@@ -443,7 +468,7 @@ function HeaderCtas({
   setIsStoreModalOpen: (isOpen: boolean) => void;
 }) {
 
-  const loginUrl = `https://shopify.com/authentication/66607317088/login?client_id=75cf9cb3-801b-43c1-bec9-869a248b99d0&locale=en-IN&redirect_uri=%2Fauthentication%2F66607317088%2Foauth%2Fauthorize%3F_cs%3D3.AMPS_INTN___jvpgITzSTd2Ku8bf2qWjLw%26client_id%3D75cf9cb3-801b-43c1-bec9-869a248b99d0%26locale%3Den-IN%26nonce%3D56de9da1-3bd1-42a4-a8ee-5c3734cc02c5%26redirect_uri%3Dhttps%253A%252F%252Fshopify.com%252F66607317088%252Faccount%252Fcallback%26response_type%3Dcode%26scope%3Dopenid%2Bemail%2Bcustomer-account-api%253Afull%26state%3DhWNBEumRedHHHa0knu8V1PLW`;
+  const loginUrl = '/account/login?return_to=/';
 
   
   return (
@@ -496,8 +521,7 @@ function HeaderCtas({
               <Suspense fallback="Sign in">
                 <Await resolve={isLoggedIn} errorElement="Sign in">
                   {(isLoggedIn) => (
-                    // <a href={isLoggedIn ? '/account' : '/account/login'}>
-                   <a href={isLoggedIn ? '/account' : loginUrl}> 
+                   <a href={isLoggedIn ? '/account' : loginUrl}>
                       {isLoggedIn ? <UserIcon className='text-black' size={24} /> : <UserIcon className='text-black' size={24} />}
                     </a>
                   )}
