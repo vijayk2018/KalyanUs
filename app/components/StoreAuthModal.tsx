@@ -18,6 +18,8 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
   const [signupName, setSignupName] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPhone, setSignupPhone] = useState('');
+  const [signupPassword, setSignupPassword] = useState('');
+  const [acceptTerms, setAcceptTerms] = useState(true);
   const [inlineError, setInlineError] = useState('');
   const [returnTo, setReturnTo] = useState('/');
 
@@ -40,7 +42,9 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
 
   useEffect(() => {
     if (!open || typeof window === 'undefined') return;
-    setReturnTo('/');
+    setReturnTo(
+      `${window.location.pathname}${window.location.search}${window.location.hash}`,
+    );
     const params = new URLSearchParams(window.location.search);
     const authError =
       params.get('error_description') ||
@@ -166,6 +170,7 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                 <div className="space-y-4">
                   <input
                     type="text"
+                    name="full_name"
                     value={signupName}
                     onChange={(event) => setSignupName(event.target.value)}
                     placeholder="Enter Full Name"
@@ -173,6 +178,7 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                   />
                   <input
                     type="email"
+                    name="email"
                     value={signupEmail}
                     onChange={(event) => setSignupEmail(event.target.value)}
                     placeholder="Email"
@@ -186,33 +192,38 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                     />
                     <input
                       type="tel"
+                      name="phone"
                       value={signupPhone}
                       onChange={(event) => setSignupPhone(event.target.value)}
                       placeholder="Phone"
                       className="h-14 rounded-r-md border border-[#d8dceb] px-4 text-lg outline-none focus:border-[#cf254a]"
                     />
                   </div>
+                  <input
+                    type="password"
+                    name="password"
+                    value={signupPassword}
+                    onChange={(event) => setSignupPassword(event.target.value)}
+                    placeholder="Create Password"
+                    className="h-14 w-full rounded-md border border-[#d8dceb] px-4 text-lg outline-none focus:border-[#cf254a]"
+                  />
                 </div>
 
                 <label className="mt-8 flex items-center gap-2 text-[20px] text-[#5f678b]">
-                  <input type="checkbox" className="h-4 w-4 accent-[#cf254a]" defaultChecked />
+                  <input
+                    type="checkbox"
+                    name="accept_terms"
+                    checked={acceptTerms}
+                    onChange={(event) => setAcceptTerms(event.target.checked)}
+                    className="h-4 w-4 accent-[#cf254a]"
+                  />
                   <span>
                     I agree to the <span className="text-[#cf254a]">Terms of Use</span> &{' '}
                     <span className="text-[#cf254a]">Privacy Policy</span>
                   </span>
                 </label>
 
-                <Form method="get" action="/account/login">
-                  <input
-                    type="hidden"
-                    name="login_hint"
-                    value={signupEmail.trim() || signupPhone.trim()}
-                  />
-                  <input
-                    type="hidden"
-                    name="login_hint_mode"
-                    value="submit"
-                  />
+                <Form method="post" action="/account/register">
                   <input
                     type="hidden"
                     name="return_to"
@@ -221,17 +232,25 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                   <button
                     type="submit"
                     onClick={(event) => {
-                      const signupHint = signupEmail.trim() || signupPhone.trim();
-                      if (!signupName.trim() || !signupHint) {
+                      const signupHint = signupEmail.trim();
+                      if (
+                        !signupName.trim() ||
+                        !signupHint ||
+                        !signupPassword.trim() ||
+                        signupPassword.trim().length < 8
+                      ) {
                         event.preventDefault();
-                        setInlineError('Please fill required signup details');
+                        setInlineError('Name, email, and 8+ character password are required');
+                      } else if (!acceptTerms) {
+                        event.preventDefault();
+                        setInlineError('Please accept Terms of Use and Privacy Policy');
                       } else {
                         setInlineError('');
                       }
                     }}
                     className="mt-8 h-14 w-full rounded-md bg-[#cf254a] text-[20px] font-semibold tracking-[0.06em] text-white"
                   >
-                    SEND OTP
+                    CREATE ACCOUNT
                   </button>
                 </Form>
 
