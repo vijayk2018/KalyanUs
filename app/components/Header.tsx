@@ -13,6 +13,7 @@ import jewelryMegaMenuPromo from '../assets/menuJewellery.jpg';
 import { FaStore } from 'react-icons/fa';
 import { getWishlist } from '~/lib/wishlist';
 import WishlistDrawer from './WishlistDrawer';
+import StoreAuthModal from './StoreAuthModal';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -41,12 +42,10 @@ export function Header({
     url.includes(header.shop.primaryDomain.url)
       ? new URL(url).pathname
       : url;
-  const navigateToAccount = (nextPath: string) => {
-    window.location.assign(nextPath);
-  };
 
   const [wishlistCount, setWishlistCount] = useState(0);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
 
   useEffect(() => {
     const updateWishlistCount = () => {
@@ -81,7 +80,7 @@ export function Header({
             </button>
             <button
               onClick={() => setIsWishlistOpen(true)}
-              className="flex flex-col items-center text-[#202020] relative"
+              className="flex flex-col items-center text-[#202020] relative cursor-pointer hover:text-[#650827]"
             >
               <HeartIcon size={24} strokeWidth={1.8} />
               {wishlistCount > 0 && (
@@ -97,7 +96,7 @@ export function Header({
             </button>
             <button
               type="button"
-              onClick={() => navigateToAccount('/account/login')}
+              onClick={() => '/account/login'}
               className="flex flex-col items-center text-[#202020]"
             >
               <UserIcon size={22} strokeWidth={1.8} />
@@ -197,7 +196,13 @@ export function Header({
           )}
         </NavLink>
         <div className='flex flex-col space-y-6 hidden lg:block '>
-          <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} wishlistCount={wishlistCount} setIsWishlistOpen={setIsWishlistOpen}/>
+          <HeaderCtas
+            isLoggedIn={isLoggedIn}
+            cart={cart}
+            wishlistCount={wishlistCount}
+            setIsWishlistOpen={setIsWishlistOpen}
+            setIsStoreModalOpen={setIsStoreModalOpen}
+          />
           <HeaderMenu
             menu={menu}
             viewport="desktop"
@@ -211,6 +216,10 @@ export function Header({
       <WishlistDrawer
         open={isWishlistOpen}
         onClose={() => setIsWishlistOpen(false)}
+      />
+      <StoreAuthModal
+        open={isStoreModalOpen}
+        onClose={() => setIsStoreModalOpen(false)}
       />
     </>
   );
@@ -426,8 +435,13 @@ function HeaderCtas({
   isLoggedIn,
   cart,
   wishlistCount,
-  setIsWishlistOpen
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {wishlistCount: number; setIsWishlistOpen: (isOpen: boolean) => void}) {
+  setIsWishlistOpen,
+  setIsStoreModalOpen,
+}: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {
+  wishlistCount: number;
+  setIsWishlistOpen: (isOpen: boolean) => void;
+  setIsStoreModalOpen: (isOpen: boolean) => void;
+}) {
   
   return (
     // <div className='lg:block hidden'>
@@ -452,7 +466,7 @@ function HeaderCtas({
         
         {/* <CartToggle cart={cart} /> */}
         <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4 ml-auto">
-          <div className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition">
+          <div className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition cursor-pointer hover:text-[#650827]">
             <div className="relative flex justify-center mb-1" onClick={() => setIsWishlistOpen(true)}>
               <HeartIcon size={24} className="text-black" />
 
@@ -462,27 +476,32 @@ function HeaderCtas({
                 </span>
               )}
             </div>
-            <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
+            <p className='text-center text-[#000000]  2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
           </div>
-          <div className="flex flex-col items-center space-x-2 text-center transition">
+          <button
+            type="button"
+            onClick={() => setIsStoreModalOpen(true)}
+            className="flex flex-col items-center space-x-2 text-center transition cursor-pointer hover:text-[#650827]"
+          >
             <div className='flex justify-center mb-1'>
               <FaStore size={24} className='text-black' />
             </div>
-            <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Store</p>
-          </div>
-          <div className="flex flex-col items-center space-x-2  text-center transition">
+            <p className='text-center text-[#000000]  2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Store</p>
+          </button>
+          <div className="flex flex-col items-center space-x-2  text-center transition cursor-pointer hover:text-[#650827]">
             <div className="mb-1">
               <Suspense fallback="Sign in">
                 <Await resolve={isLoggedIn} errorElement="Sign in">
                   {(isLoggedIn) => (
-                    <a href={isLoggedIn ? '/account' : '/account/login'}>
-                      {isLoggedIn ? 'Account' : <UserIcon className='text-black' size={24} />}
+                    // <a href={isLoggedIn ? '/account' : '/account/login'}>
+                   <a href={isLoggedIn ? '/account' : 'https://shopify.com/66607317088/account/login'}> 
+                      {isLoggedIn ? <UserIcon className='text-black' size={24} /> : <UserIcon className='text-black' size={24} />}
                     </a>
                   )}
                 </Await>
               </Suspense>
             </div>
-            <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
+            <p className='text-center text-[#000000] 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
           </div>
           
         </div>
