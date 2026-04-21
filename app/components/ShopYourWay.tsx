@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import ForHimModel from '../assets/ForHimModel-1.png'
 import ForHim from '../assets/forHim.png'
 import ForHerModel from '../assets/ForHermodel.png'
@@ -11,6 +12,7 @@ type Category = {
   title: string;
   image: string;
   productImage: string;
+  link: string;
 };
 
 const categories: Category[] = [
@@ -19,18 +21,21 @@ const categories: Category[] = [
     title: "For Him",
     image: ForHimModel,
     productImage: ForHim,
+    link: "/collections/for-him",
   },
   {
     id: 2,
     title: "For Her",
     image: ForHerModel,
     productImage: ForHer,
+    link: "/collections/for-her",
   },
   {
     id: 3,
     title: "For Lil' one",
     image: ForLilOneModel,
     productImage: ForLilOne,
+    link: "/collections/lil-one",
   },
 ];
 
@@ -55,7 +60,13 @@ const ShopYourWay: React.FC = () => {
     <div className="relative z-10 flex justify-center lg:gap-[8rem] gap-4 pb-20 lg:flex-wrap">
 
       {categories.map((item) => (
-        <div key={item.id} className="flex flex-col items-center relative">
+        <Link
+          key={item.id}
+          to={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center relative"
+        >
 
           {/* CARD IMAGE */}
           <div className={`lg:w-[260px] lg:h-[360px] md:w-[180px] md:h-[230px] w-[100px] h-[150px] overflow-hidden rounded-[40px] shadow-lg bg-white ${item.id === 2 ? 'mt-15 lg:mt-0' : 'mt-25 lg:mt-0'} `}>
@@ -83,7 +94,7 @@ const ShopYourWay: React.FC = () => {
 
           </div>
 
-        </div>
+        </Link>
       ))}
 
     </div>

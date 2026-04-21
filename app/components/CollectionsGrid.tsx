@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import MUDHRA from '../assets/Mudhra.png'
 import nimah from '../assets/Nimah.jpg'
 import TEJASVI from '../assets/tejasvi.png'
@@ -18,20 +19,22 @@ import ZiahText from '../assets/ziah.svg'
 
 
 type Collection = {
+  label: string;
   title: string;
   subtitle?: string;
   image: string;
+  link: string;
 };
 
 const collections: Collection[] = [
-  { title: MudhraText , subtitle: "HANDCRAFTED ANTIQUE JEWELLERY", image: MUDHRA },
-  { title: NimahText, subtitle: "TIMELESS TEMPLE JEWELLERY", image: nimah },
-  { title: TejasviText, subtitle: "POLKI DIAMONDS", image: TEJASVI },
-  { title: AnokhiText, subtitle: "UNCUT DIAMOND", image: Anokhi },
-  { title: RangText, subtitle: "PRECIOUS STONES", image: rang },
-  { title: HeraText, subtitle: "EVERYDAY DIAMOND", image: hera },
-  { title: ApoorvaText, subtitle: "DIAMONDS FOR SPECIAL OCCASIONS", image: apoorva },
-  { title: ZiahText, subtitle: "INFINITE SPARKLES", image: ziah },
+  { label: "Mudhra", title: MudhraText , subtitle: "HANDCRAFTED ANTIQUE JEWELLERY", image: MUDHRA, link: "/collections/mudhra" },
+  { label: "Nimah", title: NimahText, subtitle: "TIMELESS TEMPLE JEWELLERY", image: nimah, link: "/collections/nimah" },
+  { label: "Tejasvi", title: TejasviText, subtitle: "POLKI DIAMONDS", image: TEJASVI, link: "/collections/tejasvi" },
+  { label: "Anokhi", title: AnokhiText, subtitle: "UNCUT DIAMOND", image: Anokhi, link: "/collections/anokhi" },
+  { label: "Rang", title: RangText, subtitle: "PRECIOUS STONES", image: rang, link: "/collections/rang" },
+  { label: "Hera", title: HeraText, subtitle: "EVERYDAY DIAMOND", image: hera, link: "/collections/hera" },
+  { label: "Apoorva", title: ApoorvaText, subtitle: "DIAMONDS FOR SPECIAL OCCASIONS", image: apoorva, link: "/collections/apoorva" },
+  { label: "Ziah", title: ZiahText, subtitle: "INFINITE SPARKLES", image: ziah, link: "/collections/ziah" },
 ];
 
 const CollectionsGrid: React.FC = () => {
@@ -48,8 +51,9 @@ const CollectionsGrid: React.FC = () => {
       {/* Grid */}
       <div className=" mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
         {collections.map((item, i) => (
-          <div
+          <Link
             key={i}
+            to={item.link}
             className="relative group overflow-hidden cursor-pointer rounded-tl-[60px] rounded-br-[60px]"
           >
             {/* Image */}
@@ -64,7 +68,7 @@ const CollectionsGrid: React.FC = () => {
               {/* Image */}
                 <img
                     src={item.title}
-                    alt={item.title}
+                    alt={item.label}
                     className="w-[8vw] h-[8vh] object-cover filter invert"
                 />
             </div>
@@ -74,11 +78,11 @@ const CollectionsGrid: React.FC = () => {
               {/* Image */}
                 <img
                     src={item.title}
-                    alt={item.title}
+                    alt={item.label}
                     className="w-[8vw] h-[8vh]  object-cover filter invert"
                 />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

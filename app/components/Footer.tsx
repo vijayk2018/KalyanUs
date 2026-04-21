@@ -133,7 +133,7 @@ export function Footer({
                           </li>
                           <li>
                             <Link
-                              to="/pages/muhurat"
+                              to="/collections/muhurat"
                               className="font-serif text-[#999] transition hover:text-white"
                             >
                               Muhurat
@@ -421,7 +421,7 @@ function MobileAccordion({
           </li>
           <li>
             <Link
-              to="/pages/muhurat"
+              to="/collections/muhurat"
               className="block py-0.5 transition hover:text-white"
             >
               Muhurat

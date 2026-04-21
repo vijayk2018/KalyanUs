@@ -123,9 +123,12 @@ const TrendingCarousel: React.FC = () => {
           <p className="text-gray-600 mb-6 font-serif">
             Explore this season's trending collection.
           </p>
-          <button className="bg-red-600 text-white px-6 py-3">
+          <Link
+            to="/collections/trending-collections"
+            className="inline-block bg-red-600 text-white px-6 py-3"
+          >
             View More
-          </button>
+          </Link>
         </div>
       </div>
     </div>
