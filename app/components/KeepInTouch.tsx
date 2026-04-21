@@ -25,9 +25,9 @@ const KeepInTouch: React.FC = () => {
         <div className="flex flex-col justify-center px-10 lg:py-12 lg:mt-0 mt-25">
           <div className="flex flex-col lg:items-center items-start relative z-10 lg:text-black text-white ">
             {/* Heading */}
-            <h2 className="lg:text-5xl text-3xl font-serif mb-2 lg:text-center text-left">
+            <p className="text-4xl font-serif mb-2 lg:text-center text-left">
               Keep in Touch with us
-            </h2>
+            </p>
 
             {/* Paragraph */}
             <p className=" mt-3 lg:text-[12px] text-[12px] tracking-wide font-serif lg:text-center text-left">

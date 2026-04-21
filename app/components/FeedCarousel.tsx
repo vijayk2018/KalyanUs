@@ -46,7 +46,8 @@ const FeedCarousel: React.FC = () => {
   return (
     <div className="w-full py-16 text-center 2xl:px-[5rem] lg:px-[4rem] bg-[#f5f5f5]">
       {/* Heading */}
-      <h2 className="text-5xl font-serif mb-2">Fresh Of The feed</h2>
+      {/* <h2 className="text-5xl font-serif mb-2">Fresh Of The feed</h2> */}
+      <p className="heading-font text-6xl ">Fresh Of The feed</p>
 
       {/* Desktop carousel */}
       <div className="relative items-center justify-center hidden lg:flex">
