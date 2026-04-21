@@ -54,6 +54,15 @@ const notify = () => {
 };
 
 export const addToWishlist = (item: WishlistItem) => {
+  const shouldProceed = window.dispatchEvent(
+    new CustomEvent('wishlist:add-attempt', {
+      cancelable: true,
+      detail: {productId: item.id},
+    }),
+  );
+
+  if (!shouldProceed) return;
+
   const items = getWishlist();
   if (!items.some((entry) => entry.id === item.id)) {
     items.unshift(item);

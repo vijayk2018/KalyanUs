@@ -47,6 +47,7 @@ export function Header({
   const [wishlistCount, setWishlistCount] = useState(0);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   useEffect(() => {
     const updateWishlistCount = () => {
@@ -62,6 +63,18 @@ export function Header({
       window.removeEventListener("wishlistUpdated", updateWishlistCount);
     };
   }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    isLoggedIn.then((value) => {
+      if (isMounted) setIsUserLoggedIn(value);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isLoggedIn]);
 
 
   return (
@@ -105,7 +118,7 @@ export function Header({
             </button> */}
             
             <button
-              onClick={() => {isLoggedIn ? window.location.href = '/account' : setIsStoreModalOpen(true)}}
+              onClick={() => {isUserLoggedIn ? window.location.href = '/account' : setIsStoreModalOpen(true)}}
               className="flex flex-col items-center text-[#202020]"
             >
               <UserIcon size={22} strokeWidth={1.8} />
@@ -207,7 +220,7 @@ export function Header({
           </NavLink>
           <div className='flex flex-col space-y-6 hidden lg:block '>
             <HeaderCtas
-              isLoggedIn={isLoggedIn}
+              isLoggedIn={isUserLoggedIn}
               cart={cart}
               wishlistCount={wishlistCount}
               setIsWishlistOpen={setIsWishlistOpen}
@@ -447,13 +460,28 @@ function HeaderCtas({
   wishlistCount,
   setIsWishlistOpen,
   setIsStoreModalOpen,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {
+}: Pick<HeaderProps, 'cart'> & {
+  isLoggedIn: boolean;
   wishlistCount: number;
   setIsWishlistOpen: (isOpen: boolean) => void;
   setIsStoreModalOpen: (isOpen: boolean) => void;
 }) {
 
   const loginUrl = 'https://shopify.com/66607317088/account'
+
+  useEffect(() => {
+    const onWishlistAddAttempt = (event: Event) => {
+      if (isLoggedIn) return;
+      event.preventDefault();
+      setIsStoreModalOpen(true);
+    };
+
+    window.addEventListener('wishlist:add-attempt', onWishlistAddAttempt);
+
+    return () => {
+      window.removeEventListener('wishlist:add-attempt', onWishlistAddAttempt);
+    };
+  }, [isLoggedIn, setIsStoreModalOpen]);
 
   
   return (
@@ -479,8 +507,12 @@ function HeaderCtas({
 
       {/* <CartToggle cart={cart} /> */}
       <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4">
-        <div className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition">
-          <div className="relative flex justify-center mb-1" onClick={() => setIsWishlistOpen(true)}>
+        <button
+          type="button"
+          onClick={() => setIsWishlistOpen(true)}
+          className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition cursor-pointer"
+        >
+          <div className="relative flex justify-center mb-1">
             <HeartIcon size={24} className="text-black" />
 
             {wishlistCount > 0 && (
@@ -489,22 +521,24 @@ function HeaderCtas({
               </span>
             )}
           </div>
-          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
-        </div>
-        <NavLink to="/experience-centre" className="flex flex-col items-center space-x-2 text-center transition">
+          <p className='text-center text-[#000000]  2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
+        </button>
+        <NavLink to="/experience-centre" className="flex flex-col items-center space-x-2 text-center transition cursor-pointer">
           <div className='flex justify-center mb-1'>
             <FaStore size={24} className='text-black' />
           </div>
-          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Store</p>
+          <p className='text-center text-[#000000]  2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Store</p>
         </NavLink>
-        <div className="flex flex-col items-center space-x-2  text-center transition">
+        <button
+          type="button"
+          onClick={() => {isLoggedIn ? window.location.href = '/account' : setIsStoreModalOpen(true)}}
+          className="flex flex-col items-center space-x-2  text-center transition cursor-pointer"
+        >
           <div className="mb-1">
-            <button onClick={() => {isLoggedIn ? window.location.href = '/account' : setIsStoreModalOpen(true)}}>
-              <UserIcon className='text-black' size={24} /> 
-            </button>
+            <UserIcon className='text-black' size={24} /> 
           </div>
-          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
-        </div>
+          <p className='text-center text-[#000000] 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
+        </button>
 
       </div>
     </nav>
