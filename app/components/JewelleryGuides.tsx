@@ -64,7 +64,7 @@ const JewelleryGuides: React.FC = () => {
                   <h3 className="font-semibold text-gray-800 mb-4 font-serif text-[32px] leading-[0.95]">
                     {item.title}
                   </h3>
-                  <Link to={item.link}>
+                  <Link to={item.link} target="_blank" rel="noopener noreferrer">
                     <button className="bg-[#BF1C47] text-white text-sm px-4 py-2 rounded-md font-serif tracking-wide">
                       READ MORE
                     </button>
@@ -94,7 +94,7 @@ const JewelleryGuides: React.FC = () => {
                   {item.title}
                 </h3>
 
-                <Link to={item.link}>
+                <Link to={item.link} target="_blank" rel="noopener noreferrer">
                   <button className="bg-[#BF1C47] text-white text-sm px-4 py-2 rounded-md font-serif">
                     READ MORE
                   </button>

@@ -103,22 +103,15 @@ export function Header({
               <UserIcon size={22} strokeWidth={1.8} />
               <span className="text-[12px] mt-1 font-serif">Profile</span>
             </button> */}
-            <Suspense
-              fallback={
-                <a href={loginUrl} className="flex flex-col items-center text-[#202020]">
-                  <UserIcon size={22} strokeWidth={1.8} />
-                  <span className="text-[12px] mt-1 font-serif">Profile</span>
-                </a>
-              }
+            
+            <button
+              onClick={() => {isLoggedIn ? window.location.href = '/account' : setIsStoreModalOpen(true)}}
+              className="flex flex-col items-center text-[#202020]"
             >
-              <div
-                onClick={() => setIsStoreModalOpen(true)}
-                className="flex flex-col items-center text-[#202020]"
-              >
-                <UserIcon size={22} strokeWidth={1.8} />
-                <span className="text-[12px] mt-1 font-serif">Profile</span>
-              </div>
-            </Suspense>
+              <UserIcon size={22} strokeWidth={1.8} />
+              <span className="text-[12px] mt-1 font-serif">Profile</span>
+            </button>
+           
           </div>
         </div>
 
@@ -506,13 +499,9 @@ function HeaderCtas({
         </NavLink>
         <div className="flex flex-col items-center space-x-2  text-center transition">
           <div className="mb-1">
-            {/* <Suspense fallback="Sign in">
-              <Await resolve={isLoggedIn} errorElement="Sign in" onClick={() => setIsStoreModalOpen(true)}> */}
-                <button onClick={() => setIsStoreModalOpen(true)}>
-                  <UserIcon className='text-black' size={24} /> 
-                </button>
-              {/* </Await>
-            </Suspense> */}
+            <button onClick={() => {isLoggedIn ? window.location.href = '/account' : setIsStoreModalOpen(true)}}>
+              <UserIcon className='text-black' size={24} /> 
+            </button>
           </div>
           <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
         </div>
@@ -523,108 +512,7 @@ function HeaderCtas({
   );
 }
 
-function AuthModal({
-  view,
-  onClose,
-  onSwitchView,
-}: {
-  view: 'login' | 'register';
-  onClose: () => void;
-  onSwitchView: (view: 'login' | 'register') => void;
-}) {
-  return (
-    <div className="fixed flex justify-center items-center inset-0 z-[100] bg-black/50 p-4" onClick={onClose}>
-      <div
-        className="mx-auto  w-full max-w-2xl overflow-hidden rounded-lg bg-white shadow-2xl relative"
-        onClick={(event) => event.stopPropagation()}
-      >
 
-        {/* CLOSE BUTTON */}
-        <div className="absolute top-0 right-0 p-3">
-          <button
-            type="button"
-            onClick={onClose}
-            className="text-[#8aa1d8]"
-            aria-label="Close auth popup"
-          >
-            <X size={26} />
-          </button>
-        </div>
-
-
-        {view === 'login' ? (
-          <div className="grid md:grid-cols-2">
-            <div className="hidden md:block">
-              <img src={kjLogin} alt="Login banner" className="h-full w-full object-cover" />
-            </div>
-
-            <div className="px-6 pb-8 md:px-10  pt-8">
-              <h2 className="text-3xl text-[#b80f47] font-light mb-5">Login</h2>
-              <p className="text-[12px] text-gray-500 mb-6 pb-3">
-                To enjoy a seamless experience while shopping
-                <div className='px-5 border-b border-[#b80f47] w-[6rem] mt-3 '></div>
-              </p>
-
-              <input
-                type="text"
-                placeholder="Enter E Mail / Mobile number"
-                className="w-full rounded border border-gray-200 placeholder:text-gray-200 px-4 py-3 text-sm outline-none mb-4"
-              />
-              <button type="button" className="w-full bg-[#cf254a] py-3 text-sm font-semibold text-white">
-                CONTINUE
-              </button>
-              <p className="my-4 text-center text-xs text-gray-500">OR</p>
-              <button type="button" className="flex items-center gap-3 justify-center w-full rounded border border-gray-200 py-3 text-sm text-gray-700">
-                <img src={Google} alt="Login banner" className="h-3 w-3 object-cover" /> <span>Login Using Google</span>
-              </button>
-              <p className="mt-6 text-center text-sm text-gray-500">
-                Do not have an account?{' '}
-                <button
-                  type="button"
-                  onClick={() => onSwitchView('register')}
-                  className="font-semibold text-[#cf254a]"
-                >
-                  SIGN UP
-                </button>
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2">
-            <div className="hidden md:block">
-              <img src={Register} alt="Signup banner" className="h-full w-full object-contain" />
-            </div>
-            <div className="px-6 pb-8 md:px-10 pt-8 mt-8">
-
-              <div className="space-y-4">
-                <input type="text" placeholder="Enter Full Name" className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
-                <input type="email" placeholder="Email" className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
-                <input type="tel" placeholder="Phone" className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
-              </div>
-              <label className="mt-5 flex items-center gap-2 text-[12px] text-gray-600">
-                <input type="checkbox" className="h-4 w-4" />
-                <p>I agree to the <span className='text-[#cf254a]'>Terms of Use</span> & <span className='text-[#cf254a]'>Privacy Policy</span></p>
-              </label>
-              <button type="button" className="mt-6 w-full bg-[#cf254a] py-3 text-sm font-semibold text-white">
-                SEND OTP
-              </button>
-              <p className="mt-6 text-center text-sm text-gray-500">
-                Already a member with us?{' '}
-                <button
-                  type="button"
-                  onClick={() => onSwitchView('login')}
-                  className="font-semibold text-[#cf254a]"
-                >
-                  LOGIN
-                </button>
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
 
 function HeaderMenuMobileToggle() {
   const { open } = useAside();

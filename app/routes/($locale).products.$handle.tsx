@@ -21,6 +21,7 @@ import GoldIngot from '../assets/goldIngot.svg';
 import Forever from '../assets/forever.svg';
 import Exchange from '../assets/exchange.svg';
 import ProductInformation from '../assets/search.svg'
+import certificateGuideImage from '../assets/CertificateDetails.jpg';
 import {useToast} from '~/components/useToast';
 import { ToastContainer } from '~/components/Toast';
 import { addToWishlist, isInWishlist, removeFromWishlist } from '~/lib/wishlist';
@@ -120,11 +121,39 @@ const TabContent = ({tabData}: {tabData: TabRow[]}) => (
         } ${item.highlight ? "font-semibold text-base pt-3" : ""}`}
       >
         <span className="text-black font-semibold">{item.label}:</span>
-        <span className="font-medium">{item.value}</span>
+        <span
+          className={`font-medium ${
+            item.label.toLowerCase() === 'total price'
+              ? 'font-semibold text-black'
+              : ''
+          }`}
+        >
+          {item.label.toLowerCase() === 'diamond price' ? (
+            <DiamondPriceValue value={item.value} />
+          ) : (
+            item.value
+          )}
+        </span>
       </div>
     ))}
   </div>
 );
+
+const DiamondPriceValue = ({value}: {value: string}) => {
+  const currencyMatches =
+    value.match(/[₹$]\s?\d+(?:,\d{3})*(?:\.\d+)?/g) || [];
+
+  if (currencyMatches.length >= 2) {
+    return (
+      <span className="inline-flex items-center gap-2">
+        <span className="text-gray-500 line-through">{currencyMatches[0]}</span>
+        <span className="font-semibold text-black">{currencyMatches[1]}</span>
+      </span>
+    );
+  }
+
+  return <>{value}</>;
+};
 
 export default function Product() {
   const {product} = useLoaderData<typeof loader>();
@@ -182,6 +211,7 @@ export default function Product() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
   const [isVideoCallOpen, setIsVideoCallOpen] = useState(false);
+  const [isDiamondCertificateGuideOpen, setIsDiamondCertificateGuideOpen] = useState(false);
   const [showVideoDateField, setShowVideoDateField] = useState(false);
   const [activeTab, setActiveTab] = useState("summary");
   const [deliveryPincode, setDeliveryPincode] = useState('');
@@ -224,6 +254,9 @@ export default function Product() {
   const shouldShowDelivery = product.showDelivery?.value
     ? product.showDelivery.value.toLowerCase() === 'true'
     : true;
+  const shouldShowDiamondCertificateGuide = product.diamondCertificateGuide?.value
+    ? product.diamondCertificateGuide.value.toLowerCase() === 'true'
+    : false;
 
   // ✅ FIRST get variant
   const selectedVariant = useOptimisticVariant(
@@ -260,6 +293,10 @@ export default function Product() {
       behavior: 'smooth',
       block: 'start',
     });
+  };
+
+  const openDiamondCertificateGuide = () => {
+    setIsDiamondCertificateGuideOpen(true);
   };
 
   const handleReviewSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -788,9 +825,20 @@ export default function Product() {
               </p>
 
               {/* Style Number */}
-              <p className="text-lg font-medium text-red-500 font-sans">
-                Style No. {product.styleNo?.value || selectedVariant?.sku || '—'}
-              </p>
+              <div className="flex flex-wrap items-center gap-3 text-lg font-medium text-red-500 font-sans">
+                <p>
+                  Style No. {product.styleNo?.value || selectedVariant?.sku || '—'}
+                </p>
+                {shouldShowDiamondCertificateGuide ? (
+                  <button
+                    type="button"
+                    onClick={openDiamondCertificateGuide}
+                    className="cursor-pointer text-[#3f3f46] underline underline-offset-2 hover:text-black"
+                  >
+                    DIAMOND CERTIFICATE GUIDE
+                  </button>
+                ) : null}
+              </div>
 
               {/* Description */}
               <p className="text-lg text-gray-600 leading-relaxed pt-5 font-sans">
@@ -1174,6 +1222,33 @@ export default function Product() {
           </div>
         </div>
       )}
+      {isDiamondCertificateGuideOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+          onClick={() => setIsDiamondCertificateGuideOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-[480px] rounded-md bg-white p-4 shadow-xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setIsDiamondCertificateGuideOpen(false)}
+              className="absolute right-3 top-3 rounded p-1 text-gray-600 transition hover:bg-gray-100 hover:text-black"
+              aria-label="Close diamond certificate guide"
+            >
+              <X size={20} />
+            </button>
+            <div className="m-5">
+              <img
+                src={certificateGuideImage}
+                alt="Diamond certificate guide"
+                className="mx-auto h-auto max-h-[70vh] w-full object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       <ToastContainer
         toasts={toasts}
@@ -1265,6 +1340,9 @@ const PRODUCT_FRAGMENT = `#graphql
       value
     }
     gemstone: metafield(namespace: "custom", key: "gemstone") {
+      value
+    }
+    diamondCertificateGuide: metafield(namespace: "custom", key: "diamond_certificate_guide") {
       value
     }
 
