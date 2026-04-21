@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useEffect, useState } from "react"; 
+import { Link } from "react-router";
 import CarousalImage1 from '../assets/car1.jpg' 
 import CarousalImage2 from '../assets/car2.jpg' 
 import CarousalImage3 from '../assets/car3.jpg' 
@@ -23,6 +24,13 @@ const products: Product[] = [
     { id: 6, name: "Krishna's Melody Red And Green Stones Antique Gold Earrings 22 Karat", image: CarousalImage6, }, 
     { id: 7, name: "Ornament Gold Arm Vanki 22 Karat", image: CarousalImage7, }, 
 ];
+
+const toProductHandle = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/['’]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 
 const TrendingCarousel: React.FC = () => {
   const [index, setIndex] = useState(0);
@@ -72,8 +80,9 @@ const TrendingCarousel: React.FC = () => {
               {visibleItems.map((item, i) => {
                 const isCenter = i === 1 || i === 2; // middle two images emphasized
                 return (
-                  <div
+                  <Link
                     key={item.id}
+                    to={`/products/${toProductHandle(item.name)}`}
                     className={`flex flex-col items-center transition-all duration-300 ${
                       isCenter ? "opacity-100 scale-100" : "opacity-40 scale-90"
                     }`}
@@ -86,7 +95,7 @@ const TrendingCarousel: React.FC = () => {
                     <p className="2xl:text-[20px] lg:text-[18px] text-[12px] text-center mt-2 2xl:w-56 lg:w-40 font-serif">
                       {item.name}
                     </p>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
