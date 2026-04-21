@@ -32,7 +32,7 @@ export function Header({
 }: HeaderProps) {
   const {shop, menu} = header;
   const logoUrl = shop.brand?.logo?.image?.url || kalyanLogo;
-  const loginUrl = 'https://shopify.com/66607317088/account?return_to=%2F'
+  const loginUrl = 'https://shopify.com/66607317088/account'
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -107,7 +107,7 @@ export function Header({
                 </a>
               }
             >
-              <Await
+              {/* <Await
                 resolve={isLoggedIn}
                 errorElement={
                   <a href={loginUrl} className="flex flex-col items-center text-[#202020]">
@@ -116,16 +116,16 @@ export function Header({
                   </a>
                 }
               >
-                {(loggedIn) => (
-                  <a
-                    href={loggedIn ? '/account/orders' : loginUrl}
+                {(loggedIn) => ( */}
+                  <div
+                    onClick={() => setIsStoreModalOpen(true)}
                     className="flex flex-col items-center text-[#202020]"
                   >
                     <UserIcon size={22} strokeWidth={1.8} />
                     <span className="text-[12px] mt-1 font-serif">Profile</span>
-                  </a>
-                )}
-              </Await>
+                  </div>
+                {/* )}
+              </Await> */}
             </Suspense>
           </div>
         </div>
@@ -468,7 +468,7 @@ function HeaderCtas({
   setIsStoreModalOpen: (isOpen: boolean) => void;
 }) {
 
-  const loginUrl = 'https://shopify.com/66607317088/account?return_to=%2F'
+  const loginUrl = 'https://shopify.com/66607317088/account'
 
   
   return (
@@ -508,7 +508,7 @@ function HeaderCtas({
           </div>
           <button
             type="button"
-            onClick={() => setIsStoreModalOpen(true)}
+            // onClick={() => setIsStoreModalOpen(true)}
             className="flex flex-col items-center space-x-2 text-center transition cursor-pointer hover:text-[#650827]"
           >
             <div className='flex justify-center mb-1'>
@@ -518,15 +518,15 @@ function HeaderCtas({
           </button>
           <div className="flex flex-col items-center space-x-2  text-center transition cursor-pointer hover:text-[#650827]">
             <div className="mb-1">
-              <Suspense fallback="Sign in">
+              {/* <Suspense fallback="Sign in">
                 <Await resolve={isLoggedIn} errorElement="Sign in">
-                  {(isLoggedIn) => (
-                   <a href={isLoggedIn ? '/account/orders' : loginUrl}>
-                      {isLoggedIn ? <UserIcon className='text-black' size={24} /> : <UserIcon className='text-black' size={24} />}
-                    </a>
-                  )}
+                  {(isLoggedIn) => ( */}
+                   <button onClick={() => setIsStoreModalOpen(true)}>
+                      <UserIcon className='text-black' size={24} /> 
+                    </button>
+                  {/* )}
                 </Await>
-              </Suspense>
+              </Suspense> */}
             </div>
             <p className='text-center text-[#000000] 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
           </div>
