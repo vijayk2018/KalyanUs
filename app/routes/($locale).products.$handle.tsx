@@ -955,7 +955,7 @@ export default function Product() {
               <p className="text-md text-black font-semibold font-sans">Add your photo <span className="text-red-500">*</span></p>
               <input
                 type="file"
-                className="text-sm border border-[#CCCCCC] bg-white rounded-md p-2 focus:outline-none max-w-40"
+                className="mt-1 block text-xs text-black file:mr-2 file:rounded file:border file:border-[#bfbfbf] file:bg-white file:px-2 file:py-0.5 file:text-xs file:text-black hover:file:bg-[#f5f5f5]"
                 onChange={(event) =>
                   setReviewPhoto(event.target.files?.[0] ?? null)
                 }

@@ -157,11 +157,21 @@ export function Footer({
                               Diamond Guide
                             </Link>
                           </li>
-                          <li className="font-serif text-[#999] transition hover:text-white">
-                            Metal Guide
+                          <li>
+                            <Link
+                              to="/metal-guide"
+                              className="font-serif text-[#999] transition hover:text-white"
+                            >
+                              Metal Guide
+                            </Link>
                           </li>
-                          <li className="font-serif text-[#999] transition hover:text-white">
-                            Gemstone Guide
+                          <li>
+                            <Link
+                              to="/gemstone-guide"
+                              className="font-serif text-[#999] transition hover:text-white"
+                            >
+                              Gemstone Guide
+                            </Link>
                           </li>
                           <li>
                             <Link to="/size-guide" className="font-serif text-[#999] transition hover:text-white">
@@ -414,8 +424,16 @@ function MobileAccordion({
               Diamond Guide
             </Link>
           </li>
-          <li className="py-0.5">Metal Guide</li>
-          <li className="py-0.5">Gemstone Guide</li>
+          <li>
+            <Link to="/metal-guide" className="block py-0.5 transition hover:text-white">
+              Metal Guide
+            </Link>
+          </li>
+          <li>
+            <Link to="/gemstone-guide" className="block py-0.5 transition hover:text-white">
+              Gemstone Guide
+            </Link>
+          </li>
           <li>
             <Link to="/size-guide" className="block py-0.5 transition hover:text-white">
               Size guide

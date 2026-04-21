@@ -40,8 +40,9 @@ const ShopYourWay: React.FC = () => {
 
   {/* TOP SECTION */}
   <div className="bg-[#f5f5f5] lg:py-16 text-center">
-    <h2 className="text-5xl font-serif mb-2">Shop Your Way</h2>
-    <p className="text-gray-500 font-serif">Your Next Look Start Here</p>
+    {/* <h2 className="text-5xl font-serif mb-2">Shop Your Way</h2> */}
+    <p className="heading-font text-6xl mb-2">Shop Your Way</p>
+    <p className="text-gray-900 font-serif">Your Next Look Start Here</p>
   </div>
 
   {/* SPLIT BACKGROUND SECTION */}

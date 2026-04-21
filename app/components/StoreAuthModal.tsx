@@ -59,47 +59,32 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50">
-      <button
-        type="button"
-        className="absolute inset-0 bg-black/60"
-        onClick={onClose}
-        aria-label="Close store login popup"
-      />
-      <div className="relative flex min-h-full items-center justify-center p-4">
-        <div className="grid w-full max-w-5xl overflow-hidden rounded-lg bg-[#f8f8f8] shadow-2xl lg:grid-cols-[48%_52%]">
-          <div
-            className={`relative h-full text-white`}
+    <div className="fixed flex justify-center items-center inset-0 z-[100] bg-black/50 p-4">
+      <div className="mx-auto  w-full max-w-2xl overflow-hidden rounded-lg bg-white shadow-2xl relative">
+
+        <div className="absolute top-0 right-0 p-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-[#8aa1d8]"
+            aria-label="Close auth popup"
           >
-            {activeView === 'login' ? (
-              <div className="mt-auto flex h-full flex-col">
-                <img src={LoginImage} alt="Login" className="h-full w-full object-cover" />
-              </div>
-            ) : (
-              <div className="mt-auto flex h-full flex-col">
-                <img src={Register} alt="Register" className="h-full w-full object-cover" />
-              </div>
-            )}
-          </div>
+            <X size={26} />
+          </button>
+        </div>
 
-          <div className="relative p-7 lg:p-10">
-            <button
-              type="button"
-              onClick={onClose}
-              className="absolute right-4 top-3 text-[#737ca0] hover:text-[#4f5678]"
-              aria-label="Close popup"
-            >
-              <X size={28} />
-            </button>
+        {activeView === 'login' ? (
+            <div className="grid md:grid-cols-2">
+              <div className="hidden md:block">
+                <img src={LoginImage} alt="Login banner" className="h-full w-full object-cover" />
+              </div>
 
-            {activeView === 'login' ? (
-              <div className="mt-8">
-                <h2 className="text-4xl font-light text-[#cf254a]">Login</h2>
-                <p className="mt-4 text-[18px] text-[#70789a]">
+              <div className="px-6 pb-8 md:px-10  pt-8">
+                <h2 className="text-3xl text-[#b80f47] font-light mb-5">Login</h2>
+                <p className="text-[12px] text-gray-500 mb-6 pb-3">
                   To enjoy a seamless experience while shopping
+                  <div className='px-5 border-b border-[#b80f47] w-[6rem] mt-3 '></div>
                 </p>
-                <div className="mt-3 h-[2px] w-28 bg-[#cf254a]" />
-
                 <Form method="get" action="/account/login">
                   <input
                     type="text"
@@ -109,9 +94,8 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                       setLoginHint(event.target.value);
                       if (inlineError) setInlineError('');
                     }}
-                    placeholder="Enter E-Mail ID / Mobile number"
-                    className="mt-12 h-14 w-full rounded-md border border-[#d8dceb] px-4 text-lg outline-none focus:border-[#cf254a]"
-                    required
+                    placeholder="Enter E Mail / Mobile number"
+                    className="w-full rounded border border-gray-200 placeholder:text-gray-200 px-4 py-3 text-sm outline-none mb-4"
                   />
                   <input
                     type="hidden"
@@ -123,35 +107,27 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                     name="return_to"
                     value={returnTo}
                   />
-                  <button
-                    type="submit"
+                  <button type="submit" className="w-full bg-[#cf254a] py-3 text-sm font-semibold text-white"
                     onClick={(event) => {
-                      if (!normalizedLoginHint) {
-                        event.preventDefault();
-                        setInlineError('Please enter Email ID or Mobile number');
-                      }
-                    }}
-                    className="mt-8 h-14 w-full rounded-md bg-[#cf254a] text-[20px] font-semibold tracking-[0.06em] text-white"
+                        if (!normalizedLoginHint) {
+                          event.preventDefault();
+                          setInlineError('Please enter Email ID or Mobile number');
+                        }
+                      }}
                   >
                     CONTINUE
                   </button>
                 </Form>
-
                 <div className="my-7 flex items-center">
                   <div className="h-px flex-1 bg-[#d0d4e2]" />
                   <span className="px-3 text-2xl text-[#5f678b]">OR</span>
                   <div className="h-px flex-1 bg-[#d0d4e2]" />
                 </div>
-
-                <a
-                  href={`/account/login?acr_values=provider:google&return_to=${encodeURIComponent(returnTo)}`}
-                  className="h-14 w-full flex items-center justify-center rounded-md border border-[#d8dceb] text-[20px] text-[#6e7596] no-underline"
-                >
-                  <img src={GoogleImg} alt="Google" className="mr-2" />
-                  <span>Login using Google</span>
-                </a>
-
-                <p className="mt-9 text-center text-[20px] text-[#6e7596]">
+                <button type="button" className="flex items-center gap-3 justify-center w-full rounded border border-gray-200 py-3 text-sm text-gray-700"
+                  onClick={`/account/login?acr_values=provider:google&return_to=${encodeURIComponent(returnTo)}`}>
+                  <img src={GoogleImg} alt="Login banner" className="h-3 w-3 object-cover" /> <span>Login Using Google</span>
+                </button>
+                <p className="mt-6 text-center text-sm text-gray-500">
                   Do not have an account?{' '}
                   <button
                     type="button"
@@ -159,118 +135,81 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                       setInlineError('');
                       setActiveView('signup');
                     }}
-                    className="font-medium text-[#cf254a]"
+                    className="font-semibold text-[#cf254a]"
                   >
                     SIGN UP
                   </button>
                 </p>
+                
               </div>
-            ) : (
-              <div className="mt-8">
-                <div className="space-y-4">
+            </div>
+        ) : (
+          <div className="grid md:grid-cols-2">
+            <div className="hidden md:block">
+              <img src={Register} alt="Signup banner" className="h-full w-full object-contain" />
+            </div>
+            <div className="px-6 pb-8 md:px-10 pt-8 mt-8">
+
+              <div className="space-y-4">
+                <input type="text" placeholder="Enter Full Name" value={signupName}
+                    onChange={(event) => setSignupName(event.target.value)} className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
+                <input type="email" placeholder="Email" value={signupEmail}
+                    onChange={(event) => setSignupEmail(event.target.value)} className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
+                <div className="grid grid-cols-[100px_1fr] gap-0">
                   <input
                     type="text"
-                    name="full_name"
-                    value={signupName}
-                    onChange={(event) => setSignupName(event.target.value)}
-                    placeholder="Enter Full Name"
-                    className="h-14 w-full rounded-md border border-[#d8dceb] px-4 text-lg outline-none focus:border-[#cf254a]"
+                    defaultValue="+1"
+                    className="py-3 px-4 rounded-l-md border border-r-0 border-[#d8dceb] text-lg outline-none focus:border-[#cf254a]"
                   />
                   <input
-                    type="email"
-                    name="email"
-                    value={signupEmail}
-                    onChange={(event) => setSignupEmail(event.target.value)}
-                    placeholder="Email"
-                    className="h-14 w-full rounded-md border border-[#d8dceb] px-4 text-lg outline-none focus:border-[#cf254a]"
+                    type="tel"
+                    name="phone"
+                    value={signupPhone}
+                    onChange={(event) => setSignupPhone(event.target.value)}
+                    placeholder="Phone"
+                    className="py-3 px-4 rounded-r-md border border-[#d8dceb] text-lg outline-none focus:border-[#cf254a]"
                   />
-                  <div className="grid grid-cols-[100px_1fr] gap-0">
-                    <input
-                      type="text"
-                      defaultValue="+1"
-                      className="h-14 rounded-l-md border border-r-0 border-[#d8dceb] px-3 text-lg outline-none focus:border-[#cf254a]"
-                    />
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={signupPhone}
-                      onChange={(event) => setSignupPhone(event.target.value)}
-                      placeholder="Phone"
-                      className="h-14 rounded-r-md border border-[#d8dceb] px-4 text-lg outline-none focus:border-[#cf254a]"
-                    />
-                  </div>
-                  <input
-                    type="password"
-                    name="password"
-                    value={signupPassword}
-                    onChange={(event) => setSignupPassword(event.target.value)}
-                    placeholder="Create Password"
-                    className="h-14 w-full rounded-md border border-[#d8dceb] px-4 text-lg outline-none focus:border-[#cf254a]"
-                  />
+                  
                 </div>
-
-                <label className="mt-8 flex items-center gap-2 text-[20px] text-[#5f678b]">
-                  <input
-                    type="checkbox"
-                    name="accept_terms"
-                    checked={acceptTerms}
-                    onChange={(event) => setAcceptTerms(event.target.checked)}
-                    className="h-4 w-4 accent-[#cf254a]"
-                  />
-                  <span>
-                    I agree to the <span className="text-[#cf254a]">Terms of Use</span> &{' '}
-                    <span className="text-[#cf254a]">Privacy Policy</span>
-                  </span>
-                </label>
-
-                <Form method="post" action="/account/register">
-                  <input
-                    type="hidden"
-                    name="return_to"
-                    value={returnTo}
-                  />
-                  <button
-                    type="submit"
-                    onClick={(event) => {
-                      const signupHint = signupEmail.trim();
-                      if (
-                        !signupName.trim() ||
-                        !signupHint ||
-                        !signupPassword.trim() ||
-                        signupPassword.trim().length < 8
-                      ) {
-                        event.preventDefault();
-                        setInlineError('Name, email, and 8+ character password are required');
-                      } else if (!acceptTerms) {
-                        event.preventDefault();
-                        setInlineError('Please accept Terms of Use and Privacy Policy');
-                      } else {
-                        setInlineError('');
-                      }
-                    }}
-                    className="mt-8 h-14 w-full rounded-md bg-[#cf254a] text-[20px] font-semibold tracking-[0.06em] text-white"
-                  >
-                    CREATE ACCOUNT
-                  </button>
-                </Form>
-
-                <p className="mt-8 text-center text-[20px] text-[#6e7596]">
-                  Already a member with us?{' '}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setInlineError('');
-                      setActiveView('login');
-                    }}
-                    className="font-medium text-[#cf254a]"
-                  >
-                    LOGIN
-                  </button>
-                </p>
+                <input
+                  type="password"
+                  name="password"
+                  value={signupPassword}
+                  onChange={(event) => setSignupPassword(event.target.value)}
+                  placeholder="Create Password"
+                  className="h-14 w-full rounded-md border border-[#d8dceb] px-4 text-lg outline-none focus:border-[#cf254a]"
+                />
               </div>
-            )}
+              <label className="mt-5 flex items-center gap-2 text-[12px] text-gray-600">
+                <input
+                  type="checkbox"
+                  name="accept_terms"
+                  checked={acceptTerms}
+                  onChange={(event) => setAcceptTerms(event.target.checked)}
+                  className="h-4 w-4 accent-[#cf254a]"
+                />
+                <p>I agree to the <span className='text-[#cf254a]'>Terms of Use</span> & <span className='text-[#cf254a]'>Privacy Policy</span></p>
+              </label>
+              <button type="button" className="mt-6 w-full bg-[#cf254a] py-3 text-sm font-semibold text-white">
+                SEND OTP
+              </button>
+              <p className="mt-6 text-center text-sm text-gray-500">
+                Already a member with us?{' '}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setInlineError('');
+                    setActiveView('login');
+                  }}
+                  className="font-semibold text-[#cf254a]"
+                >
+                  LOGIN
+                </button>
+              </p>
+            </div>
           </div>
-        </div>
+        )}
+            
       </div>
       {inlineError ? (
         <div className="pointer-events-none absolute bottom-8 left-1/2 z-60 w-[min(92vw,560px)] -translate-x-1/2 rounded-md bg-[#fb6262] px-5 py-3 text-center text-[18px] text-white shadow-xl">

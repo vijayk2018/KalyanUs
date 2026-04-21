@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import DiamondGuide from '../assets/diamondguide.png';
 import MetalGuide from '../assets/metalguide.png';
 import GemstoneGuide from '../assets/gemstoneguide.png';
@@ -10,26 +11,30 @@ type Guide = {
   image: string;
 };
 
-const guides: Guide[] = [
+const guides: (Guide & { link: string })[] = [
   {
     id: 1,
     title: "DIAMOND GUIDE",
     image: DiamondGuide,
+    link: "/diamond-guide",
   },
   {
     id: 2,
     title: "METAL GUIDE",
     image: MetalGuide,
+    link: "/metal-guide",
   },
   {
     id: 3,
     title: "GEMSTONE GUIDE",
     image: GemstoneGuide,
+    link: "/gemstone-guide",
   },
   {
     id: 4,
     title: "SIZE GUIDE",
     image: SizeGuide,
+    link: "/size-guide",
   },
 ];
 
@@ -59,9 +64,11 @@ const JewelleryGuides: React.FC = () => {
                   <h3 className="font-semibold text-gray-800 mb-4 font-serif text-[32px] leading-[0.95]">
                     {item.title}
                   </h3>
-                  <button className="bg-[#BF1C47] text-white text-sm px-4 py-2 rounded-md font-serif tracking-wide">
-                    READ MORE
-                  </button>
+                  <Link to={item.link}>
+                    <button className="bg-[#BF1C47] text-white text-sm px-4 py-2 rounded-md font-serif tracking-wide">
+                      READ MORE
+                    </button>
+                  </Link>
                 </div>
                 <img
                   src={item.image}
@@ -80,16 +87,18 @@ const JewelleryGuides: React.FC = () => {
               key={item.id}
               className="bg-white rounded-2xl shadow-md pl-6 py-6 flex items-center justify-between hover:shadow-lg transition"
             >
-              
+
               {/* LEFT CONTENT */}
               <div>
                 <h3 className="font-semibold text-gray-800 mb-4 font-serif">
                   {item.title}
                 </h3>
 
-                <button className="bg-[#BF1C47] text-white text-sm px-4 py-2 rounded-md font-serif">
-                  READ MORE
-                </button>
+                <Link to={item.link}>
+                  <button className="bg-[#BF1C47] text-white text-sm px-4 py-2 rounded-md font-serif">
+                    READ MORE
+                  </button>
+                </Link>
               </div>
 
               {/* RIGHT IMAGE */}

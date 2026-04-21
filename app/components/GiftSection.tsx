@@ -25,9 +25,12 @@ const GiftSection: React.FC = () => {
           {/* Centered Block */}
           <div className="flex flex-col items-start max-w-2xl lg:block hidden">
             {/* Heading */}
-            <h2 className="text-5xl font-serif mb-2 text-[#c41e3a]">
+            {/* <h2 className="text-5xl font-serif mb-2 text-[#c41e3a]">
               Gift for your favourite ones!
-            </h2>
+            </h2> */}
+                    <p className="heading-font text-5xl mb-2 text-[#c41e3a]">
+   Gift for your favourite ones!
+</p>
 
             {/* Paragraph */}
             <p className="text-[#c41e3a] mt-3 font-serif">
@@ -49,9 +52,12 @@ const GiftSection: React.FC = () => {
           {/* Centered Block */}
           <div className="flex flex-col items-start max-w-2xl lg:hidden">
             {/* Heading */}
-            <h2 className="text-5xl font-serif mb-2 text-[#c41e3a]">
+            {/* <h2 className="text-5xl font-serif mb-2 text-[#c41e3a]">
               Gift for your favourite ones!
-            </h2>
+            </h2> */}
+             <p className="heading-font text-5xl mb-2 text-[#c41e3a]">
+   Gift for your favourite ones!
+</p>
 
             {/* Paragraph */}
             <p className="text-[#c41e3a] mt-3 font-serif">
