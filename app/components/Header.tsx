@@ -95,14 +95,30 @@ export function Header({
               <Store size={22} strokeWidth={1.8} />
               <span className="text-[12px] mt-1 font-serif">Store</span>
             </NavLink>
-            <button
+            {/* <button
               type="button"
               onClick={() => setIsStoreModalOpen(true)}
               className="flex flex-col items-center text-[#202020]"
             >
               <UserIcon size={22} strokeWidth={1.8} />
               <span className="text-[12px] mt-1 font-serif">Profile</span>
-            </button>
+            </button> */}
+            <Suspense
+              fallback={
+                <a href={loginUrl} className="flex flex-col items-center text-[#202020]">
+                  <UserIcon size={22} strokeWidth={1.8} />
+                  <span className="text-[12px] mt-1 font-serif">Profile</span>
+                </a>
+              }
+            >
+              <div
+                onClick={() => setIsStoreModalOpen(true)}
+                className="flex flex-col items-center text-[#202020]"
+              >
+                <UserIcon size={22} strokeWidth={1.8} />
+                <span className="text-[12px] mt-1 font-serif">Profile</span>
+              </div>
+            </Suspense>
           </div>
         </div>
 
@@ -197,7 +213,13 @@ export function Header({
             )}
           </NavLink>
           <div className='flex flex-col space-y-6 hidden lg:block '>
-            <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} onProfileClick={() => setIsStoreModalOpen(true)} wishlistCount={wishlistCount} setIsWishlistOpen={setIsWishlistOpen} setIsStoreModalOpen={setIsStoreModalOpen}/>
+            <HeaderCtas
+              isLoggedIn={isLoggedIn}
+              cart={cart}
+              wishlistCount={wishlistCount}
+              setIsWishlistOpen={setIsWishlistOpen}
+              setIsStoreModalOpen={setIsStoreModalOpen}
+            />
             <HeaderMenu
               menu={menu}
               viewport="desktop"
