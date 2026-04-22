@@ -151,7 +151,7 @@ import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
 import moreCollectionsImage from '../assets/moreCollections.jpg';
 import moreBlogImage from '../assets/blogMainBanner.jpg';
 import { FaStore } from 'react-icons/fa';
-import { getWishlist } from '~/lib/wishlist';
+import { getWishlist, loadWishlist } from '~/lib/wishlist';
 import WishlistDrawer from './WishlistDrawer';
 import StoreAuthModal from './StoreAuthModal';
 
@@ -360,7 +360,7 @@ export function Header({
       setWishlistCount(items.length);
     };
 
-    updateWishlistCount();
+    void loadWishlist().then(updateWishlistCount);
 
     window.addEventListener("wishlistUpdated", updateWishlistCount);
 

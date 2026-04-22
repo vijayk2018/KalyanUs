@@ -24,7 +24,7 @@ import ProductInformation from '../assets/search.svg'
 import certificateGuideImage from '../assets/CertificateDetails.jpg';
 import {useToast} from '~/components/useToast';
 import { ToastContainer } from '~/components/Toast';
-import { addToWishlist, isInWishlist, removeFromWishlist } from '~/lib/wishlist';
+import { addToWishlist, isInWishlist, loadWishlist, removeFromWishlist } from '~/lib/wishlist';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
@@ -368,13 +368,15 @@ export default function Product() {
   const [wishlisted, setWishlisted] = useState(false);
 
   useEffect(() => {
-    setWishlisted(isInWishlist(productId));
+    void loadWishlist().then(() => {
+      setWishlisted(isInWishlist(productId));
+    });
   }, [productId]);
 
   const handleWishlist = () => {
     if (wishlisted) {
       removeFromWishlist(productId);
-      showSuccess("Removed from wishlist");
+      // showSuccess("Removed from wishlist");
     } else {
       addToWishlist({
         id: product.id,
@@ -384,7 +386,6 @@ export default function Product() {
         price: selectedVariant?.price?.amount,
         variantId: selectedVariant?.id,
       });
-      showSuccess("Added to wishlist");
     }
 
     setWishlisted(!wishlisted);
