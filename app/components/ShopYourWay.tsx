@@ -101,9 +101,9 @@ const ShopYourWay: React.FC = () => {
 
     {/* BUTTON */}
     <div className="relative z-10 flex justify-center pb-6">
-      <button className="absolute bg-[#BF1C47] text-white px-8 py-2 rounded-md font-semibold font-serif">
+      <a className="absolute bg-[#BF1C47] text-white px-8 py-2 rounded-md font-semibold font-serif cursor-pointer" href="/collections/kj-us-sub-category" target="_blank" rel="noopener noreferrer">
         VIEW ALL
-      </button>
+      </a>
     </div>
 
   </div>

@@ -903,6 +903,11 @@ export default function Product() {
             {/* Desktop/Tablet tab content */}
             <div className="hidden lg:block">
               <TabContent tabData={productTabs[activeTab as keyof typeof productTabs] || []} />
+              {activeTab === 'diamond' && shouldShowDiamondCertificateGuide ? (
+                <p className="mt-4 text-sm text-gray-700 font-sans">
+                  100% Natural and Certified Diamonds.
+                </p>
+              ) : null}
             </div>
 
             {/* Mobile tabs */}
@@ -924,7 +929,14 @@ export default function Product() {
                       {tab.label}
                     </button>
                     {activeTab === tab.key ? (
-                      <TabContent tabData={productTabs[tab.key as keyof typeof productTabs] || []} />
+                      <>
+                        <TabContent tabData={productTabs[tab.key as keyof typeof productTabs] || []} />
+                        {tab.key === 'diamond' && shouldShowDiamondCertificateGuide ? (
+                          <p className="mt-3 text-sm text-gray-700 font-sans">
+                            100% Natural and Certified Diamonds.
+                          </p>
+                        ) : null}
+                      </>
                     ) : null}
                   </div>
                 ))}
