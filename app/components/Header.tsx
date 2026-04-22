@@ -31,6 +31,20 @@ import ringsMenuImage from '../assets/rings.jpg';
 import womenMenuImage from '../assets/Women.jpg';
 import goldMenuImage from '../assets/gold.jpg'
 import mudhraSideMenuImage  from '../assets/menuMuhurat.jpg'
+import menuNecklaceImage from '../assets/menuNecklace.jpg';
+import bridalNecklaceMenuImage from '../assets/bridalNecklace.jpg';
+import charmNecklaceMenuImage from '../assets/charmNecklace.jpg';
+import chokerNecklaceMenuImage from '../assets/chokerNecklace.jpg';
+import collarNecklaceMenuImage from '../assets/collarNecklace.jpg';
+import delicateNecklaceMenuImage from '../assets/delicateNecklace.jpg';
+import designerNecklaceMenuImage from '../assets/designerNecklace.jpg';
+import eternityNecklaceMenuImage from '../assets/eternityNecklace.jpg';
+import goldNecklaceMenuImage from '../assets/goldNecklace.jpg';
+import lariatNecklaceMenuImage from '../assets/lariatNecklace.jpeg';
+import longNecklaceMenuImage from '../assets/longNecklace.jpg';
+import multiLayerNecklaceMenuImage from '../assets/multiLayerNecklace.jpg';
+import pendantNecklaceMenuImage from '../assets/pendantNecklace.jpg';
+import diamondNecklaceMenuImage from '../assets/diamondNecklace.jpeg';
 import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
 import moreCollectionsImage from '../assets/moreCollections.jpg';
 import moreBlogImage from '../assets/blogMainBanner.jpg';
@@ -72,6 +86,20 @@ const HEADER_MENU_ITEM_IMAGES: Record<string, string> = {
   rings: ringsMenuImage,
   women: womenMenuImage,
   gold: goldMenuImage,
+  'bridal necklace': bridalNecklaceMenuImage,
+  'charm necklace': charmNecklaceMenuImage,
+  'choker necklace': chokerNecklaceMenuImage,
+  'collar necklace': collarNecklaceMenuImage,
+  'diamond necklace': diamondNecklaceMenuImage,
+  'delicate necklace': delicateNecklaceMenuImage,
+  'designer necklace': designerNecklaceMenuImage,
+  'eternity necklace': eternityNecklaceMenuImage,
+  'gold necklace': goldNecklaceMenuImage,
+  'long necklace': longNecklaceMenuImage,
+  'lariat necklace': lariatNecklaceMenuImage,
+  'multi layer necklace': multiLayerNecklaceMenuImage,
+  multilayernecklace: multiLayerNecklaceMenuImage,
+  'pendant necklace': pendantNecklaceMenuImage,
 };
 
 export function Header({
@@ -364,6 +392,7 @@ export function HeaderMenu({
           const isCollectionMenu = item.title.trim().toLowerCase() === 'collection';
           const isMuhuratMenu = item.title.trim().toLowerCase() === 'muhurat';
           const isJewelryMenu = item.title.trim().toLowerCase() === 'jewelry';
+          const isNecklaceMenu = item.title.trim().toLowerCase() === 'necklace';
           const shouldShowPromoCard = Boolean(viewAllItem);
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
@@ -502,7 +531,7 @@ export function HeaderMenu({
                               const menuImage =
                                 (isCollectionMenu &&
                                   COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()]) ||
-                                ((isMuhuratMenu || isJewelryMenu) &&
+                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu) &&
                                   HEADER_MENU_ITEM_IMAGES[subItem.title.trim().toLowerCase()]);
                               return (
                                 <NavLink
@@ -530,7 +559,7 @@ export function HeaderMenu({
                               const menuImage =
                                 (isCollectionMenu &&
                                   COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()]) ||
-                                ((isMuhuratMenu || isJewelryMenu) &&
+                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu) &&
                                   HEADER_MENU_ITEM_IMAGES[subItem.title.trim().toLowerCase()]);
                               return (
                                 <NavLink
@@ -571,6 +600,8 @@ export function HeaderMenu({
                                 ? moreCollectionsImage
                                 : isMuhuratMenu 
                                   ? mudhraSideMenuImage
+                                  : isNecklaceMenu
+                                    ? menuNecklaceImage
                                   : jewelryMegaMenuPromo
                           }
                           alt={`${item.title} collection`}
