@@ -24,6 +24,15 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
   const [returnTo, setReturnTo] = useState('/');
 
   const normalizedLoginHint = loginHint.trim();
+  const [selectedCountry, setSelectedCountry] = useState('US');
+  const [dialCode, setDialCode] = useState('+1');
+
+  const countryCodes: Record<string, string> = {
+    US: '+1',
+    IN: '+91',
+    GB: '+44',
+    AE: '+971',
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -155,30 +164,48 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                     onChange={(event) => setSignupName(event.target.value)} className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
                 <input type="email" placeholder="Email" value={signupEmail}
                     onChange={(event) => setSignupEmail(event.target.value)} className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
-                <div className="grid grid-cols-[100px_1fr] gap-0">
-                  <input
-                    type="text"
-                    defaultValue="+1"
-                    className="py-3 px-4 rounded-l-md border border-r-0 border-[#d8dceb] text-lg outline-none focus:border-[#cf254a]"
-                  />
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={signupPhone}
-                    onChange={(event) => setSignupPhone(event.target.value)}
-                    placeholder="Phone"
-                    className="py-3 px-4 rounded-r-md border border-[#d8dceb] text-lg outline-none focus:border-[#cf254a]"
-                  />
-                  
+                <div className="relative w-full border border-[#d8dceb] rounded-md flex items-center focus-within:border-[#cf254a]">
+                  <div className="grid grid-cols-3 items-center gap-2 ">
+                    <p className='text-[#6e7191] bg-white text-[14px] absolute -top-2 left-2'>Mobile No</p>
+                    <div className="flex items-center col-span-1 flag-select">
+                      
+                      <select
+                        value={selectedCountry}
+                        onChange={(event) => {
+                          const code = event.target.value;
+                          setSelectedCountry(code);
+                          setDialCode(countryCodes[code] || '+1');
+                        }}
+                        className="bg-transparent text-sm text-gray-700 outline-none"
+                      >
+                        <option value="US">US</option>
+                        <option value="IN">IN</option>
+                        <option value="GB">GB</option>
+                        <option value="AE">AE</option>
+                      </select>
+                      <span className="text-sm text-gray-700 ml-1">{dialCode}</span>
+                    </div>
+                    <div className='col-span-2 border-l border-[#d8dceb]'>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={signupPhone}
+                        onChange={(event) => setSignupPhone(event.target.value)}
+                        placeholder="Phone"
+                        className="py-3 px-4 text-lg outline-none rounded-r-md placeholder:text-gray-200 w-full bg-transparent"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <input
+
+                {/* <input
                   type="password"
                   name="password"
                   value={signupPassword}
                   onChange={(event) => setSignupPassword(event.target.value)}
                   placeholder="Create Password"
                   className="h-14 w-full rounded-md border border-[#d8dceb] px-4 text-lg outline-none focus:border-[#cf254a]"
-                />
+                /> */}
               </div>
               <div className="mt-5 flex items-center gap-2 text-[12px] text-gray-600">
                 <input
@@ -190,11 +217,19 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                 />
                 <p>
                   I agree to the{' '}
-                  <Link to="/terms-and-conditions" className="text-[#cf254a] underline underline-offset-2">
+                  <Link
+                    to="/terms-and-conditions"
+                    onClick={onClose}
+                    className="text-[#cf254a] underline underline-offset-2"
+                  >
                     Terms of Use
                   </Link>{' '}
                   &{' '}
-                  <Link to="/privacy-policy" className="text-[#cf254a] underline underline-offset-2">
+                  <Link
+                    to="/privacy-policy"
+                    onClick={onClose}
+                    className="text-[#cf254a] underline underline-offset-2"
+                  >
                     Privacy Policy
                   </Link>
                 </p>

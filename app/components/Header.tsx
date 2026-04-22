@@ -680,7 +680,13 @@ export function HeaderMenu({
                           : resolveMenuUrl(group.url, url);
 
                         return (
-                          <NavLink key={group.id} to={cardUrl} prefetch="intent" className="block">
+                          <NavLink
+                            key={group.id}
+                            to={cardUrl}
+                            prefetch="intent"
+                            onClick={() => setActiveDesktopMenuId(null)}
+                            className="block"
+                          >
                             <img
                               src={cardImage}
                               alt={group.title}
@@ -779,6 +785,7 @@ export function HeaderMenu({
                                   key={subItem.id}
                                   to={subUrl}
                                   prefetch="intent"
+                                  onClick={() => setActiveDesktopMenuId(null)}
                                   className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${
                                     menuImage ? 'flex items-center gap-2' : 'block'
                                   }`}
@@ -816,6 +823,7 @@ export function HeaderMenu({
                                   key={subItem.id}
                                   to={subUrl}
                                   prefetch="intent"
+                                  onClick={() => setActiveDesktopMenuId(null)}
                                   className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${
                                     menuImage ? 'flex items-center gap-2' : 'block'
                                   }`}
@@ -840,6 +848,7 @@ export function HeaderMenu({
                       <NavLink
                         to={resolveMenuUrl(viewAllItem?.url, url)}
                         prefetch="intent"
+                        onClick={() => setActiveDesktopMenuId(null)}
                         className="block overflow-hidden rounded-md"
                       >
                         <img

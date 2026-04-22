@@ -756,3 +756,13 @@ body {
 .heading-font {
   font-family: var(--font-heading);
 }
+
+.flag-select button {
+  border: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.flag-select .flag-select__btn:focus {
+  outline: none !important;
+}
