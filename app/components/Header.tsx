@@ -10,6 +10,15 @@ import { useAside } from '~/components/Aside';
 import { HeartIcon, Menu, Search, Store, UserIcon, X } from 'lucide-react';
 import kalyanLogo from '../assets/kalyanLogo.svg';
 import jewelryMegaMenuPromo from '../assets/menuJewellery.jpg';
+import menuPriceImage from '../assets/menuPrice.jpg';
+import apoorvaMenuImage from '../assets/apoorva.jpeg';
+import ziahMenuImage from '../assets/ziah.jpeg';
+import heraMenuImage from '../assets/hera.jpeg';
+import mudhraMenuImage from '../assets/mudhra.jpg';
+import nimahMenuImage from '../assets/nimah.jpg';
+import anokhiMenuImage from '../assets/anokhi.jpg';
+import rangMenuImage from '../assets/rang.jpg';
+import tejasviMenuImage from '../assets/tejasvi.jpeg';
 import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
 import moreCollectionsImage from '../assets/moreCollections.jpg';
 import moreBlogImage from '../assets/blogMainBanner.jpg';
@@ -26,6 +35,17 @@ interface HeaderProps {
 }
 
 type Viewport = 'desktop' | 'mobile';
+
+const COLLECTION_MENU_IMAGES: Record<string, string> = {
+  apoorva: apoorvaMenuImage,
+  ziah: ziahMenuImage,
+  hera: heraMenuImage,
+  mudhra: mudhraMenuImage,
+  nimah: nimahMenuImage,
+  anokhi: anokhiMenuImage,
+  rang: rangMenuImage,
+  tejasvi: tejasviMenuImage,
+};
 
 export function Header({
   header,
@@ -313,6 +333,8 @@ export function HeaderMenu({
             (group) => group.id !== viewAllItem?.id,
           );
           const isMoreMenu = item.title.trim().toLowerCase() === 'more';
+          const isPriceRangeMenu = item.title.trim().toLowerCase() === 'price range';
+          const isCollectionMenu = item.title.trim().toLowerCase() === 'collection';
           const shouldShowPromoCard = Boolean(viewAllItem);
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
@@ -389,13 +411,15 @@ export function HeaderMenu({
                   >
                     <div
                       className={`grid gap-6 ${
-                        groupedItems.length >= 4
-                          ? 'grid-cols-4'
-                          : groupedItems.length === 3
-                            ? 'grid-cols-3'
-                            : groupedItems.length === 2
-                              ? 'grid-cols-2'
-                              : 'grid-cols-1'
+                        isPriceRangeMenu
+                          ? 'grid-cols-1'
+                          : groupedItems.length >= 4
+                            ? 'grid-cols-4'
+                            : groupedItems.length === 3
+                              ? 'grid-cols-3'
+                              : groupedItems.length === 2
+                                ? 'grid-cols-2'
+                                : 'grid-cols-1'
                       }`}
                     >
                       {groupedItems.map((group) => {
@@ -406,6 +430,7 @@ export function HeaderMenu({
                         const items = group.items ?? [];
                         const isSingleCategoryLayout =
                           groupedItems.length === 1 && isCategory;
+                        const isPriceRangeGroup = isPriceRangeMenu;
                         const splitIndex = Math.ceil(items.length / 2);
                         const columnA = isCategory
                           ? items.slice(0, splitIndex)
@@ -419,7 +444,9 @@ export function HeaderMenu({
                           </p>
                           <div
                             className={
-                              isSingleCategoryLayout
+                              isPriceRangeGroup
+                                ? 'grid grid-cols-1 gap-y-3'
+                                : isSingleCategoryLayout
                                 ? 'grid grid-cols-4 gap-x-8 gap-y-3'
                                 : isCategory
                                   ? 'grid grid-cols-2 gap-x-6 gap-y-2'
@@ -428,18 +455,32 @@ export function HeaderMenu({
                           >
                             {(isSingleCategoryLayout
                               ? items
+                              : isPriceRangeGroup
+                                ? [group]
                               : columnA.length
                                 ? columnA
                                 : [group]
                             ).map((subItem) => {
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
+                              const menuImage =
+                                isCollectionMenu &&
+                                COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()];
                               return (
                                 <NavLink
                                   key={subItem.id}
                                   to={subUrl}
                                   prefetch="intent"
-                                  className="block text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35]"
+                                  className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${
+                                    menuImage ? 'flex items-center gap-2' : 'block'
+                                  }`}
                                 >
+                                  {menuImage ? (
+                                    <img
+                                      src={menuImage}
+                                      alt={subItem.title}
+                                      className="h-16 w-16  object-cover"
+                                    />
+                                  ) : null}
                                   {subItem.title}
                                 </NavLink>
                               );
@@ -447,13 +488,25 @@ export function HeaderMenu({
                             {!isSingleCategoryLayout &&
                               columnB.map((subItem) => {
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
+                              const menuImage =
+                                isCollectionMenu &&
+                                COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()];
                               return (
                                 <NavLink
                                   key={subItem.id}
                                   to={subUrl}
                                   prefetch="intent"
-                                  className="block text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35]"
+                                  className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${
+                                    menuImage ? 'flex items-center gap-2' : 'block'
+                                  }`}
                                 >
+                                  {menuImage ? (
+                                    <img
+                                      src={menuImage}
+                                      alt={subItem.title}
+                                      className="h-16 w-16  object-cover"
+                                    />
+                                  ) : null}
                                   {subItem.title}
                                 </NavLink>
                               );
@@ -470,9 +523,15 @@ export function HeaderMenu({
                         className="block overflow-hidden rounded-md"
                       >
                         <img
-                          src={jewelryMegaMenuPromo}
+                          src={
+                            isPriceRangeMenu
+                              ? menuPriceImage
+                              : isCollectionMenu
+                                ? moreCollectionsImage
+                                : jewelryMegaMenuPromo
+                          }
                           alt={`${item.title} collection`}
-                          className="h-[340px] w-full rounded-md object-cover"
+                          className="h-[180px] w-full rounded-md object-cover"
                         />
                         <span className="mt-3 inline-block text-[13px] font-semibold uppercase tracking-[0.08em] text-[#202020] border-t border-[#cf254a] pt-1">
                           View All Designs
