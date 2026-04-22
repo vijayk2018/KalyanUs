@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {X} from 'lucide-react';
-import {Form} from 'react-router';
+import {Form, Link} from 'react-router';
 import LoginImage from '../assets/Sign-in.jpg'
 import Register from '../assets/regiteer.png'
 import GoogleImg from '../assets/google.svg';
@@ -180,7 +180,7 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                   className="h-14 w-full rounded-md border border-[#d8dceb] px-4 text-lg outline-none focus:border-[#cf254a]"
                 />
               </div>
-              <label className="mt-5 flex items-center gap-2 text-[12px] text-gray-600">
+              <div className="mt-5 flex items-center gap-2 text-[12px] text-gray-600">
                 <input
                   type="checkbox"
                   name="accept_terms"
@@ -188,8 +188,17 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                   onChange={(event) => setAcceptTerms(event.target.checked)}
                   className="h-4 w-4 accent-[#cf254a]"
                 />
-                <p>I agree to the <span className='text-[#cf254a]'>Terms of Use</span> & <span className='text-[#cf254a]'>Privacy Policy</span></p>
-              </label>
+                <p>
+                  I agree to the{' '}
+                  <Link to="/terms-and-conditions" className="text-[#cf254a] underline underline-offset-2">
+                    Terms of Use
+                  </Link>{' '}
+                  &{' '}
+                  <Link to="/privacy-policy" className="text-[#cf254a] underline underline-offset-2">
+                    Privacy Policy
+                  </Link>
+                </p>
+              </div>
               <button type="button" className="mt-6 w-full bg-[#cf254a] py-3 text-sm font-semibold text-white">
                 SEND OTP
               </button>

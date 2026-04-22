@@ -93,7 +93,7 @@ export function Header({
               {/* <span className="text-[11px] mt-1">&nbsp;</span> */}
             </button>
             <button
-              onClick={() => setIsWishlistOpen(true)}
+              onClick={() => {isLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true)}}
               className="flex flex-col items-center text-[#202020] relative cursor-pointer hover:text-[#650827]"
             >
               <HeartIcon size={24} strokeWidth={1.8} />
@@ -509,7 +509,7 @@ function HeaderCtas({
       <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4">
         <button
           type="button"
-          onClick={() => setIsWishlistOpen(true)}
+          onClick={() => {isLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true)}}
           className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition cursor-pointer"
         >
           <div className="relative flex justify-center mb-1">
