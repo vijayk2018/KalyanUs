@@ -59,6 +59,19 @@ import vRingMenuImage from '../assets/vRing.jpeg';
 import eternityMenuImage from '../assets/eternity.jpg';
 import coupleBandsMenuImage from '../assets/coupleBands.jpg';
 import weddingBandsMenuImage from '../assets/weddingBands.jpg';
+import menuEarringsImage from '../assets/menuEarrings.jpg';
+import chandBaliMenuImage from '../assets/chandBali.jpg';
+import chandelierMenuImage from '../assets/chandelier.jpg';
+import delicateEarringsMenuImage from '../assets/delicateEarrings.jpeg';
+import droopsDanglesMenuImage from '../assets/droopsDangles.jpeg';
+import earCuffsMenuImage from '../assets/earCuffs.jpg';
+import hoopsMenuImage from '../assets/hoops.jpeg';
+import jhumkaMenuImage from '../assets/jhumka.jpg';
+import longEarringsMenuImage from '../assets/longEarrings.jpeg';
+import missMatchMenuImage from '../assets/missMatch.jpeg';
+import multiStonesMenuImage from '../assets/multiStones.jpg';
+import statementEarringsMenuImage from '../assets/statementEarrings.jpg';
+import studMenuImage from '../assets/stud.jpeg';
 import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
 import moreCollectionsImage from '../assets/moreCollections.jpg';
 import moreBlogImage from '../assets/blogMainBanner.jpg';
@@ -129,6 +142,21 @@ const HEADER_MENU_ITEM_IMAGES: Record<string, string> = {
   'couple bands': coupleBandsMenuImage,
   'wedding bands': weddingBandsMenuImage,
   'eternity ring': eternityMenuImage,
+  'chand bali': chandBaliMenuImage,
+  chandelier: chandelierMenuImage,
+  'delicate earrings': delicateEarringsMenuImage,
+  'droops and dangles': droopsDanglesMenuImage,
+  'drops dangles': droopsDanglesMenuImage,
+  'droops dangles': droopsDanglesMenuImage,
+  'ear cuffs': earCuffsMenuImage,
+  hoops: hoopsMenuImage,
+  jhumka: jhumkaMenuImage,
+  'long earrings': longEarringsMenuImage,
+  missmatch: missMatchMenuImage,
+  'miss-match': missMatchMenuImage,
+  'multi stones': multiStonesMenuImage,
+  'statement earrings': statementEarringsMenuImage,
+  stud: studMenuImage,
 };
 
 export function Header({
@@ -423,6 +451,7 @@ export function HeaderMenu({
           const isJewelryMenu = item.title.trim().toLowerCase() === 'jewelry';
           const isNecklaceMenu = item.title.trim().toLowerCase() === 'necklace';
           const isRingsMenu = item.title.trim().toLowerCase() === 'rings';
+          const isEarringsMenu = item.title.trim().toLowerCase() === 'earrings';
           const shouldShowPromoCard = Boolean(viewAllItem);
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
@@ -561,7 +590,7 @@ export function HeaderMenu({
                               const menuImage =
                                 (isCollectionMenu &&
                                   COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()]) ||
-                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu) &&
+                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu) &&
                                   HEADER_MENU_ITEM_IMAGES[subItem.title.trim().toLowerCase()]);
                               return (
                                 <NavLink
@@ -589,7 +618,7 @@ export function HeaderMenu({
                               const menuImage =
                                 (isCollectionMenu &&
                                   COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()]) ||
-                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu) &&
+                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu) &&
                                   HEADER_MENU_ITEM_IMAGES[subItem.title.trim().toLowerCase()]);
                               return (
                                 <NavLink
@@ -634,6 +663,8 @@ export function HeaderMenu({
                                     ? menuNecklaceImage
                                     : isRingsMenu
                                       ? menuRingImage
+                                      : isEarringsMenu
+                                        ? menuEarringsImage
                                   : jewelryMegaMenuPromo
                           }
                           alt={`${item.title} collection`}
