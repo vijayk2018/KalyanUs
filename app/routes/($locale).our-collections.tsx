@@ -26,16 +26,16 @@ export default function OurCollectionsPage() {
         <CollectionsGrid isFrom="collections"/>
 
         {/* YouTube Video Embed */}
-        <div className="mt-12 overflow-hidden rounded-[8px] w-full" style={{ aspectRatio: '16/9' }}>
-          <iframe
-            src="https://www.youtube.com/embed/49dRgGoMIpI"
-            title="Tejasvi from Kalyan Jewellers"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="w-full h-full"
-            style={{ border: 'none', display: 'block' }}
-          />
-        </div>
+       <div className="mt-12 mx-auto max-w-6xl overflow-hidden flex justify-center rounded-[8px] w-full" style={{ aspectRatio: '16/9' }}>
+        <iframe
+          src="https://www.youtube.com/embed/49dRgGoMIpI"
+          title="Tejasvi from Kalyan Jewellers"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="w-full h-full"
+          style={{ border: 'none', display: 'block' }}
+        />
+      </div>
       </div>
     </div>
   );

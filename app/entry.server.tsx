@@ -21,6 +21,7 @@ export default async function handleRequest(
     },
     styleSrc: ['https://fonts.googleapis.com'],
     fontSrc: ['https://fonts.gstatic.com'],
+    frameSrc: ['https://www.youtube.com', 'https://www.youtube-nocookie.com'],
   });
 
   const body = await renderToReadableStream(
