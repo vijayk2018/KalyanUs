@@ -82,6 +82,24 @@ import pendantsDiamondMenuImage from '../assets/pendants.jpeg';
 import pendantWithChainDiamondMenuImage from '../assets/pendantWithChain.jpeg';
 import ringsDiamondMenuImage from '../assets/rings.jpeg';
 import tiePinMenuImage from '../assets/tiePin.jpeg';
+import menuGoldImage from '../assets/menuGold.jpg';
+import ankletGoldMenuImage from '../assets/ankletGold.jpg';
+import bajubandhGoldMenuImage from '../assets/bajubandhGold.jpg';
+import banglesGoldMenuImage from '../assets/banglesgold.jpg';
+import braceletGoldMenuImage from '../assets/braceletGold.jpg';
+import chainsGoldMenuImage from '../assets/chainsGold.jpg';
+import earringsGoldMenuImage from '../assets/earringsGold.jpg';
+import handsetGoldMenuImage from '../assets/handsetGold.jpg';
+import maangTikkaGoldMenuImage from '../assets/maangTikkaGold.jpg';
+import mangalsutraGoldMenuImage from '../assets/mangalsutraGold.jpg';
+import mugappuGoldMenuImage from '../assets/mugappuGold.jpg';
+import necklaceGoldMenuImage from '../assets/necklaceGold.jpg';
+import pendantsGoldMenuImage from '../assets/pendantsGold.jpg';
+import pendantWithChainGoldMenuImage from '../assets/pendantWithChaingold.jpg';
+import religiousGoldMenuImage from '../assets/religiousGold.jpg';
+import ringsGoldMenuImage from '../assets/ringsGold.jpg';
+import vankiGoldMenuImage from '../assets/vankiGold.jpg';
+import waistChainGoldMenuImage from '../assets/waistChainGold.jpg';
 import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
 import moreCollectionsImage from '../assets/moreCollections.jpg';
 import moreBlogImage from '../assets/blogMainBanner.jpg';
@@ -181,6 +199,26 @@ const DIAMOND_MENU_ITEM_IMAGES: Record<string, string> = {
   necklace: necklaceDiamondMenuImage,
   rings: ringsDiamondMenuImage,
   'pendant with chain': pendantWithChainDiamondMenuImage,
+};
+
+const GOLD_MENU_ITEM_IMAGES: Record<string, string> = {
+  anklet: ankletGoldMenuImage,
+  bajubandh: bajubandhGoldMenuImage,
+  bangles: banglesGoldMenuImage,
+  bracelet: braceletGoldMenuImage,
+  chains: chainsGoldMenuImage,
+  earrings: earringsGoldMenuImage,
+  handset: handsetGoldMenuImage,
+  'maang tikka': maangTikkaGoldMenuImage,
+  mangalsutra: mangalsutraGoldMenuImage,
+  mugappu: mugappuGoldMenuImage,
+  necklace: necklaceGoldMenuImage,
+  pendants: pendantsGoldMenuImage,
+  'pendant with chain': pendantWithChainGoldMenuImage,
+  religious: religiousGoldMenuImage,
+  rings: ringsGoldMenuImage,
+  vanki: vankiGoldMenuImage,
+  'waist chain': waistChainGoldMenuImage,
 };
 
 export function Header({
@@ -477,6 +515,7 @@ export function HeaderMenu({
           const isRingsMenu = item.title.trim().toLowerCase() === 'rings';
           const isEarringsMenu = item.title.trim().toLowerCase() === 'earrings';
           const isDiamondMenu = item.title.trim().toLowerCase() === 'diamond';
+          const isGoldMenu = item.title.trim().toLowerCase() === 'gold';
           const shouldShowPromoCard = Boolean(viewAllItem);
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
@@ -614,6 +653,8 @@ export function HeaderMenu({
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               const normalizedSubItemTitle = subItem.title.trim().toLowerCase();
                               const menuImage =
+                                (isGoldMenu &&
+                                  GOLD_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isDiamondMenu &&
                                   DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isCollectionMenu &&
@@ -645,6 +686,8 @@ export function HeaderMenu({
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               const normalizedSubItemTitle = subItem.title.trim().toLowerCase();
                               const menuImage =
+                                (isGoldMenu &&
+                                  GOLD_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isDiamondMenu &&
                                   DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isCollectionMenu &&
@@ -698,6 +741,8 @@ export function HeaderMenu({
                                         ? menuEarringsImage
                                         : isDiamondMenu
                                           ? menuDiamondImage
+                                          : isGoldMenu
+                                            ? menuGoldImage
                                   : jewelryMegaMenuPromo
                           }
                           alt={`${item.title} collection`}
