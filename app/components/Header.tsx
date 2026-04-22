@@ -10,6 +10,9 @@ import { useAside } from '~/components/Aside';
 import { HeartIcon, Menu, Search, Store, UserIcon, X } from 'lucide-react';
 import kalyanLogo from '../assets/kalyanLogo.svg';
 import jewelryMegaMenuPromo from '../assets/menuJewellery.jpg';
+import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
+import moreCollectionsImage from '../assets/moreCollections.jpg';
+import moreBlogImage from '../assets/blogMainBanner.jpg';
 import { FaStore } from 'react-icons/fa';
 import { getWishlist } from '~/lib/wishlist';
 import WishlistDrawer from './WishlistDrawer';
@@ -309,6 +312,7 @@ export function HeaderMenu({
           const groupedItems = item.items.filter(
             (group) => group.id !== viewAllItem?.id,
           );
+          const isMoreMenu = item.title.trim().toLowerCase() === 'more';
           const shouldShowPromoCard = Boolean(viewAllItem);
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
@@ -350,6 +354,32 @@ export function HeaderMenu({
                 onMouseLeave={() => setActiveDesktopMenuId(null)}
               >
                 <div className="rounded-b-md bg-white px-8 py-6 text-[#202020] shadow-2xl">
+                  {isMoreMenu ? (
+                    <div className="mx-auto grid w-full grid-cols-3 gap-6">
+                      {groupedItems.map((group) => {
+                        const normalizedTitle = group.title.trim().toLowerCase();
+                        const cardImage = normalizedTitle.includes('brand')
+                          ? moreBrandStoryImage
+                          : normalizedTitle.includes('collection')
+                            ? moreCollectionsImage
+                            : moreBlogImage;
+                        const cardUrl = resolveMenuUrl(group.url, url);
+
+                        return (
+                          <NavLink key={group.id} to={cardUrl} prefetch="intent" className="block">
+                            <img
+                              src={cardImage}
+                              alt={group.title}
+                              className="h-[210px] w-full rounded-md object-cover"
+                            />
+                            <span className="mt-2 block text-center text-[20px] font-semibold text-[#202020]">
+                              {group.title}
+                            </span>
+                          </NavLink>
+                        );
+                      })}
+                    </div>
+                  ) : (
                   <div
                     className={`mx-auto grid w-full gap-8 ${
                       shouldShowPromoCard ? 'grid-cols-[1fr_320px]' : 'grid-cols-1'
@@ -372,8 +402,12 @@ export function HeaderMenu({
                           .toLowerCase();
                         const isCategory = normalizedGroupTitle === 'category';
                         const items = group.items ?? [];
+                        const isSingleCategoryLayout =
+                          groupedItems.length === 1 && isCategory;
                         const splitIndex = Math.ceil(items.length / 2);
-                        const columnA = isCategory ? items.slice(0, splitIndex) : items;
+                        const columnA = isCategory
+                          ? items.slice(0, splitIndex)
+                          : items;
                         const columnB = isCategory ? items.slice(splitIndex) : [];
 
                         return (
@@ -381,8 +415,21 @@ export function HeaderMenu({
                           <p className="font-semibold tracking-[0.08em] text-[13px] w-30 underline decoration-[#cf254a] underline-offset-4">
                             {getDisplayTitle(group.title)}
                           </p>
-                          <div className={isCategory ? 'grid grid-cols-2 gap-x-6 gap-y-2' : 'space-y-2'}>
-                            {(columnA.length ? columnA : [group]).map((subItem) => {
+                          <div
+                            className={
+                              isSingleCategoryLayout
+                                ? 'grid grid-cols-4 gap-x-8 gap-y-3'
+                                : isCategory
+                                  ? 'grid grid-cols-2 gap-x-6 gap-y-2'
+                                  : 'space-y-2'
+                            }
+                          >
+                            {(isSingleCategoryLayout
+                              ? items
+                              : columnA.length
+                                ? columnA
+                                : [group]
+                            ).map((subItem) => {
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               return (
                                 <NavLink
@@ -395,7 +442,8 @@ export function HeaderMenu({
                                 </NavLink>
                               );
                             })}
-                            {columnB.map((subItem) => {
+                            {!isSingleCategoryLayout &&
+                              columnB.map((subItem) => {
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               return (
                                 <NavLink
@@ -430,6 +478,7 @@ export function HeaderMenu({
                       </NavLink>
                     ) : null}
                   </div>
+                  )}
                 </div>
               </div>
             </div>
