@@ -19,6 +19,18 @@ import nimahMenuImage from '../assets/nimah.jpg';
 import anokhiMenuImage from '../assets/anokhi.jpg';
 import rangMenuImage from '../assets/rang.jpg';
 import tejasviMenuImage from '../assets/tejasvi.jpeg';
+import banglesMenuImage from '../assets/bangles.jpg';
+import braceletsMenuImage from '../assets/bracelets.jpg';
+import bridalJewelryMenuImage from '../assets/bridalJewelry.jpg';
+import chainsMenuImage from '../assets/chains.jpg';
+import earringsMenuImage from '../assets/earrings.jpg';
+import giftsMenuImage from '../assets/gifts.jpg';
+import necklacesMenuImage from '../assets/necklaces.jpg';
+import religiousMenuImage from '../assets/religious.jpg';
+import ringsMenuImage from '../assets/rings.jpg';
+import womenMenuImage from '../assets/Women.jpg';
+import goldMenuImage from '../assets/gold.jpg'
+import mudhraSideMenuImage  from '../assets/menuMuhurat.jpg'
 import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
 import moreCollectionsImage from '../assets/moreCollections.jpg';
 import moreBlogImage from '../assets/blogMainBanner.jpg';
@@ -45,6 +57,21 @@ const COLLECTION_MENU_IMAGES: Record<string, string> = {
   anokhi: anokhiMenuImage,
   rang: rangMenuImage,
   tejasvi: tejasviMenuImage,
+};
+
+const HEADER_MENU_ITEM_IMAGES: Record<string, string> = {
+  bangles: banglesMenuImage,
+  bracelets: braceletsMenuImage,
+  'bridal jewelry': bridalJewelryMenuImage,
+  bridaljewelry: bridalJewelryMenuImage,
+  chains: chainsMenuImage,
+  earrings: earringsMenuImage,
+  gifts: giftsMenuImage,
+  necklaces: necklacesMenuImage,
+  religious: religiousMenuImage,
+  rings: ringsMenuImage,
+  women: womenMenuImage,
+  gold: goldMenuImage,
 };
 
 export function Header({
@@ -335,6 +362,8 @@ export function HeaderMenu({
           const isMoreMenu = item.title.trim().toLowerCase() === 'more';
           const isPriceRangeMenu = item.title.trim().toLowerCase() === 'price range';
           const isCollectionMenu = item.title.trim().toLowerCase() === 'collection';
+          const isMuhuratMenu = item.title.trim().toLowerCase() === 'muhurat';
+          const isJewelryMenu = item.title.trim().toLowerCase() === 'jewelry';
           const shouldShowPromoCard = Boolean(viewAllItem);
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
@@ -412,7 +441,7 @@ export function HeaderMenu({
                     <div
                       className={`grid gap-6 ${
                         isPriceRangeMenu
-                          ? 'grid-cols-1'
+                          ? 'grid-cols-1'            
                           : groupedItems.length >= 4
                             ? 'grid-cols-4'
                             : groupedItems.length === 3
@@ -427,6 +456,8 @@ export function HeaderMenu({
                           .trim()
                           .toLowerCase();
                         const isCategory = normalizedGroupTitle === 'category';
+                        const isAllJewelryGroup = normalizedGroupTitle === 'all jewelry';
+                        const isShopForGroup = normalizedGroupTitle === 'shop for';
                         const items = group.items ?? [];
                         const isSingleCategoryLayout =
                           groupedItems.length === 1 && isCategory;
@@ -436,9 +467,15 @@ export function HeaderMenu({
                           ? items.slice(0, splitIndex)
                           : items;
                         const columnB = isCategory ? items.slice(splitIndex) : [];
+                        const isAll = isCategory && isAllJewelryGroup && isShopForGroup;
 
                         return (
-                        <div key={group.id} className="space-y-3">
+                        <div
+                          key={group.id}
+                          className={`space-y-3 ${
+                             isCategory && isMuhuratMenu ? 'col-span-2' : 'col-span-1'
+                          }`}
+                        >
                           <p className="font-semibold tracking-[0.08em] text-[13px] w-30 underline decoration-[#cf254a] underline-offset-4">
                             {getDisplayTitle(group.title)}
                           </p>
@@ -463,8 +500,10 @@ export function HeaderMenu({
                             ).map((subItem) => {
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               const menuImage =
-                                isCollectionMenu &&
-                                COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()];
+                                (isCollectionMenu &&
+                                  COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()]) ||
+                                ((isMuhuratMenu || isJewelryMenu) &&
+                                  HEADER_MENU_ITEM_IMAGES[subItem.title.trim().toLowerCase()]);
                               return (
                                 <NavLink
                                   key={subItem.id}
@@ -478,7 +517,7 @@ export function HeaderMenu({
                                     <img
                                       src={menuImage}
                                       alt={subItem.title}
-                                      className="h-16 w-16  object-cover"
+                                      className="h-12 w-12  object-cover"
                                     />
                                   ) : null}
                                   {subItem.title}
@@ -489,8 +528,10 @@ export function HeaderMenu({
                               columnB.map((subItem) => {
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               const menuImage =
-                                isCollectionMenu &&
-                                COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()];
+                                (isCollectionMenu &&
+                                  COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()]) ||
+                                ((isMuhuratMenu || isJewelryMenu) &&
+                                  HEADER_MENU_ITEM_IMAGES[subItem.title.trim().toLowerCase()]);
                               return (
                                 <NavLink
                                   key={subItem.id}
@@ -504,7 +545,7 @@ export function HeaderMenu({
                                     <img
                                       src={menuImage}
                                       alt={subItem.title}
-                                      className="h-16 w-16  object-cover"
+                                      className="h-12 w-12  object-cover"
                                     />
                                   ) : null}
                                   {subItem.title}
@@ -528,7 +569,9 @@ export function HeaderMenu({
                               ? menuPriceImage
                               : isCollectionMenu
                                 ? moreCollectionsImage
-                                : jewelryMegaMenuPromo
+                                : isMuhuratMenu 
+                                  ? mudhraSideMenuImage
+                                  : jewelryMegaMenuPromo
                           }
                           alt={`${item.title} collection`}
                           className="h-[180px] w-full rounded-md object-cover"
