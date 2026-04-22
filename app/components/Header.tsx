@@ -100,6 +100,37 @@ import religiousGoldMenuImage from '../assets/religiousGold.jpg';
 import ringsGoldMenuImage from '../assets/ringsGold.jpg';
 import vankiGoldMenuImage from '../assets/vankiGold.jpg';
 import waistChainGoldMenuImage from '../assets/waistChainGold.jpg';
+import ankletJewelryMenuImage from '../assets/ankletJewelry.jpg';
+import bajubandhJewelryMenuImage from '../assets/bajubandhJewelry.jpg';
+import banglesJewelryMenuImage from '../assets/banglesJewelry.jpg';
+import braceletsJewelryMenuImage from '../assets/braceletsJewelry.jpeg';
+import bridalJewelryJewelryMenuImage from '../assets/bridalJewelryJewelry.jpg';
+import chainsJewelryMenuImage from '../assets/chainsJewelry.jpg';
+import diamondJewelryMenuImage from '../assets/diamondJewelry.jpeg';
+import earringsJewelryMenuImage from '../assets/earringsJewelry.jpeg';
+import giftsJewelryMenuImage from '../assets/giftsJewelry.jpg';
+import goldJewelryMenuImage from '../assets/goldJewelry.jpg';
+import groomJewelryMenuImage from '../assets/groomJewelryJewelry.jpg';
+import handsetJewelryMenuImage from '../assets/handsetJewelry.jpg';
+import kidsJeweleryMenuImage from '../assets/kidsJewelry.jpg';
+import maangTikkaJewelryMenuImage from '../assets/maangTikkaJewelry.jpg';
+import mangalsutrasJewelryMenuImage from '../assets/mangalsutrasJewelry.jpg';
+import menJewelryMenuImage from '../assets/menJewelry.jpg';
+import mugappuJewelryMenuImage from '../assets/mugappuJewelry.jpg';
+import necklacesJewelryMenuImage from '../assets/necklacesJewelry.jpeg';
+import newArrivalJewelryMenuImage from '../assets/newArrivalJewelry.jpeg';
+import pendantWithChainJewelryMenuImage from '../assets/pendantWithChainJewelry.jpg';
+import pendantsJewelryMenuImage from '../assets/pendantsJewelry.jpg';
+import religiousJewelryMenuImage from '../assets/religiousJewelry.jpg';
+import ringsJewelryMenuImage from '../assets/ringsJewelry.jpg';
+import roseGoldJewelryMenuImage from '../assets/roseGoldJewelry.jpeg';
+import tiePinJewelryMenuImage from '../assets/tiePinJewelry.jpeg';
+import triToneJewelryMenuImage from '../assets/triToneJewelry.jpg';
+import twoToneJewelryMenuImage from '../assets/twoToneJewelry.jpg';
+import unisexJewelryMenuImage from '../assets/unisexJewelry.jpg';
+import vankiJewelryMenuImage from '../assets/vankiJewelry.jpg';
+import waistChainJewelryMenuImage from '../assets/waistChainJewelry.jpg';
+import womenJewelryMenuImage from '../assets/womenJewelry.jpg';
 import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
 import moreCollectionsImage from '../assets/moreCollections.jpg';
 import moreBlogImage from '../assets/blogMainBanner.jpg';
@@ -219,6 +250,45 @@ const GOLD_MENU_ITEM_IMAGES: Record<string, string> = {
   rings: ringsGoldMenuImage,
   vanki: vankiGoldMenuImage,
   'waist chain': waistChainGoldMenuImage,
+};
+
+const JEWELRY_MENU_ITEM_IMAGES: Record<string, string> = {
+  anklet: ankletJewelryMenuImage,
+  bajubandh: bajubandhJewelryMenuImage,
+  bangles: banglesJewelryMenuImage,
+  bracelets: braceletsJewelryMenuImage,
+  'bridal jewelry': bridalJewelryJewelryMenuImage,
+  chains: chainsJewelryMenuImage,
+  diamond: diamondJewelryMenuImage,
+  diomand: diamondJewelryMenuImage,
+  earrings: earringsJewelryMenuImage,
+  gifts: giftsJewelryMenuImage,
+  gold: goldJewelryMenuImage,
+  'groom jewelry': groomJewelryMenuImage,
+  handset: handsetJewelryMenuImage,
+  'maang tikka': maangTikkaJewelryMenuImage,
+  mangalsutra: mangalsutrasJewelryMenuImage,
+  mangalsutras: mangalsutrasJewelryMenuImage,
+  men: menJewelryMenuImage,
+  kids: kidsJeweleryMenuImage,
+  mugappu: mugappuJewelryMenuImage,
+  necklaces: necklacesJewelryMenuImage,
+  'new arrivals': newArrivalJewelryMenuImage,
+  'new arrival': newArrivalJewelryMenuImage,
+  'pendant with chain': pendantWithChainJewelryMenuImage,
+  pendants: pendantsJewelryMenuImage,
+  religious: religiousJewelryMenuImage,
+  rings: ringsJewelryMenuImage,
+  'rose gold': roseGoldJewelryMenuImage,
+  'tie pin': tiePinJewelryMenuImage,
+  tritone: triToneJewelryMenuImage,
+  'tri tone': triToneJewelryMenuImage,
+  twotone: twoToneJewelryMenuImage,
+  'two tone': twoToneJewelryMenuImage,
+  unisex: unisexJewelryMenuImage,
+  vanki: vankiJewelryMenuImage,
+  'waist chain': waistChainJewelryMenuImage,
+  women: womenJewelryMenuImage,
 };
 
 export function Header({
@@ -594,7 +664,7 @@ export function HeaderMenu({
                       className={`grid gap-6 ${
                         isPriceRangeMenu
                           ? 'grid-cols-1'            
-                          : groupedItems.length >= 4
+                          : groupedItems.length >= 4 || isMuhuratMenu
                             ? 'grid-cols-4'
                             : groupedItems.length === 3
                               ? 'grid-cols-3'
@@ -653,6 +723,8 @@ export function HeaderMenu({
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               const normalizedSubItemTitle = subItem.title.trim().toLowerCase();
                               const menuImage =
+                                (isJewelryMenu &&
+                                  JEWELRY_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isGoldMenu &&
                                   GOLD_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isDiamondMenu &&
@@ -674,7 +746,7 @@ export function HeaderMenu({
                                     <img
                                       src={menuImage}
                                       alt={subItem.title}
-                                      className="h-12 w-12  object-cover"
+                                      className="h-8 w-8  object-cover"
                                     />
                                   ) : null}
                                   {subItem.title}
@@ -686,6 +758,8 @@ export function HeaderMenu({
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               const normalizedSubItemTitle = subItem.title.trim().toLowerCase();
                               const menuImage =
+                                (isJewelryMenu &&
+                                  JEWELRY_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isGoldMenu &&
                                   GOLD_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isDiamondMenu &&
@@ -707,7 +781,7 @@ export function HeaderMenu({
                                     <img
                                       src={menuImage}
                                       alt={subItem.title}
-                                      className="h-12 w-12  object-cover"
+                                      className="h-8 w-8  object-cover"
                                     />
                                   ) : null}
                                   {subItem.title}
