@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import Essential from '../assets/essential.png'
 import Festival from '../assets/Festive.png'
 import Party from '../assets/ThePartyEdit.png'
@@ -7,12 +8,13 @@ import GiftBox from '../assets/gift.png'
 type GiftItem = {
   title: string;
   image: string;
+  link: string;
 };
 
 const items: GiftItem[] = [
-  { title: "Everyday essential", image: Essential },
-  { title: "Festive", image: Festival },
-  { title: "The Party Edit", image: Party },
+  { title: "Everyday essential", image: Essential, link: "/collections/everyday-essential" },
+  { title: "Festive", image: Festival, link: "/collections/festive" },
+  { title: "The Party Edit", image: Party, link: "/collections/the-party-edit" },
 ];
 
 const GiftSection: React.FC = () => {
@@ -74,13 +76,13 @@ const GiftSection: React.FC = () => {
                 <div key={i} className="flex flex-col items-center min-w-[84%] sm:min-w-[60%] lg:min-w-0 snap-start">
                   
                   {/* Card */}
-                  <div className="w-full h-full overflow-hidden lg:rounded-none">
+                  <Link to={item.link} className="block w-full h-full overflow-hidden lg:rounded-none">
                     <img
                       src={item.image}
                       alt={item.title}
                       className="w-full h-full object-cover"
                     />
-                  </div>
+                  </Link>
 
                 </div>
               ))}

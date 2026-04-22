@@ -10,6 +10,9 @@ import { useAside } from '~/components/Aside';
 import { HeartIcon, Menu, Search, Store, UserIcon, X } from 'lucide-react';
 import kalyanLogo from '../assets/kalyanLogo.svg';
 import jewelryMegaMenuPromo from '../assets/menuJewellery.jpg';
+import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
+import moreCollectionsImage from '../assets/moreCollections.jpg';
+import moreBlogImage from '../assets/blogMainBanner.jpg';
 import { FaStore } from 'react-icons/fa';
 import { getWishlist } from '~/lib/wishlist';
 import WishlistDrawer from './WishlistDrawer';
@@ -47,6 +50,7 @@ export function Header({
   const [wishlistCount, setWishlistCount] = useState(0);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   useEffect(() => {
     const updateWishlistCount = () => {
@@ -62,6 +66,18 @@ export function Header({
       window.removeEventListener("wishlistUpdated", updateWishlistCount);
     };
   }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    isLoggedIn.then((value) => {
+      if (isMounted) setIsUserLoggedIn(value);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isLoggedIn]);
 
 
   return (
@@ -80,7 +96,7 @@ export function Header({
               {/* <span className="text-[11px] mt-1">&nbsp;</span> */}
             </button>
             <button
-              onClick={() => setIsWishlistOpen(true)}
+              onClick={() => {isLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true)}}
               className="flex flex-col items-center text-[#202020] relative cursor-pointer hover:text-[#650827]"
             >
               <HeartIcon size={24} strokeWidth={1.8} />
@@ -103,22 +119,15 @@ export function Header({
               <UserIcon size={22} strokeWidth={1.8} />
               <span className="text-[12px] mt-1 font-serif">Profile</span>
             </button> */}
-            <Suspense
-              fallback={
-                <a href={loginUrl} className="flex flex-col items-center text-[#202020]">
-                  <UserIcon size={22} strokeWidth={1.8} />
-                  <span className="text-[12px] mt-1 font-serif">Profile</span>
-                </a>
-              }
+            
+            <button
+              onClick={() => {isUserLoggedIn ? window.location.href = '/account' : setIsStoreModalOpen(true)}}
+              className="flex flex-col items-center text-[#202020]"
             >
-              <div
-                onClick={() => setIsStoreModalOpen(true)}
-                className="flex flex-col items-center text-[#202020]"
-              >
-                <UserIcon size={22} strokeWidth={1.8} />
-                <span className="text-[12px] mt-1 font-serif">Profile</span>
-              </div>
-            </Suspense>
+              <UserIcon size={22} strokeWidth={1.8} />
+              <span className="text-[12px] mt-1 font-serif">Profile</span>
+            </button>
+           
           </div>
         </div>
 
@@ -214,7 +223,7 @@ export function Header({
           </NavLink>
           <div className='flex flex-col space-y-6 hidden lg:block '>
             <HeaderCtas
-              isLoggedIn={isLoggedIn}
+              isLoggedIn={isUserLoggedIn}
               cart={cart}
               wishlistCount={wishlistCount}
               setIsWishlistOpen={setIsWishlistOpen}
@@ -303,6 +312,7 @@ export function HeaderMenu({
           const groupedItems = item.items.filter(
             (group) => group.id !== viewAllItem?.id,
           );
+          const isMoreMenu = item.title.trim().toLowerCase() === 'more';
           const shouldShowPromoCard = Boolean(viewAllItem);
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
@@ -344,6 +354,34 @@ export function HeaderMenu({
                 onMouseLeave={() => setActiveDesktopMenuId(null)}
               >
                 <div className="rounded-b-md bg-white px-8 py-6 text-[#202020] shadow-2xl">
+                  {isMoreMenu ? (
+                    <div className="mx-auto grid w-full grid-cols-3 gap-6">
+                      {groupedItems.map((group) => {
+                        const normalizedTitle = group.title.trim().toLowerCase();
+                        const cardImage = normalizedTitle.includes('brand')
+                          ? moreBrandStoryImage
+                          : normalizedTitle.includes('collection')
+                            ? moreCollectionsImage
+                            : moreBlogImage;
+                        const cardUrl = normalizedTitle.includes('collection')
+                          ? '/our-collections'
+                          : resolveMenuUrl(group.url, url);
+
+                        return (
+                          <NavLink key={group.id} to={cardUrl} prefetch="intent" className="block">
+                            <img
+                              src={cardImage}
+                              alt={group.title}
+                              className="h-[210px] w-full rounded-md object-cover"
+                            />
+                            <span className="mt-2 block text-center text-[20px] font-semibold text-[#202020]">
+                              {group.title}
+                            </span>
+                          </NavLink>
+                        );
+                      })}
+                    </div>
+                  ) : (
                   <div
                     className={`mx-auto grid w-full gap-8 ${
                       shouldShowPromoCard ? 'grid-cols-[1fr_320px]' : 'grid-cols-1'
@@ -366,8 +404,12 @@ export function HeaderMenu({
                           .toLowerCase();
                         const isCategory = normalizedGroupTitle === 'category';
                         const items = group.items ?? [];
+                        const isSingleCategoryLayout =
+                          groupedItems.length === 1 && isCategory;
                         const splitIndex = Math.ceil(items.length / 2);
-                        const columnA = isCategory ? items.slice(0, splitIndex) : items;
+                        const columnA = isCategory
+                          ? items.slice(0, splitIndex)
+                          : items;
                         const columnB = isCategory ? items.slice(splitIndex) : [];
 
                         return (
@@ -375,8 +417,21 @@ export function HeaderMenu({
                           <p className="font-semibold tracking-[0.08em] text-[13px] w-30 underline decoration-[#cf254a] underline-offset-4">
                             {getDisplayTitle(group.title)}
                           </p>
-                          <div className={isCategory ? 'grid grid-cols-2 gap-x-6 gap-y-2' : 'space-y-2'}>
-                            {(columnA.length ? columnA : [group]).map((subItem) => {
+                          <div
+                            className={
+                              isSingleCategoryLayout
+                                ? 'grid grid-cols-4 gap-x-8 gap-y-3'
+                                : isCategory
+                                  ? 'grid grid-cols-2 gap-x-6 gap-y-2'
+                                  : 'space-y-2'
+                            }
+                          >
+                            {(isSingleCategoryLayout
+                              ? items
+                              : columnA.length
+                                ? columnA
+                                : [group]
+                            ).map((subItem) => {
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               return (
                                 <NavLink
@@ -389,7 +444,8 @@ export function HeaderMenu({
                                 </NavLink>
                               );
                             })}
-                            {columnB.map((subItem) => {
+                            {!isSingleCategoryLayout &&
+                              columnB.map((subItem) => {
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               return (
                                 <NavLink
@@ -424,6 +480,7 @@ export function HeaderMenu({
                       </NavLink>
                     ) : null}
                   </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -454,13 +511,28 @@ function HeaderCtas({
   wishlistCount,
   setIsWishlistOpen,
   setIsStoreModalOpen,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'> & {
+}: Pick<HeaderProps, 'cart'> & {
+  isLoggedIn: boolean;
   wishlistCount: number;
   setIsWishlistOpen: (isOpen: boolean) => void;
   setIsStoreModalOpen: (isOpen: boolean) => void;
 }) {
 
   const loginUrl = 'https://shopify.com/66607317088/account'
+
+  useEffect(() => {
+    const onWishlistAddAttempt = (event: Event) => {
+      if (isLoggedIn) return;
+      event.preventDefault();
+      setIsStoreModalOpen(true);
+    };
+
+    window.addEventListener('wishlist:add-attempt', onWishlistAddAttempt);
+
+    return () => {
+      window.removeEventListener('wishlist:add-attempt', onWishlistAddAttempt);
+    };
+  }, [isLoggedIn, setIsStoreModalOpen]);
 
   
   return (
@@ -486,8 +558,12 @@ function HeaderCtas({
 
       {/* <CartToggle cart={cart} /> */}
       <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4">
-        <div className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition">
-          <div className="relative flex justify-center mb-1" onClick={() => setIsWishlistOpen(true)}>
+        <button
+          type="button"
+          onClick={() => {isLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true)}}
+          className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition cursor-pointer"
+        >
+          <div className="relative flex justify-center mb-1">
             <HeartIcon size={24} className="text-black" />
 
             {wishlistCount > 0 && (
@@ -496,26 +572,24 @@ function HeaderCtas({
               </span>
             )}
           </div>
-          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
-        </div>
-        <NavLink to="/experience-centre" className="flex flex-col items-center space-x-2 text-center transition">
+          <p className='text-center text-[#000000]  2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
+        </button>
+        <NavLink to="/experience-centre" className="flex flex-col items-center space-x-2 text-center transition cursor-pointer">
           <div className='flex justify-center mb-1'>
             <FaStore size={24} className='text-black' />
           </div>
-          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Store</p>
+          <p className='text-center text-[#000000]  2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Store</p>
         </NavLink>
-        <div className="flex flex-col items-center space-x-2  text-center transition">
+        <button
+          type="button"
+          onClick={() => {isLoggedIn ? window.location.href = '/account' : setIsStoreModalOpen(true)}}
+          className="flex flex-col items-center space-x-2  text-center transition cursor-pointer"
+        >
           <div className="mb-1">
-            {/* <Suspense fallback="Sign in">
-              <Await resolve={isLoggedIn} errorElement="Sign in" onClick={() => setIsStoreModalOpen(true)}> */}
-                <button onClick={() => setIsStoreModalOpen(true)}>
-                  <UserIcon className='text-black' size={24} /> 
-                </button>
-              {/* </Await>
-            </Suspense> */}
+            <UserIcon className='text-black' size={24} /> 
           </div>
-          <p className='text-center text-[#000000] hover:text-white 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
-        </div>
+          <p className='text-center text-[#000000] 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
+        </button>
 
       </div>
     </nav>
@@ -523,108 +597,7 @@ function HeaderCtas({
   );
 }
 
-function AuthModal({
-  view,
-  onClose,
-  onSwitchView,
-}: {
-  view: 'login' | 'register';
-  onClose: () => void;
-  onSwitchView: (view: 'login' | 'register') => void;
-}) {
-  return (
-    <div className="fixed flex justify-center items-center inset-0 z-[100] bg-black/50 p-4" onClick={onClose}>
-      <div
-        className="mx-auto  w-full max-w-2xl overflow-hidden rounded-lg bg-white shadow-2xl relative"
-        onClick={(event) => event.stopPropagation()}
-      >
 
-        {/* CLOSE BUTTON */}
-        <div className="absolute top-0 right-0 p-3">
-          <button
-            type="button"
-            onClick={onClose}
-            className="text-[#8aa1d8]"
-            aria-label="Close auth popup"
-          >
-            <X size={26} />
-          </button>
-        </div>
-
-
-        {view === 'login' ? (
-          <div className="grid md:grid-cols-2">
-            <div className="hidden md:block">
-              <img src={kjLogin} alt="Login banner" className="h-full w-full object-cover" />
-            </div>
-
-            <div className="px-6 pb-8 md:px-10  pt-8">
-              <h2 className="text-3xl text-[#b80f47] font-light mb-5">Login</h2>
-              <p className="text-[12px] text-gray-500 mb-6 pb-3">
-                To enjoy a seamless experience while shopping
-                <div className='px-5 border-b border-[#b80f47] w-[6rem] mt-3 '></div>
-              </p>
-
-              <input
-                type="text"
-                placeholder="Enter E Mail / Mobile number"
-                className="w-full rounded border border-gray-200 placeholder:text-gray-200 px-4 py-3 text-sm outline-none mb-4"
-              />
-              <button type="button" className="w-full bg-[#cf254a] py-3 text-sm font-semibold text-white">
-                CONTINUE
-              </button>
-              <p className="my-4 text-center text-xs text-gray-500">OR</p>
-              <button type="button" className="flex items-center gap-3 justify-center w-full rounded border border-gray-200 py-3 text-sm text-gray-700">
-                <img src={Google} alt="Login banner" className="h-3 w-3 object-cover" /> <span>Login Using Google</span>
-              </button>
-              <p className="mt-6 text-center text-sm text-gray-500">
-                Do not have an account?{' '}
-                <button
-                  type="button"
-                  onClick={() => onSwitchView('register')}
-                  className="font-semibold text-[#cf254a]"
-                >
-                  SIGN UP
-                </button>
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2">
-            <div className="hidden md:block">
-              <img src={Register} alt="Signup banner" className="h-full w-full object-contain" />
-            </div>
-            <div className="px-6 pb-8 md:px-10 pt-8 mt-8">
-
-              <div className="space-y-4">
-                <input type="text" placeholder="Enter Full Name" className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
-                <input type="email" placeholder="Email" className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
-                <input type="tel" placeholder="Phone" className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none" />
-              </div>
-              <label className="mt-5 flex items-center gap-2 text-[12px] text-gray-600">
-                <input type="checkbox" className="h-4 w-4" />
-                <p>I agree to the <span className='text-[#cf254a]'>Terms of Use</span> & <span className='text-[#cf254a]'>Privacy Policy</span></p>
-              </label>
-              <button type="button" className="mt-6 w-full bg-[#cf254a] py-3 text-sm font-semibold text-white">
-                SEND OTP
-              </button>
-              <p className="mt-6 text-center text-sm text-gray-500">
-                Already a member with us?{' '}
-                <button
-                  type="button"
-                  onClick={() => onSwitchView('login')}
-                  className="font-semibold text-[#cf254a]"
-                >
-                  LOGIN
-                </button>
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
 
 function HeaderMenuMobileToggle() {
   const { open } = useAside();
