@@ -72,6 +72,16 @@ import missMatchMenuImage from '../assets/missMatch.jpeg';
 import multiStonesMenuImage from '../assets/multiStones.jpg';
 import statementEarringsMenuImage from '../assets/statementEarrings.jpg';
 import studMenuImage from '../assets/stud.jpeg';
+import menuDiamondImage from '../assets/menuDiamond.jpg';
+import banglesDiamondMenuImage from '../assets/bangles.jpeg';
+import braceletDiamondMenuImage from '../assets/bracelet.jpeg';
+import earringsDiamondMenuImage from '../assets/earrings.jpeg';
+import mangalsutraPendantMenuImage from '../assets/mangalsutraPendant.jpeg';
+import necklaceDiamondMenuImage from '../assets/necklace.jpeg';
+import pendantsDiamondMenuImage from '../assets/pendants.jpeg';
+import pendantWithChainDiamondMenuImage from '../assets/pendantWithChain.jpeg';
+import ringsDiamondMenuImage from '../assets/rings.jpeg';
+import tiePinMenuImage from '../assets/tiePin.jpeg';
 import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
 import moreCollectionsImage from '../assets/moreCollections.jpg';
 import moreBlogImage from '../assets/blogMainBanner.jpg';
@@ -157,6 +167,20 @@ const HEADER_MENU_ITEM_IMAGES: Record<string, string> = {
   'multi stones': multiStonesMenuImage,
   'statement earrings': statementEarringsMenuImage,
   stud: studMenuImage,
+  bracelet: braceletDiamondMenuImage,
+  mangalsutra: mangalsutraPendantMenuImage,
+  'mangalsutra pendant': mangalsutraPendantMenuImage,
+  pendants: pendantsDiamondMenuImage,
+  'tie pin': tiePinMenuImage,
+  tiepin: tiePinMenuImage,
+};
+
+const DIAMOND_MENU_ITEM_IMAGES: Record<string, string> = {
+  bangles: banglesDiamondMenuImage,
+  earrings: earringsDiamondMenuImage,
+  necklace: necklaceDiamondMenuImage,
+  rings: ringsDiamondMenuImage,
+  'pendant with chain': pendantWithChainDiamondMenuImage,
 };
 
 export function Header({
@@ -452,6 +476,7 @@ export function HeaderMenu({
           const isNecklaceMenu = item.title.trim().toLowerCase() === 'necklace';
           const isRingsMenu = item.title.trim().toLowerCase() === 'rings';
           const isEarringsMenu = item.title.trim().toLowerCase() === 'earrings';
+          const isDiamondMenu = item.title.trim().toLowerCase() === 'diamond';
           const shouldShowPromoCard = Boolean(viewAllItem);
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
@@ -587,11 +612,14 @@ export function HeaderMenu({
                                 : [group]
                             ).map((subItem) => {
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
+                              const normalizedSubItemTitle = subItem.title.trim().toLowerCase();
                               const menuImage =
+                                (isDiamondMenu &&
+                                  DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isCollectionMenu &&
-                                  COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()]) ||
-                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu) &&
-                                  HEADER_MENU_ITEM_IMAGES[subItem.title.trim().toLowerCase()]);
+                                  COLLECTION_MENU_IMAGES[normalizedSubItemTitle]) ||
+                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu || isDiamondMenu) &&
+                                  HEADER_MENU_ITEM_IMAGES[normalizedSubItemTitle]);
                               return (
                                 <NavLink
                                   key={subItem.id}
@@ -615,11 +643,14 @@ export function HeaderMenu({
                             {!isSingleCategoryLayout &&
                               columnB.map((subItem) => {
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
+                              const normalizedSubItemTitle = subItem.title.trim().toLowerCase();
                               const menuImage =
+                                (isDiamondMenu &&
+                                  DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isCollectionMenu &&
-                                  COLLECTION_MENU_IMAGES[subItem.title.trim().toLowerCase()]) ||
-                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu) &&
-                                  HEADER_MENU_ITEM_IMAGES[subItem.title.trim().toLowerCase()]);
+                                  COLLECTION_MENU_IMAGES[normalizedSubItemTitle]) ||
+                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu || isDiamondMenu) &&
+                                  HEADER_MENU_ITEM_IMAGES[normalizedSubItemTitle]);
                               return (
                                 <NavLink
                                   key={subItem.id}
@@ -665,6 +696,8 @@ export function HeaderMenu({
                                       ? menuRingImage
                                       : isEarringsMenu
                                         ? menuEarringsImage
+                                        : isDiamondMenu
+                                          ? menuDiamondImage
                                   : jewelryMegaMenuPromo
                           }
                           alt={`${item.title} collection`}
