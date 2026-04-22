@@ -37,17 +37,19 @@ const collections: Collection[] = [
   { label: "Ziah", title: ZiahText, subtitle: "INFINITE SPARKLES", image: ziah, link: "/collections/ziah" },
 ];
 
-const CollectionsGrid: React.FC = () => {
+const CollectionsGrid: React.FC<{ isFrom?: string }> = ({ isFrom }) => {
   return (
-    <div className="w-full bg-[#f5f5f5] lg:py-16 2xl:px-[5rem] lg:px-[4rem] p-6">
+    <div className={`${isFrom == 'collections' ? 'bg-white' : 'bg-[#f5f5f5]'}  w-full lg:py-16 2xl:px-[5rem] lg:px-[4rem] p-6`}>
       
       {/* Heading */}
       {/* <h2 className="text-5xl text-center font-serif mb-12">
         Explore the collections
       </h2> */}
-<p className="heading-font text-6xl text-center mb-12">
-   Explore the collections
-</p>
+      {isFrom == 'collections' ? '' : 
+        <p className="heading-font text-6xl text-center mb-12">
+          Explore the collections
+        </p>
+    }
       {/* Grid */}
       <div className=" mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
         {collections.map((item, i) => (

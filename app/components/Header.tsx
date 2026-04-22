@@ -363,7 +363,9 @@ export function HeaderMenu({
                           : normalizedTitle.includes('collection')
                             ? moreCollectionsImage
                             : moreBlogImage;
-                        const cardUrl = resolveMenuUrl(group.url, url);
+                        const cardUrl = normalizedTitle.includes('collection')
+                          ? '/our-collections'
+                          : resolveMenuUrl(group.url, url);
 
                         return (
                           <NavLink key={group.id} to={cardUrl} prefetch="intent" className="block">
