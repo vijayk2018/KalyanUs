@@ -100,6 +100,22 @@ import religiousGoldMenuImage from '../assets/religiousGold.jpg';
 import ringsGoldMenuImage from '../assets/ringsGold.jpg';
 import vankiGoldMenuImage from '../assets/vankiGold.jpg';
 import waistChainGoldMenuImage from '../assets/waistChainGold.jpg';
+import menuOccasionImage from '../assets/menuOccasion.jpg';
+import bridalJewelryOccasionMenuImage from '../assets/bridalJewelryOccasion.jpg';
+import giftsOccasionMenuImage from '../assets/giftsOccasion.jpg';
+import kidsOccasionMenuImage from '../assets/kidsOccasion.jpg';
+import menOccasionMenuImage from '../assets/MenOccasion.jpg';
+import unisexOccasionMenuImage from '../assets/unisexOccasion.jpg';
+import womenOccasionMenuImage from '../assets/womenOccasion.jpg';
+import weddingDiamondOccasionMenuImage from '../assets/weddingDiamond.jpeg';
+import weddingGoldOccasionMenuImage from '../assets/weddingGoldJewelry.jpg';
+import allEngagementRingsOccasionMenuImage from '../assets/allEngagementRings.jpg';
+import engagementJewelryForHimOccasionMenuImage from '../assets/engagementJewelryForHim.jpg';
+import engagementJewelryForHerOccasionMenuImage from '../assets/engagementJewelryForHer.jpg';
+import engagementRingsForMenOccasionMenuImage from '../assets/engagementRingsForMen.jpg';
+import engagementRingsForWomenOccasionMenuImage from '../assets/engagementRingsForWomen.jpg';
+import partyJewelryForMenOccasionMenuImage from '../assets/partyJewelryForMen.jpg';
+import partyJewelryForWomenOccasionMenuImage from '../assets/partyJewelryForWomen.jpeg';
 import ankletJewelryMenuImage from '../assets/ankletJewelry.jpg';
 import bajubandhJewelryMenuImage from '../assets/bajubandhJewelry.jpg';
 import banglesJewelryMenuImage from '../assets/banglesJewelry.jpg';
@@ -289,6 +305,28 @@ const JEWELRY_MENU_ITEM_IMAGES: Record<string, string> = {
   vanki: vankiJewelryMenuImage,
   'waist chain': waistChainJewelryMenuImage,
   women: womenJewelryMenuImage,
+};
+
+const OCCASION_MENU_ITEM_IMAGES: Record<string, string> = {
+  'wedding diamond jewelry': weddingDiamondOccasionMenuImage,
+  'wedding gold jewelry': weddingGoldOccasionMenuImage,
+  mangalsutras: mangalsutrasJewelryMenuImage,
+  'all engagement rings': allEngagementRingsOccasionMenuImage,
+  'engagement jewelry for him': engagementJewelryForHimOccasionMenuImage,
+  'engagement jewelry for her': engagementJewelryForHerOccasionMenuImage,
+  'engagement rings for men': engagementRingsForMenOccasionMenuImage,
+  'engagement rings for women': engagementRingsForWomenOccasionMenuImage,
+  'party jewelry for men': partyJewelryForMenOccasionMenuImage,
+  'party jewelry for women': partyJewelryForWomenOccasionMenuImage,
+  'bridal jewelry': bridalJewelryOccasionMenuImage,
+  'groom jewelry': groomJewelryMenuImage,
+  'groom jewellery': groomJewelryMenuImage,
+  'groom jewlery': groomJewelryMenuImage,
+  gifts: giftsOccasionMenuImage,
+  kids: kidsOccasionMenuImage,
+  men: menOccasionMenuImage,
+  unisex: unisexOccasionMenuImage,
+  women: womenOccasionMenuImage,
 };
 
 export function Header({
@@ -586,6 +624,7 @@ export function HeaderMenu({
           const isEarringsMenu = item.title.trim().toLowerCase() === 'earrings';
           const isDiamondMenu = item.title.trim().toLowerCase() === 'diamond';
           const isGoldMenu = item.title.trim().toLowerCase() === 'gold';
+          const isOccasionMenu = item.title.trim().toLowerCase() === 'occasion';
           const shouldShowPromoCard = Boolean(viewAllItem);
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
@@ -723,6 +762,8 @@ export function HeaderMenu({
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               const normalizedSubItemTitle = subItem.title.trim().toLowerCase();
                               const menuImage =
+                                (isOccasionMenu &&
+                                  OCCASION_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isJewelryMenu &&
                                   JEWELRY_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isGoldMenu &&
@@ -731,7 +772,7 @@ export function HeaderMenu({
                                   DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isCollectionMenu &&
                                   COLLECTION_MENU_IMAGES[normalizedSubItemTitle]) ||
-                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu || isDiamondMenu) &&
+                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu || isDiamondMenu || isOccasionMenu) &&
                                   HEADER_MENU_ITEM_IMAGES[normalizedSubItemTitle]);
                               return (
                                 <NavLink
@@ -758,6 +799,8 @@ export function HeaderMenu({
                               const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
                               const normalizedSubItemTitle = subItem.title.trim().toLowerCase();
                               const menuImage =
+                                (isOccasionMenu &&
+                                  OCCASION_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isJewelryMenu &&
                                   JEWELRY_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isGoldMenu &&
@@ -766,7 +809,7 @@ export function HeaderMenu({
                                   DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
                                 (isCollectionMenu &&
                                   COLLECTION_MENU_IMAGES[normalizedSubItemTitle]) ||
-                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu || isDiamondMenu) &&
+                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu || isDiamondMenu || isOccasionMenu) &&
                                   HEADER_MENU_ITEM_IMAGES[normalizedSubItemTitle]);
                               return (
                                 <NavLink
@@ -817,6 +860,8 @@ export function HeaderMenu({
                                           ? menuDiamondImage
                                           : isGoldMenu
                                             ? menuGoldImage
+                                            : isOccasionMenu
+                                              ? menuOccasionImage
                                   : jewelryMegaMenuPromo
                           }
                           alt={`${item.title} collection`}
