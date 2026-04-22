@@ -76,7 +76,7 @@ const GiftSection: React.FC = () => {
                 <div key={i} className="flex flex-col items-center min-w-[84%] sm:min-w-[60%] lg:min-w-0 snap-start">
                   
                   {/* Card */}
-                  <Link to={item.link} className="block w-full h-full overflow-hidden lg:rounded-none">
+                  <Link to={item.link} target="_blank" rel="noopener noreferrer" className="block w-full h-full overflow-hidden lg:rounded-none">
                     <img
                       src={item.image}
                       alt={item.title}

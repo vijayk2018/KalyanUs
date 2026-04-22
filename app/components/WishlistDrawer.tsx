@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {X} from "lucide-react";
-import {getWishlist, removeFromWishlist, type WishlistItem} from "~/lib/wishlist";
+import {getWishlist, loadWishlist, removeFromWishlist, type WishlistItem} from "~/lib/wishlist";
 import {Link} from "react-router";
 
 
@@ -9,7 +9,9 @@ export default function WishlistDrawer({open, onClose}: {open: boolean; onClose:
 
   useEffect(() => {
     if (open) {
-      setItems(getWishlist());
+      void loadWishlist().then(() => {
+        setItems(getWishlist());
+      });
     }
   }, [open]);
 

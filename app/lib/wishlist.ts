@@ -1,5 +1,3 @@
-const WISHLIST_KEY = 'wishlist_items';
-
 export type WishlistItem = {
   id: string;
   title: string;
@@ -8,6 +6,10 @@ export type WishlistItem = {
   price?: string | null;
   variantId?: string | null;
 };
+
+let wishlistCache: WishlistItem[] = [];
+let wishlistLoaded = false;
+let loadingPromise: Promise<WishlistItem[]> | null = null;
 
 const normalizeWishlist = (rawItems: unknown): WishlistItem[] => {
   if (!Array.isArray(rawItems)) return [];
@@ -35,25 +37,74 @@ const normalizeWishlist = (rawItems: unknown): WishlistItem[] => {
     .filter(Boolean) as WishlistItem[];
 };
 
-export const getWishlist = (): WishlistItem[] => {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]');
-    return normalizeWishlist(raw);
-  } catch {
-    return [];
-  }
-};
-
-export const saveWishlist = (items: WishlistItem[]) => {
-  localStorage.setItem(WISHLIST_KEY, JSON.stringify(items));
-};
-
 const notify = () => {
+  if (typeof window === 'undefined') return;
   window.dispatchEvent(new Event('wishlistUpdated'));
 };
 
+const fetchWishlist = async (): Promise<WishlistItem[]> => {
+  const response = await fetch('/api/wishlist', {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    return [];
+  }
+
+  const payload = (await response.json()) as {items?: unknown};
+  return normalizeWishlist(payload.items ?? []);
+};
+
+const persistWishlist = async (operation: 'add' | 'remove', item: WishlistItem) => {
+  const response = await fetch('/api/wishlist', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({operation, item}),
+  });
+
+  if (!response.ok) {
+    throw new Error('Unable to update wishlist');
+  }
+};
+
+export const loadWishlist = async () => {
+  if (typeof window === 'undefined') return [];
+  if (wishlistLoaded) return wishlistCache;
+  if (loadingPromise) return loadingPromise;
+
+  loadingPromise = fetchWishlist()
+    .then((items) => {
+      wishlistCache = items;
+      wishlistLoaded = true;
+      notify();
+      return wishlistCache;
+    })
+    .catch(() => {
+      wishlistCache = [];
+      wishlistLoaded = true;
+      return wishlistCache;
+    })
+    .finally(() => {
+      loadingPromise = null;
+    });
+
+  return loadingPromise;
+};
+
+export const getWishlist = (): WishlistItem[] => {
+  if (typeof window === 'undefined') {
+    return [];
+  }
+  if (!wishlistLoaded && !loadingPromise) {
+    void loadWishlist();
+  }
+  return wishlistCache;
+};
+
 export const addToWishlist = (item: WishlistItem) => {
+  if (typeof window === 'undefined') return;
   const shouldProceed = window.dispatchEvent(
     new CustomEvent('wishlist:add-attempt', {
       cancelable: true,
@@ -63,18 +114,29 @@ export const addToWishlist = (item: WishlistItem) => {
 
   if (!shouldProceed) return;
 
-  const items = getWishlist();
+  const items = [...getWishlist()];
   if (!items.some((entry) => entry.id === item.id)) {
-    items.unshift(item);
-    saveWishlist(items);
+    wishlistCache = [item, ...items];
     notify();
+    void persistWishlist('add', item).catch(() => {
+      wishlistCache = items;
+      notify();
+    });
   }
 };
 
 export const removeFromWishlist = (productId: string) => {
-  const items = getWishlist().filter((item) => item.id !== productId);
-  saveWishlist(items);
+  const previous = [...getWishlist()];
+  const targetItem = previous.find((entry) => entry.id === productId);
+  if (!targetItem) return;
+
+  wishlistCache = previous.filter((item) => item.id !== productId);
   notify();
+
+  void persistWishlist('remove', targetItem).catch(() => {
+    wishlistCache = previous;
+    notify();
+  });
 };
 
 export const isInWishlist = (productId: string) => {

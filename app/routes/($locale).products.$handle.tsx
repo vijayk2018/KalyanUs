@@ -24,7 +24,7 @@ import ProductInformation from '../assets/search.svg'
 import certificateGuideImage from '../assets/CertificateDetails.jpg';
 import {useToast} from '~/components/useToast';
 import { ToastContainer } from '~/components/Toast';
-import { addToWishlist, isInWishlist, removeFromWishlist } from '~/lib/wishlist';
+import { addToWishlist, isInWishlist, loadWishlist, removeFromWishlist } from '~/lib/wishlist';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
@@ -368,13 +368,15 @@ export default function Product() {
   const [wishlisted, setWishlisted] = useState(false);
 
   useEffect(() => {
-    setWishlisted(isInWishlist(productId));
+    void loadWishlist().then(() => {
+      setWishlisted(isInWishlist(productId));
+    });
   }, [productId]);
 
   const handleWishlist = () => {
     if (wishlisted) {
       removeFromWishlist(productId);
-      showSuccess("Removed from wishlist");
+      // showSuccess("Removed from wishlist");
     } else {
       addToWishlist({
         id: product.id,
@@ -384,7 +386,6 @@ export default function Product() {
         price: selectedVariant?.price?.amount,
         variantId: selectedVariant?.id,
       });
-      showSuccess("Added to wishlist");
     }
 
     setWishlisted(!wishlisted);
@@ -903,6 +904,11 @@ export default function Product() {
             {/* Desktop/Tablet tab content */}
             <div className="hidden lg:block">
               <TabContent tabData={productTabs[activeTab as keyof typeof productTabs] || []} />
+              {activeTab === 'diamond' && shouldShowDiamondCertificateGuide ? (
+                <p className="mt-4 text-sm text-gray-700 font-sans">
+                  100% Natural and Certified Diamonds.
+                </p>
+              ) : null}
             </div>
 
             {/* Mobile tabs */}
@@ -924,7 +930,14 @@ export default function Product() {
                       {tab.label}
                     </button>
                     {activeTab === tab.key ? (
-                      <TabContent tabData={productTabs[tab.key as keyof typeof productTabs] || []} />
+                      <>
+                        <TabContent tabData={productTabs[tab.key as keyof typeof productTabs] || []} />
+                        {tab.key === 'diamond' && shouldShowDiamondCertificateGuide ? (
+                          <p className="mt-3 text-sm text-gray-700 font-sans">
+                            100% Natural and Certified Diamonds.
+                          </p>
+                        ) : null}
+                      </>
                     ) : null}
                   </div>
                 ))}
