@@ -133,7 +133,9 @@ export default function StoreAuthModal({open, onClose}: StoreAuthModalProps) {
                   <div className="h-px flex-1 bg-[#d0d4e2]" />
                 </div>
                 <button type="button" className="flex items-center gap-3 justify-center w-full rounded border border-gray-200 py-3 text-sm text-gray-700"
-                  onClick={`/account/login?acr_values=provider:google&return_to=${encodeURIComponent(returnTo)}`}>
+                  onClick={() => {
+                    window.location.href = `/account/login?acr_values=provider:google&return_to=${encodeURIComponent(returnTo)}`;
+                  }}>
                   <img src={GoogleImg} alt="Login banner" className="h-3 w-3 object-cover" /> <span>Login Using Google</span>
                 </button>
                 <p className="mt-6 text-center text-sm text-gray-500">
