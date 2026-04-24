@@ -60,20 +60,21 @@ export async function action({request, context}: {request: Request; context: any
   }
 
   const adminAccessToken = context.env?.PRIVATE_ADMIN_API_TOKEN;
-  const storeDomain = context.env?.PUBLIC_STORE_DOMAIN;
-  if (!adminAccessToken || !storeDomain) {
+  const configuredStoreDomain =
+    context.env?.PUBLIC_STORE_DOMAIN || 'avi0gn-m1.myshopify.com';
+
+  if (!adminAccessToken || !configuredStoreDomain) {
     return Response.json(
-      {
-        ok: false,
-        error:
-          'Admin API credentials are missing. Set PRIVATE_ADMIN_API_TOKEN and PUBLIC_STORE_DOMAIN.',
-      },
+      {ok: false, error: 'Missing Shopify Admin API configuration.'},
       {status: 500},
     );
   }
 
+  const normalizedStoreDomain = configuredStoreDomain.replace(/^https?:\/\//, '');
+  const adminApiUrl = `https://${normalizedStoreDomain}/admin/api/2026-01/graphql.json`;
+
   const metaobjectType = context.env?.CALLBACK_METAOBJECT_TYPE ?? 'callback_form';
-  const response = await fetch(`https://${storeDomain}/admin/api/2026-01/graphql.json`, {
+  const response = await fetch(adminApiUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
