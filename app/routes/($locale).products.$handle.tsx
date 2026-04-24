@@ -222,6 +222,7 @@ export default function Product() {
   const [callbackName, setCallbackName] = useState('');
   const [callbackEmail, setCallbackEmail] = useState('');
   const [callbackPhone, setCallbackPhone] = useState('');
+  const [callbackStoreLocation, setCallbackStoreLocation] = useState('');
   const [videoCallDate, setVideoCallDate] = useState('');
   const [videoCallName, setVideoCallName] = useState('');
   const [videoCallEmail, setVideoCallEmail] = useState('');
@@ -322,7 +323,8 @@ export default function Product() {
     if (
       !callbackName.trim() ||
       !callbackEmail.trim() ||
-      !callbackPhone.trim()
+      !callbackPhone.trim() ||
+      !callbackStoreLocation.trim()
     ) {
       showError('Please fill all callback form fields.');
       return;
@@ -332,6 +334,7 @@ export default function Product() {
     setCallbackName('');
     setCallbackEmail('');
     setCallbackPhone('');
+    setCallbackStoreLocation('');
   };
 
   const handleDeliverySubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -1147,6 +1150,18 @@ export default function Product() {
                     onChange={(event) => setCallbackPhone(event.target.value)}
                   />
                 </div>
+              </div>
+              <div>
+                <label className="mb-1 block text-sm text-gray-700">Preferred Store</label>
+                <select
+                  className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
+                  value={callbackStoreLocation}
+                  onChange={(event) => setCallbackStoreLocation(event.target.value)}
+                >
+                  <option value="">Select a store</option>
+                  <option value="Kalyan Jewellers (New Jersey)">Kalyan Jewellers (New Jersey)</option>
+                  <option value="Kalyan Jewellers (Chicago)">Kalyan Jewellers (Chicago)</option>
+                </select>
               </div>
 
               <button
