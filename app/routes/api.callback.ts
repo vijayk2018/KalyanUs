@@ -17,6 +17,8 @@ type CallbackPayload = {
   name: string;
   phone: string;
   email: string;
+  message: string;
+  created_at: string;
   preferred_store: string;
   product_title: string;
   product_handle: string;
@@ -45,6 +47,8 @@ export async function action({request, context}: {request: Request; context: any
     name: String(body.name ?? '').trim(),
     phone: String(body.phone ?? '').trim(),
     email: String(body.email ?? '').trim(),
+    message: String(body.message ?? 'Callback request').trim(),
+    created_at: String(body.created_at ?? new Date().toISOString()).trim(),
     preferred_store: String(body.preferred_store ?? '').trim(),
     product_title: String(body.product_title ?? '').trim(),
     product_handle: String(body.product_handle ?? '').trim(),
@@ -59,26 +63,27 @@ export async function action({request, context}: {request: Request; context: any
     );
   }
 
-  const adminAccessToken = context.env?.PRIVATE_ADMIN_API_TOKEN;
+
   const configuredStoreDomain =
     context.env?.PUBLIC_STORE_DOMAIN || 'avi0gn-m1.myshopify.com';
 
-  if (!adminAccessToken || !configuredStoreDomain) {
-    return Response.json(
-      {ok: false, error: 'Missing Shopify Admin API configuration.'},
-      {status: 500},
-    );
-  }
 
   const normalizedStoreDomain = configuredStoreDomain.replace(/^https?:\/\//, '');
   const adminApiUrl = `https://${normalizedStoreDomain}/admin/api/2026-01/graphql.json`;
 
   const metaobjectType = context.env?.CALLBACK_METAOBJECT_TYPE ?? 'callback_form';
+  const shopifyAccessToken = context.env?.SHOPIFY_ACCESS_TOKEN;
+  if (!shopifyAccessToken) {
+    return Response.json(
+      {ok: false, error: 'Server is missing SHOPIFY_ACCESS_TOKEN configuration.'},
+      {status: 500},
+    );
+  }
   const response = await fetch(adminApiUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Shopify-Access-Token': adminAccessToken,
+      'X-Shopify-Access-Token': shopifyAccessToken,
     },
     body: JSON.stringify({
       query: CALLBACK_METAOBJECT_CREATE_MUTATION,
@@ -93,8 +98,6 @@ export async function action({request, context}: {request: Request; context: any
             {key: 'product_title', value: payload.product_title},
             {key: 'product_handle', value: payload.product_handle},
             {key: 'product_id', value: payload.product_id},
-            {key: 'status', value: 'new'},
-            {key: 'created_at', value: new Date().toISOString()},
           ],
         },
       },
@@ -111,6 +114,7 @@ export async function action({request, context}: {request: Request; context: any
     errors?: Array<{message?: string}>;
   };
 
+  console.log('GraphQL response:', JSON.stringify(json, null, 2),json);
   const topLevelError = json.errors?.[0]?.message;
   const userError = json.data?.metaobjectCreate?.userErrors?.[0]?.message;
   const createdMetaobjectId = json.data?.metaobjectCreate?.metaobject?.id;
