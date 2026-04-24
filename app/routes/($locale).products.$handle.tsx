@@ -223,6 +223,7 @@ export default function Product() {
   const [callbackEmail, setCallbackEmail] = useState('');
   const [callbackPhone, setCallbackPhone] = useState('');
   const [callbackStoreLocation, setCallbackStoreLocation] = useState('');
+  const [isCallbackSubmitting, setIsCallbackSubmitting] = useState(false);
   const [videoCallDate, setVideoCallDate] = useState('');
   const [videoCallName, setVideoCallName] = useState('');
   const [videoCallEmail, setVideoCallEmail] = useState('');
@@ -318,7 +319,7 @@ export default function Product() {
     setReviewPhoto(null);
   };
 
-  const handleCallbackSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleCallbackSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
       !callbackName.trim() ||
@@ -329,12 +330,42 @@ export default function Product() {
       showError('Please fill all callback form fields.');
       return;
     }
-    setIsCallbackOpen(false);
-    showSuccess('Callback request submitted successfully.');
-    setCallbackName('');
-    setCallbackEmail('');
-    setCallbackPhone('');
-    setCallbackStoreLocation('');
+    try {
+      setIsCallbackSubmitting(true);
+      const formData = new FormData(event.currentTarget);
+      const payload = {
+        name: String(formData.get('name') || ''),
+        email: String(formData.get('email') || ''),
+        phone: String(formData.get('phone') || ''),
+        preferred_store: String(formData.get('preferred_store') || ''),
+        product_title: String(formData.get('product_title') || product.title),
+        product_handle: String(formData.get('product_handle') || product.handle),
+        product_id: String(formData.get('product_id') || product.id),
+      };
+
+      const response = await fetch('/api/callback', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload),
+      });
+      const result = (await response.json()) as {ok?: boolean; error?: string};
+
+      if (!response.ok || !result.ok) {
+        showError(result.error || 'Failed to submit callback request.');
+        return;
+      }
+
+      setIsCallbackOpen(false);
+      showSuccess('Callback request submitted successfully.');
+      setCallbackName('');
+      setCallbackEmail('');
+      setCallbackPhone('');
+      setCallbackStoreLocation('');
+    } catch {
+      showError('Failed to submit callback request. Please try again.');
+    } finally {
+      setIsCallbackSubmitting(false);
+    }
   };
 
   const handleDeliverySubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -1121,10 +1152,16 @@ export default function Product() {
             </p>
 
             <form className="space-y-3" onSubmit={handleCallbackSubmit}>
+              {/* Hidden product fields for callback metaobject payload */}
+              <input type="hidden" name="product_title" value={product.title} />
+              <input type="hidden" name="product_handle" value={product.handle} />
+              <input type="hidden" name="product_id" value={product.id} />
+
               <div>
                 <label className="mb-1 block text-sm text-gray-700">Name</label>
                 <input
                   type="text"
+                  name="name"
                   className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                   value={callbackName}
                   onChange={(event) => setCallbackName(event.target.value)}
@@ -1134,6 +1171,7 @@ export default function Product() {
                 <label className="mb-1 block text-sm text-gray-700">Email</label>
                 <input
                   type="email"
+                  name="email"
                   className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                   value={callbackEmail}
                   onChange={(event) => setCallbackEmail(event.target.value)}
@@ -1145,6 +1183,7 @@ export default function Product() {
                   <span className="mr-2 text-sm text-gray-600">+1</span>
                   <input
                     type="tel"
+                    name="phone"
                     className="w-full text-sm focus:outline-none"
                     value={callbackPhone}
                     onChange={(event) => setCallbackPhone(event.target.value)}
@@ -1154,6 +1193,7 @@ export default function Product() {
               <div>
                 <label className="mb-1 block text-sm text-gray-700">Preferred Store</label>
                 <select
+                  name="preferred_store"
                   className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                   value={callbackStoreLocation}
                   onChange={(event) => setCallbackStoreLocation(event.target.value)}
@@ -1166,9 +1206,10 @@ export default function Product() {
 
               <button
                 type="submit"
+                disabled={isCallbackSubmitting}
                 className="mt-2 w-full bg-[#cf254a] py-2 text-sm font-semibold text-white hover:bg-red-700"
               >
-                Submit
+                {isCallbackSubmitting ? 'Submitting...' : 'Submit'}
               </button>
             </form>
           </div>

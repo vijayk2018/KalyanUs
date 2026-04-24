@@ -69,7 +69,7 @@ const ShopYourWay: React.FC = () => {
         >
 
           {/* CARD IMAGE */}
-          <div className={`lg:w-[260px] lg:h-[360px] md:w-[180px] md:h-[230px] w-[100px] h-[150px] overflow-hidden rounded-[40px] shadow-lg bg-white ${item.id === 2 ? 'mt-15 lg:mt-0' : 'mt-25 lg:mt-0'} `}>
+          <div className={`lg:w-[260px] lg:h-[360px] md:w-[180px] md:h-[230px] w-[100px] h-[150px] overflow-hidden rounded-[40px] shadow-lg ${item.id === 2 ? 'mt-15 lg:mt-0' : 'mt-25 lg:mt-0'} `}>
             <img
               src={item.image}
               alt={item.title}

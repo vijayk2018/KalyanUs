@@ -2,7 +2,7 @@ import type {WishlistItem} from '~/lib/wishlist';
 
 const WISHLIST_SESSION_KEY_PREFIX = 'wishlist:';
 
-const CUSTOMER_ID_QUERY = `#graphql
+const CUSTOMER_ID_QUERY = `
   query WishlistCustomerId {
     customer {
       id
