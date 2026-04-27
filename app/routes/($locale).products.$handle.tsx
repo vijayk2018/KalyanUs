@@ -212,7 +212,9 @@ export default function Product() {
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
   const [isVideoCallOpen, setIsVideoCallOpen] = useState(false);
   const [isDiamondCertificateGuideOpen, setIsDiamondCertificateGuideOpen] = useState(false);
-  const [videoCallScheduleMode, setVideoCallScheduleMode] = useState<'today' | 'pick_date'>('today');
+  const [videoCallScheduleMode, setVideoCallScheduleMode] = useState<
+    'today' | 'pick_date' | ''
+  >('');
   const [activeTab, setActiveTab] = useState("summary");
   const [deliveryPincode, setDeliveryPincode] = useState('');
   const [reviewNickname, setReviewNickname] = useState('');
@@ -385,6 +387,7 @@ export default function Product() {
   const handleVideoCallSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
+      !videoCallScheduleMode ||
       !videoCallName.trim() ||
       !videoCallEmail.trim() ||
       !videoCallPhone.trim() ||
@@ -424,7 +427,7 @@ export default function Product() {
 
       setIsVideoCallOpen(false);
       showSuccess('Video call request submitted successfully.');
-      setVideoCallScheduleMode('today');
+      setVideoCallScheduleMode('');
       setVideoCallDate('');
       setVideoCallTime('');
       setVideoCallName('');
@@ -1304,6 +1307,9 @@ export default function Product() {
             </div>
 
             <form className="space-y-3 px-5" onSubmit={handleVideoCallSubmit}>
+              {videoCallScheduleMode ? null : (
+                <p className="text-xs text-gray-600">Please select Today or Pick A Date.</p>
+              )}
               {videoCallScheduleMode === 'today' ? (
                 <div className="mb-1 flex flex-wrap gap-3">
                   {videoCallTimeSlots.map((slot) => (
@@ -1321,14 +1327,15 @@ export default function Product() {
                     </button>
                   ))}
                 </div>
-              ) : (
+              ) : null}
+              {videoCallScheduleMode === 'pick_date' ? (
                 <input
                   type="date"
                   value={videoCallDate}
                   onChange={(event) => setVideoCallDate(event.target.value)}
                   className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                 />
-              )}
+              ) : null}
               <input
                 type="text"
                 placeholder="Your Name"

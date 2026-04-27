@@ -109,6 +109,26 @@ export async function action({request, context}: {request: Request; context: any
     );
   }
 
+  const metaobjectFields: Array<{key: string; value: string}> = [
+    {key: 'schedule_mode', value: payload.schedule_mode},
+    {key: 'name', value: payload.name},
+    {key: 'email', value: payload.email},
+    {key: 'isd_code', value: payload.isd_code},
+    {key: 'phone', value: payload.phone},
+    {key: 'product_title', value: payload.product_title},
+    {key: 'product_handle', value: payload.product_handle},
+    {key: 'product_id', value: payload.product_id},
+  ];
+
+  if (payload.schedule_mode === 'today') {
+    metaobjectFields.push({key: 'appointment_time', value: payload.appointment_time});
+  } else {
+    metaobjectFields.push({key: 'appointment_date', value: payload.appointment_date});
+    if (payload.appointment_time) {
+      metaobjectFields.push({key: 'appointment_time', value: payload.appointment_time});
+    }
+  }
+
   const response = await fetch(adminApiUrl, {
     method: 'POST',
     headers: {
@@ -120,18 +140,7 @@ export async function action({request, context}: {request: Request; context: any
       variables: {
         metaobject: {
           type: metaobjectType,
-          fields: [
-            {key: 'schedule_mode', value: payload.schedule_mode},
-            {key: 'appointment_date', value: payload.appointment_date},
-            {key: 'appointment_time', value: payload.appointment_time},
-            {key: 'name', value: payload.name},
-            {key: 'email', value: payload.email},
-            {key: 'isd_code', value: payload.isd_code},
-            {key: 'phone', value: payload.phone},
-            {key: 'product_title', value: payload.product_title},
-            {key: 'product_handle', value: payload.product_handle},
-            {key: 'product_id', value: payload.product_id},
-          ],
+          fields: metaobjectFields,
         },
       },
     }),
