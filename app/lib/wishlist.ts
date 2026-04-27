@@ -8,7 +8,6 @@ export type WishlistItem = {
 };
 
 let wishlistCache: WishlistItem[] = [];
-let wishlistLoaded = false;
 let loadingPromise: Promise<WishlistItem[]> | null = null;
 
 const normalizeWishlist = (rawItems: unknown): WishlistItem[] => {
@@ -71,19 +70,19 @@ const persistWishlist = async (operation: 'add' | 'remove', item: WishlistItem) 
 
 export const loadWishlist = async () => {
   if (typeof window === 'undefined') return [];
-  if (wishlistLoaded) return wishlistCache;
   if (loadingPromise) return loadingPromise;
 
+  // Always refresh from server so wishlist stays user-specific
+  // across login/logout and account switches in the same tab.
   loadingPromise = fetchWishlist()
     .then((items) => {
       wishlistCache = items;
-      wishlistLoaded = true;
       notify();
       return wishlistCache;
     })
     .catch(() => {
       wishlistCache = [];
-      wishlistLoaded = true;
+      notify();
       return wishlistCache;
     })
     .finally(() => {
@@ -97,10 +96,15 @@ export const getWishlist = (): WishlistItem[] => {
   if (typeof window === 'undefined') {
     return [];
   }
-  if (!wishlistLoaded && !loadingPromise) {
+  if (!loadingPromise && wishlistCache.length === 0) {
     void loadWishlist();
   }
   return wishlistCache;
+};
+
+export const clearWishlistCache = () => {
+  wishlistCache = [];
+  notify();
 };
 
 export const addToWishlist = (item: WishlistItem) => {
