@@ -221,6 +221,8 @@ export default function Product() {
   const [reviewSummary, setReviewSummary] = useState('');
   const [reviewText, setReviewText] = useState('');
   const [reviewPhoto, setReviewPhoto] = useState<File | null>(null);
+  const [isReviewSubmitting, setIsReviewSubmitting] = useState(false);
+  const [reviewSuccessBanner, setReviewSuccessBanner] = useState('');
   const [callbackName, setCallbackName] = useState('');
   const [callbackEmail, setCallbackEmail] = useState('');
   const [callbackPhone, setCallbackPhone] = useState('');
@@ -307,8 +309,9 @@ export default function Product() {
     setIsDiamondCertificateGuideOpen(true);
   };
 
-  const handleReviewSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleReviewSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const reviewFormElement = event.currentTarget;
     if (
       !reviewNickname.trim() ||
       !reviewSummary.trim() ||
@@ -318,11 +321,43 @@ export default function Product() {
       showError('Please fill all required review fields.');
       return;
     }
-    showSuccess('Review submitted successfully.');
-    setReviewNickname('');
-    setReviewSummary('');
-    setReviewText('');
-    setReviewPhoto(null);
+
+    try {
+      setIsReviewSubmitting(true);
+      setReviewSuccessBanner('');
+      const payload = new FormData();
+      payload.append('nickname', reviewNickname.trim());
+      payload.append('summary', reviewSummary.trim());
+      payload.append('review', reviewText.trim());
+      payload.append('product_title', product.title);
+      payload.append('product_handle', product.handle);
+      payload.append('product_id', product.id);
+      if (reviewPhoto) {
+        payload.append('photo', reviewPhoto);
+      }
+
+      const response = await fetch('/api/review', {
+        method: 'POST',
+        body: payload,
+      });
+      const result = (await response.json()) as {ok?: boolean; error?: string};
+
+      if (!response.ok || !result.ok) {
+        showError(result.error || 'Failed to submit review.');
+        return;
+      }
+
+      setReviewSuccessBanner('You submitted your review for moderation.');
+      setReviewNickname('');
+      setReviewSummary('');
+      setReviewText('');
+      setReviewPhoto(null);
+      reviewFormElement.reset();
+    } catch {
+      showError('Failed to submit review. Please try again.');
+    } finally {
+      setIsReviewSubmitting(false);
+    }
   };
 
   const handleCallbackSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -471,6 +506,12 @@ export default function Product() {
   return (
     <div className='bg-[#fdfaf5] 2xl:px-[5rem] lg:px-[4rem]'>
       <p className='text-[14px] text-gray-400 px-6 pt-4 font-sans'><a href='/'> Home</a> | <span className='text-black'>{product.title}</span></p>
+      {reviewSuccessBanner ? (
+        <div className="mx-6 mt-4 flex items-center gap-3 bg-[#e2ede2] px-4 py-3 text-[#14813f]">
+          <span className="text-lg leading-none">✓</span>
+          <span className="font-sans text-base">{reviewSuccessBanner}</span>
+        </div>
+      ) : null}
       <div className="mx-auto px-6 py-10 w-full flex flex-col lg:flex-row lg:gap-[5rem] items-center">
         
         {/* LEFT SIDE */}
@@ -1093,6 +1134,7 @@ export default function Product() {
               <p className="text-md text-black font-semibold font-sans">Add your photo <span className="text-red-500">*</span></p>
               <input
                 type="file"
+                accept="image/*"
                 className="mt-1 block text-xs text-black file:mr-2 file:rounded file:border file:border-[#bfbfbf] file:bg-white file:px-2 file:py-0.5 file:text-xs file:text-black hover:file:bg-[#f5f5f5]"
                 onChange={(event) =>
                   setReviewPhoto(event.target.files?.[0] ?? null)
@@ -1103,9 +1145,10 @@ export default function Product() {
             <div className='flex justify-center'>
               <button
                 type="submit"
+                disabled={isReviewSubmitting}
                 className="bg-[#cf254a] text-white px-6 py-2 font-sans hover:bg-red-600 w-full"
               >
-                Submit Review
+                {isReviewSubmitting ? 'Submitting...' : 'Submit Review'}
               </button>
             </div>
           </form>

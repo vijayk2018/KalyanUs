@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from 'react';
-import { Await, NavLink, useAsyncValue } from 'react-router';
+import { Await, NavLink, useAsyncValue, useNavigation } from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -151,7 +151,7 @@ import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
 import moreCollectionsImage from '../assets/moreCollections.jpg';
 import moreBlogImage from '../assets/blogMainBanner.jpg';
 import { FaStore } from 'react-icons/fa';
-import { getWishlist, loadWishlist } from '~/lib/wishlist';
+import { clearWishlistCache, getWishlist, loadWishlist } from '~/lib/wishlist';
 import WishlistDrawer from './WishlistDrawer';
 import StoreAuthModal from './StoreAuthModal';
 
@@ -353,6 +353,7 @@ export function Header({
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const updateWishlistCount = () => {
@@ -381,6 +382,24 @@ export function Header({
     };
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    if (isUserLoggedIn) {
+      void loadWishlist();
+      return;
+    }
+    clearWishlistCache();
+  }, [isUserLoggedIn]);
+
+  useEffect(() => {
+    const formAction = navigation.formAction || '';
+    const isLoggingOut =
+      navigation.state === 'submitting' && formAction.includes('/account/logout');
+
+    if (isLoggingOut) {
+      setIsUserLoggedIn(false);
+    }
+  }, [navigation.formAction, navigation.state]);
+
 
   return (
     <>
@@ -398,7 +417,7 @@ export function Header({
               {/* <span className="text-[11px] mt-1">&nbsp;</span> */}
             </button>
             <button
-              onClick={() => {isLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true)}}
+              onClick={() => {isUserLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true)}}
               className="flex flex-col items-center text-[#202020] relative cursor-pointer hover:text-[#650827]"
             >
               <HeartIcon size={24} strokeWidth={1.8} />
