@@ -212,7 +212,7 @@ export default function Product() {
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
   const [isVideoCallOpen, setIsVideoCallOpen] = useState(false);
   const [isDiamondCertificateGuideOpen, setIsDiamondCertificateGuideOpen] = useState(false);
-  const [showVideoDateField, setShowVideoDateField] = useState(false);
+  const [videoCallScheduleMode, setVideoCallScheduleMode] = useState<'today' | 'pick_date'>('today');
   const [activeTab, setActiveTab] = useState("summary");
   const [deliveryPincode, setDeliveryPincode] = useState('');
   const [reviewNickname, setReviewNickname] = useState('');
@@ -225,9 +225,13 @@ export default function Product() {
   const [callbackStoreLocation, setCallbackStoreLocation] = useState('');
   const [isCallbackSubmitting, setIsCallbackSubmitting] = useState(false);
   const [videoCallDate, setVideoCallDate] = useState('');
+  const [videoCallTime, setVideoCallTime] = useState('');
   const [videoCallName, setVideoCallName] = useState('');
   const [videoCallEmail, setVideoCallEmail] = useState('');
+  const [videoCallIsdCode, setVideoCallIsdCode] = useState('+1');
   const [videoCallPhone, setVideoCallPhone] = useState('');
+  const [isVideoCallSubmitting, setIsVideoCallSubmitting] = useState(false);
+  const videoCallTimeSlots = ['11:39 pm', '3:00 pm', '12:00 pm', '5:00 pm'];
   const {showSuccess, showError, toasts, removeToast} = useToast();
   const productTabs = useMemo(
     () => ({
@@ -378,24 +382,60 @@ export default function Product() {
     setDeliveryPincode('');
   };
 
-  const handleVideoCallSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleVideoCallSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
       !videoCallName.trim() ||
       !videoCallEmail.trim() ||
       !videoCallPhone.trim() ||
-      (showVideoDateField && !videoCallDate)
+      !videoCallIsdCode.trim() ||
+      (videoCallScheduleMode === 'today' && !videoCallTime.trim()) ||
+      (videoCallScheduleMode === 'pick_date' && !videoCallDate)
     ) {
       showError('Please fill all required video call fields.');
       return;
     }
-    setIsVideoCallOpen(false);
-    showSuccess('Video call request submitted successfully.');
-    setShowVideoDateField(false);
-    setVideoCallDate('');
-    setVideoCallName('');
-    setVideoCallEmail('');
-    setVideoCallPhone('');
+    try {
+      setIsVideoCallSubmitting(true);
+      const payload = {
+        schedule_mode: videoCallScheduleMode,
+        appointment_date: videoCallScheduleMode === 'pick_date' ? videoCallDate : '',
+        appointment_time: videoCallScheduleMode === 'today' ? videoCallTime : '',
+        name: videoCallName.trim(),
+        email: videoCallEmail.trim(),
+        isd_code: videoCallIsdCode.trim(),
+        phone: videoCallPhone.trim(),
+        product_title: product.title,
+        product_handle: product.handle,
+        product_id: product.id,
+      };
+
+      const response = await fetch('/api/video-call', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload),
+      });
+      const result = (await response.json()) as {ok?: boolean; error?: string};
+
+      if (!response.ok || !result.ok) {
+        showError(result.error || 'Failed to submit video call request.');
+        return;
+      }
+
+      setIsVideoCallOpen(false);
+      showSuccess('Video call request submitted successfully.');
+      setVideoCallScheduleMode('today');
+      setVideoCallDate('');
+      setVideoCallTime('');
+      setVideoCallName('');
+      setVideoCallEmail('');
+      setVideoCallIsdCode('+1');
+      setVideoCallPhone('');
+    } catch {
+      showError('Failed to submit video call request. Please try again.');
+    } finally {
+      setIsVideoCallSubmitting(false);
+    }
   };
 
   const productId = product.id;
@@ -1238,25 +1278,57 @@ export default function Product() {
 
             <p className="mb-3 text-xs text-gray-600 px-5">Available days: Monday</p>
 
-            <div className='px-5'>
+            <div className='px-5 flex gap-3'>
               <button
                 type="button"
-                onClick={() => setShowVideoDateField((prev) => !prev)}
-                className={`mb-3 ${showVideoDateField ? 'bg-[#f2dce6] text-black' :  'bg-[#cf254a] text-white'} px-4 py-2 text-sm  hover:bg-red-700`}
+                onClick={() => setVideoCallScheduleMode('today')}
+                className={`mb-3 rounded border px-4 py-2 text-sm ${
+                  videoCallScheduleMode === 'today'
+                    ? 'bg-[#cf254a] text-white border-[#cf254a]'
+                    : 'bg-white text-black border-[#cccccc]'
+                }`}
+              >
+                Today
+              </button>
+              <button
+                type="button"
+                onClick={() => setVideoCallScheduleMode('pick_date')}
+                className={`mb-3 rounded border px-4 py-2 text-sm ${
+                  videoCallScheduleMode === 'pick_date'
+                    ? 'bg-[#cf254a] text-white border-[#cf254a]'
+                    : 'bg-white text-black border-[#cccccc]'
+                }`}
               >
                 Pick A Date
               </button>
             </div>
 
             <form className="space-y-3 px-5" onSubmit={handleVideoCallSubmit}>
-              {showVideoDateField ? (
+              {videoCallScheduleMode === 'today' ? (
+                <div className="mb-1 flex flex-wrap gap-3">
+                  {videoCallTimeSlots.map((slot) => (
+                    <button
+                      key={slot}
+                      type="button"
+                      onClick={() => setVideoCallTime(slot)}
+                      className={`rounded border px-4 py-2 text-sm ${
+                        videoCallTime === slot
+                          ? 'border-[#cf254a] bg-[#cf254a] text-white'
+                          : 'border-[#cccccc] bg-white text-black'
+                      }`}
+                    >
+                      {slot}
+                    </button>
+                  ))}
+                </div>
+              ) : (
                 <input
                   type="date"
                   value={videoCallDate}
                   onChange={(event) => setVideoCallDate(event.target.value)}
                   className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                 />
-              ) : null}
+              )}
               <input
                 type="text"
                 placeholder="Your Name"
@@ -1271,21 +1343,31 @@ export default function Product() {
                 onChange={(event) => setVideoCallEmail(event.target.value)}
                 className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
               />
-              <div className="flex items-center rounded border border-[#CCCCCC] bg-white px-3 py-2">
-                <span className="mr-2 text-sm text-gray-600">+1</span>
+              <div className="flex items-center gap-2">
+                <select
+                  value={videoCallIsdCode}
+                  onChange={(event) => setVideoCallIsdCode(event.target.value)}
+                  className="w-[130px] rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
+                >
+                  <option value="+1">+1</option>
+                  <option value="+91">+91</option>
+                  <option value="+44">+44</option>
+                  <option value="+61">+61</option>
+                </select>
                 <input
                   type="tel"
                   placeholder="Mobile Number"
                   value={videoCallPhone}
                   onChange={(event) => setVideoCallPhone(event.target.value)}
-                  className="w-full text-sm focus:outline-none"
+                  className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                 />
               </div>
               <button
                 type="submit"
-                className="mt-2 w-full bg-[#cf254a] py-2.5 text-sm  rounded-md font-semibold text-white hover:bg-red-700"
+                disabled={isVideoCallSubmitting}
+                className="mt-2 w-full rounded-md bg-[#cf254a] py-2.5 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Confirm
+                {isVideoCallSubmitting ? 'Submitting...' : 'Confirm'}
               </button>
             </form>
           </div>
