@@ -1,0 +1,139 @@
+const CALLBACK_METAOBJECT_CREATE_MUTATION = `
+  mutation CreateCallbackFormEntry($metaobject: MetaobjectCreateInput!) {
+    metaobjectCreate(metaobject: $metaobject) {
+      metaobject {
+        id
+        handle
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+` as const;
+
+type CallbackPayload = {
+  name: string;
+  phone: string;
+  email: string;
+  message: string;
+  created_at: string;
+  preferred_store: string;
+  product_title: string;
+  product_handle: string;
+  product_id: string;
+};
+
+const requiredFields: Array<keyof CallbackPayload> = [
+  'name',
+  'phone',
+  'email',
+  'preferred_store',
+  'product_title',
+  'product_handle',
+  'product_id',
+];
+
+export async function action({request, context}: {request: Request; context: any}) {
+  let body: Partial<CallbackPayload>;
+  try {
+    body = (await request.json()) as Partial<CallbackPayload>;
+  } catch {
+    return Response.json({ok: false, error: 'Invalid request payload.'}, {status: 400});
+  }
+
+  const payload = {
+    name: String(body.name ?? '').trim(),
+    phone: String(body.phone ?? '').trim(),
+    email: String(body.email ?? '').trim(),
+    message: String(body.message ?? 'Callback request').trim(),
+    created_at: String(body.created_at ?? new Date().toISOString()).trim(),
+    preferred_store: String(body.preferred_store ?? '').trim(),
+    product_title: String(body.product_title ?? '').trim(),
+    product_handle: String(body.product_handle ?? '').trim(),
+    product_id: String(body.product_id ?? '').trim(),
+  } satisfies CallbackPayload;
+
+  const missingRequired = requiredFields.some((field) => !payload[field]);
+  if (missingRequired) {
+    return Response.json(
+      {ok: false, error: 'Please fill all callback form fields.'},
+      {status: 400},
+    );
+  }
+
+
+  const configuredStoreDomain =
+    context.env?.PUBLIC_STORE_DOMAIN || 'avi0gn-m1.myshopify.com';
+
+
+  const normalizedStoreDomain = configuredStoreDomain.replace(/^https?:\/\//, '');
+  const adminApiUrl = `https://${normalizedStoreDomain}/admin/api/2026-01/graphql.json`;
+
+  const metaobjectType = 'callback_form';
+
+  const shopifyAccessToken =
+    context.env?.SHOPIFY_ACCESS_TOKEN ?? context.env?.ADMIN_API_ACCESS_TOKEN;
+  if (!shopifyAccessToken) {
+    return Response.json(
+      {
+        ok: false,
+        error:
+          'Server is missing SHOPIFY_ACCESS_TOKEN or ADMIN_API_ACCESS_TOKEN configuration.',
+      },
+      {status: 500},
+    );
+  }
+  const response = await fetch(adminApiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Access-Token': shopifyAccessToken,
+    },
+    body: JSON.stringify({
+      query: CALLBACK_METAOBJECT_CREATE_MUTATION,
+      variables: {
+        metaobject: {
+          type: metaobjectType,
+          fields: [
+            {key: 'name', value: payload.name},
+            {key: 'email', value: payload.email},
+            {key: 'phone', value: payload.phone},
+            {key: 'preferred_store', value: payload.preferred_store},
+            {key: 'product_title', value: payload.product_title},
+            {key: 'product_handle', value: payload.product_handle},
+            {key: 'product_id', value: payload.product_id},
+          ],
+        },
+      },
+    }),
+  });
+
+  const json = (await response.json()) as {
+    data?: {
+      metaobjectCreate?: {
+        metaobject?: {id?: string};
+        userErrors?: Array<{message?: string}>;
+      };
+    };
+    errors?: Array<{message?: string}>;
+  };
+
+  console.log('GraphQL response:', JSON.stringify(json, null, 2),json);
+  const topLevelError = json.errors?.[0]?.message;
+  const userError = json.data?.metaobjectCreate?.userErrors?.[0]?.message;
+  const createdMetaobjectId = json.data?.metaobjectCreate?.metaobject?.id;
+
+  if (!response.ok || topLevelError || userError || !createdMetaobjectId) {
+    return Response.json(
+      {
+        ok: false,
+        error: topLevelError || userError || 'Failed to create callback form entry.',
+      },
+      {status: 500},
+    );
+  }
+
+  return Response.json({ok: true});
+}

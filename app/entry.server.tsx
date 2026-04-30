@@ -19,6 +19,9 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    styleSrc: ['https://fonts.googleapis.com'],
+    fontSrc: ['https://fonts.gstatic.com'],
+    frameSrc: ['https://www.youtube.com', 'https://www.youtube-nocookie.com'],
   });
 
   const body = await renderToReadableStream(

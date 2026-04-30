@@ -8,7 +8,7 @@ import type {
   RecommendedProductFragment,
 } from 'storefrontapi.generated';
 import {useVariantUrl} from '~/lib/variants';
-import {addToWishlist, isInWishlist, removeFromWishlist} from '~/lib/wishlist';
+import {addToWishlist, isInWishlist, loadWishlist, removeFromWishlist} from '~/lib/wishlist';
 
 export function ProductItem({
   product,
@@ -25,7 +25,9 @@ export function ProductItem({
   const [wishlisted, setWishlisted] = useState(false);
 
   useEffect(() => {
-    setWishlisted(isInWishlist(product.id));
+    void loadWishlist().then(() => {
+      setWishlisted(isInWishlist(product.id));
+    });
   }, [product.id]);
 
   const handleWishlistToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
