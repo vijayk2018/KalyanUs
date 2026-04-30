@@ -20,6 +20,7 @@ type SearchFormPredictiveProps = Omit<FormProps, 'children'> & {
 };
 
 export const SEARCH_ENDPOINT = '/search';
+const MAX_PREDICTIVE_SEARCH_LIMIT = 128;
 
 /**
  *  Search form component that sends search requests to the `/search` route
@@ -53,7 +54,7 @@ export function SearchFormPredictive({
   /** Fetch search results based on the input value */
   function fetchResults(event: React.ChangeEvent<HTMLInputElement>) {
     void fetcher.submit(
-      {q: event.target.value || '', limit: 5, predictive: true},
+      {q: event.target.value || '', limit: MAX_PREDICTIVE_SEARCH_LIMIT, predictive: true},
       {method: 'GET', action: SEARCH_ENDPOINT},
     );
   }

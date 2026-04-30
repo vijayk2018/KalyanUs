@@ -17,6 +17,8 @@ export const meta: Route.MetaFunction = () => {
   return [{title: ` Search`}];
 };
 
+const MAX_PREDICTIVE_SEARCH_LIMIT = 128;
+
 export async function loader({request, context}: Route.LoaderArgs) {
   const url = new URL(request.url);
   const isPredictive = url.searchParams.has('predictive');
@@ -487,7 +489,11 @@ async function predictiveSearch({
   const {storefront} = context;
   const url = new URL(request.url);
   const term = String(url.searchParams.get('q') || '').trim();
-  const limit = Number(url.searchParams.get('limit') || 10);
+  const rawLimit = Number(url.searchParams.get('limit') || 10);
+  const limit = Math.min(
+    MAX_PREDICTIVE_SEARCH_LIMIT,
+    Number.isFinite(rawLimit) && rawLimit > 0 ? Math.floor(rawLimit) : 10,
+  );
   const type = 'predictive';
 
   if (!term) return {type, term, result: getEmptyPredictiveSearchResult()};

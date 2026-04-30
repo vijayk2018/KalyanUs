@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 import ForHimModel from '../assets/ForHimModel-1.png'
 import ForHim from '../assets/forHim.png'
 import ForHerModel from '../assets/ForHermodel.png'
@@ -11,6 +12,7 @@ type Category = {
   title: string;
   image: string;
   productImage: string;
+  link: string;
 };
 
 const categories: Category[] = [
@@ -19,18 +21,21 @@ const categories: Category[] = [
     title: "For Him",
     image: ForHimModel,
     productImage: ForHim,
+    link: "/collections/for-him",
   },
   {
     id: 2,
     title: "For Her",
     image: ForHerModel,
     productImage: ForHer,
+    link: "/collections/for-her",
   },
   {
     id: 3,
     title: "For Lil' one",
     image: ForLilOneModel,
     productImage: ForLilOne,
+    link: "/collections/lil-one",
   },
 ];
 
@@ -40,8 +45,9 @@ const ShopYourWay: React.FC = () => {
 
   {/* TOP SECTION */}
   <div className="bg-[#f5f5f5] lg:py-16 text-center">
-    <h2 className="text-5xl font-serif mb-2">Shop Your Way</h2>
-    <p className="text-gray-500 font-serif">Your Next Look Start Here</p>
+    {/* <h2 className="text-5xl font-serif mb-2">Shop Your Way</h2> */}
+    <p className="heading-font text-6xl mb-2">Shop Your Way</p>
+    <p className="text-gray-900 font-serif">Your Next Look Start Here</p>
   </div>
 
   {/* SPLIT BACKGROUND SECTION */}
@@ -54,10 +60,16 @@ const ShopYourWay: React.FC = () => {
     <div className="relative z-10 flex justify-center lg:gap-[8rem] gap-4 pb-20 lg:flex-wrap">
 
       {categories.map((item) => (
-        <div key={item.id} className="flex flex-col items-center relative">
+        <Link
+          key={item.id}
+          to={item.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center relative"
+        >
 
           {/* CARD IMAGE */}
-          <div className={`lg:w-[260px] lg:h-[360px] md:w-[180px] md:h-[230px] w-[100px] h-[150px] overflow-hidden rounded-[40px] shadow-lg bg-white ${item.id === 2 ? 'mt-15 lg:mt-0' : 'mt-25 lg:mt-0'} `}>
+          <div className={`lg:w-[260px] lg:h-[360px] md:w-[180px] md:h-[230px] w-[100px] h-[150px] overflow-hidden rounded-[40px] shadow-lg ${item.id === 2 ? 'mt-15 lg:mt-0' : 'mt-25 lg:mt-0'} `}>
             <img
               src={item.image}
               alt={item.title}
@@ -82,16 +94,16 @@ const ShopYourWay: React.FC = () => {
 
           </div>
 
-        </div>
+        </Link>
       ))}
 
     </div>
 
     {/* BUTTON */}
     <div className="relative z-10 flex justify-center pb-6">
-      <button className="absolute bg-[#BF1C47] text-white px-8 py-2 rounded-md font-semibold font-serif">
+      <a className="absolute bg-[#BF1C47] text-white px-8 py-2 rounded-md font-semibold font-serif cursor-pointer" href="/collections/kj-us-sub-category" target="_blank" rel="noopener noreferrer">
         VIEW ALL
-      </button>
+      </a>
     </div>
 
   </div>

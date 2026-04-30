@@ -6,6 +6,7 @@ export async function loader({request, context}: Route.LoaderArgs) {
   const loginHint = url.searchParams.get('login_hint') || undefined;
   const loginHintMode = url.searchParams.get('login_hint_mode') || undefined;
   const locale = url.searchParams.get('locale') || undefined;
+  const returnTo = url.searchParams.get('return_to') || undefined;
 
   return context.customerAccount.login({
     countryCode: context.storefront.i18n.country,
@@ -13,5 +14,6 @@ export async function loader({request, context}: Route.LoaderArgs) {
     loginHint,
     loginHintMode,
     locale,
+    ...(returnTo ? ({returnTo} as any) : {}),
   });
 }

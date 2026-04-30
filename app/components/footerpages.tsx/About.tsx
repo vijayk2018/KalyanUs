@@ -38,9 +38,12 @@ export default function About() {
                         />
                     </div>
                     <div className="md:col-span-3 flex flex-col justify-start">
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#333] mt-4 sm:mt-6 mb-3 font-serif leading-tight">
+                        {/* <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#333] mt-4 sm:mt-6 mb-3 font-serif leading-tight">
                             About Kalyan Jewellers
-                        </h2>
+                        </h2> */}
+                        <p className="heading-font text-5xl mt-6 mb-4">
+   About Kalyan Jewellers
+</p>
                         <div className="space-y-6 sm:space-y-8 md:space-y-10 text-[13px] sm:text-[14px] leading-relaxed font-serif">
                             <div>
                                 <h3 className="m-0.5 text-[18px] sm:text-[20px] md:text-[22px] font-semibold text-[#333]">Founding Vision</h3>

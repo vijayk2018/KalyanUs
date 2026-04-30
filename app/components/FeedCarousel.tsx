@@ -8,14 +8,30 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type Post = {
   image: string;
+  href: string;
 };
 
 const posts: Post[] = [
-  { image: CarousalImage3 },
-  { image: CarousalImage2 },
-  { image: CarousalImage1 },
-  { image: CarousalImage4 },
-  { image: CarousalImage5 },
+  {
+    image: CarousalImage3,
+    href: 'https://www.instagram.com/p/DDeu2yay0iz/?igsh=MWVucTU5bHp5cm1vMQ%3D%3D',
+  },
+  {
+    image: CarousalImage2,
+    href: 'https://www.instagram.com/p/DG5s08DhiDM/?igsh=bjM1dHFpMWRxaGJu',
+  },
+  {
+    image: CarousalImage1,
+    href: 'https://www.instagram.com/reel/DIOs962TqEV/?igsh=MThhNzA4c2V1ZnVkYg%3D%3D',
+  },
+  {
+    image: CarousalImage4,
+    href: 'https://www.instagram.com/p/DFGLyWcTuPW/?igsh=NGw1MmltdHRnbjRh',
+  },
+  {
+    image: CarousalImage5,
+    href: 'https://www.instagram.com/p/DDrjUPUSW_2/?igsh=Y2Yzajcycnlzenpx',
+  },
 ];
 
 const FeedCarousel: React.FC = () => {
@@ -46,7 +62,8 @@ const FeedCarousel: React.FC = () => {
   return (
     <div className="w-full py-16 text-center 2xl:px-[5rem] lg:px-[4rem] bg-[#f5f5f5]">
       {/* Heading */}
-      <h2 className="text-5xl font-serif mb-2">Fresh Of The feed</h2>
+      {/* <h2 className="text-5xl font-serif mb-2">Fresh Of The feed</h2> */}
+      <p className="heading-font text-6xl ">Fresh Of The feed</p>
 
       {/* Desktop carousel */}
       <div className="relative items-center justify-center hidden lg:flex">
@@ -102,9 +119,14 @@ const FeedCarousel: React.FC = () => {
                   width: `${BASE_WIDTH}px`,
                 }}
               >
-                <div className="bg-white rounded-2xl shadow-xl p-3 w-full h-full">
+                <a
+                  href={post.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block bg-white rounded-2xl shadow-xl p-3 w-full h-full"
+                >
                   <img src={post.image} alt="" className="w-full h-full object-cover rounded-xl" />
-                </div>
+                </a>
               </div>
             );
           })}
@@ -127,9 +149,14 @@ const FeedCarousel: React.FC = () => {
           >
             {posts.map((post, i) => (
               <div key={i} className="min-w-full">
-                <div className="bg-white rounded-2xl shadow-lg p-3">
+                <a
+                  href={post.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block bg-white rounded-2xl shadow-lg p-3"
+                >
                   <img src={post.image} alt="" className="w-full h-full object-cover rounded-xl" />
-                </div>
+                </a>
               </div>
             ))}
           </div>

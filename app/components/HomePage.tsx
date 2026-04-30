@@ -84,16 +84,15 @@ const HomePage: React.FC<HomePageProps> = ({
       [
         media1?.url ?? null,
         media2?.url ?? null,
-        // media3,
-        // media4,
+        media3,
+        media4,
       ]
         .filter((m): m is string => Boolean(m))
         .map((url) => ({
           image: url,
           text: "Shop 100% Natural, Certified Diamonds",
         })),
-    // [media1, media2, media3, media4],
-    [media1, media2],
+    [media1, media2, media3, media4],
   );
 
   // Auto rotate
