@@ -18,6 +18,15 @@ const SORT_OPTIONS = [
   {label: 'Price - High To Low', value: 'price-desc'},
 ] as const;
 
+function isAvailabilityFilterInput(filterInput: string) {
+  try {
+    const parsed = JSON.parse(filterInput) as {available?: boolean};
+    return typeof parsed.available === 'boolean';
+  } catch {
+    return false;
+  }
+}
+
 function getSortVariables(sortParam: string | null) {
   switch (sortParam) {
     case 'whats-new':
@@ -58,14 +67,14 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   });
   const selectedFilters = request.url
     ? Array.from(new URL(request.url).searchParams.getAll('filter'))
-        .map((value) => {
-          try {
-            return JSON.parse(value);
-          } catch {
-            return null;
-          }
-        })
-        .filter(Boolean)
+      .map((value) => {
+        try {
+          return JSON.parse(value);
+        } catch {
+          return null;
+        }
+      })
+      .filter(Boolean)
     : [];
   const sortParam = new URL(request.url).searchParams.get('sort');
   const sortVariables = getSortVariables(sortParam);
@@ -152,6 +161,11 @@ export default function Collection() {
       nextParams.delete('filter');
       remaining.forEach((value) => nextParams.append('filter', value));
     } else {
+      const nextExisting = isAvailabilityFilterInput(filterInput)
+        ? existing.filter((value) => !isAvailabilityFilterInput(value))
+        : existing;
+      nextParams.delete('filter');
+      nextExisting.forEach((value) => nextParams.append('filter', value));
       nextParams.append('filter', filterInput);
     }
 
@@ -178,7 +192,7 @@ export default function Collection() {
 
   return (
     <>
-    {/* Desktop View */}
+      {/* Desktop View */}
       <div className='bg-[#f8f7f1] flex flex-col py-8 2xl:px-[5rem] lg:px-[4rem] p-6 lg:block hidden'>
         <div className="flex items-center gap-3">
           <button
@@ -202,13 +216,13 @@ export default function Collection() {
             <Link to="/" className="transition hover:text-[#333] text-[16px]">
               Home
             </Link>
-            <span aria-hidden>|</span>
+            {/* <span aria-hidden>|</span>
             <Link
               to="/#shop-by-category"
               className="transition hover:text-[#333] text-[16px]"
             >
               Collection
-            </Link>
+            </Link> */}
             <span aria-hidden>|</span>
             <span className="text-[16px] transition hover:text-[#333]">
               {collection.title}
@@ -246,7 +260,7 @@ export default function Collection() {
       {/* Mobile View */}
       <div className='bg-[#f8f7f1] flex flex-col py-8 2xl:px-[5rem] lg:px-[4rem] p-6 lg:hidden '>
         <div className="flex items-center gap-3">
-          
+
           <h1 className="text-3xl font-normal text-[#999]">
             {collection.title}{' '}
             <span className="font-normal text-2xl text-[#000]">
@@ -260,13 +274,13 @@ export default function Collection() {
             <Link to="/" className="transition hover:text-[#333] text-[16px]">
               Home
             </Link>
-            <span aria-hidden>|</span>
+            {/* <span aria-hidden>|</span>
             <Link
               to="/#shop-by-category"
               className="transition hover:text-[#333] text-[16px]"
             >
               Collection
-            </Link>
+            </Link> */}
             <span aria-hidden>|</span>
             <span className="text-[16px] transition hover:text-[#333]">
               {collection.title}

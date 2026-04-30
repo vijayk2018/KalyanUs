@@ -1,9 +1,25 @@
-import React from 'react';
+import React, {type FormEvent, useState} from 'react';
 import { Link } from 'react-router';
 import storeImg from '~/assets/kalyan_iselin_store1.jpeg';
-import { MapPin, Phone, MessageSquare, Map as MapIcon, ChevronRight } from 'lucide-react';
+import { MapPin, Map as MapIcon, X } from 'lucide-react';
+
+const DIRECTIONS_URL =
+  'https://www.google.com//maps/place/Kalyan+Jewellers/@40.5736499,-74.324300,20z/data=!4m6!3m5!1s0x89c3b78ee9083fa9:0xd904594a7f6e5ac4!8m2!3d40.5736499!4d-74.324300!16s%2Fg%2F11y8j5w1bx?entry=ttu&g_ep=EgoyMDI1MDEwNi4xIKXMDSoASAFQAw%3D%3D';
 
 export default function BookAppointment() {
+    const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+
+    const handleAppointmentSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setIsAppointmentModalOpen(false);
+        setName('');
+        setEmail('');
+        setPhone('');
+    };
+
     return (
         <div className="bg-white min-h-screen font-serif py-8 px-4 sm:py-10 md:py-12 md:px-8 lg:px-[5rem] 2xl:px-[4rem]">
             {/* Breadcrumb - Precisely left-aligned with the card */}
@@ -70,14 +86,23 @@ export default function BookAppointment() {
                             {/* Buttons sidebar */}
                             <div className="h-full w-full bg-white p-4 sm:p-6 md:w-[42%]">
                                 <div className="flex flex-col justify-center gap-3.5">
-                                <button className="w-full rounded-sm bg-[#cf2d4c] px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-white shadow-md transition-all hover:bg-[#b0223d] sm:py-3.5 sm:text-[11px]">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsAppointmentModalOpen(true)}
+                                    className="w-full rounded-sm bg-[#cf2d4c] px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-white shadow-md transition-all hover:bg-[#b0223d] sm:py-3.5 sm:text-[11px]"
+                                >
                                     Book an Appointment
                                 </button>
 
-                                <button className="flex w-full items-center justify-center gap-2 rounded-sm border border-gray-100 bg-[#fdfdfd] px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-[#cf2d4c] transition-all hover:bg-gray-50 sm:py-3.5 sm:text-[11px]">
+                                <a
+                                    href={DIRECTIONS_URL}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex w-full items-center justify-center gap-2 rounded-sm border border-gray-100 bg-[#fdfdfd] px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-[#cf2d4c] transition-all hover:bg-gray-50 sm:py-3.5 sm:text-[11px]"
+                                >
                                     <MapIcon size={16} />
                                     Get Directions
-                                </button>
+                                </a>
 
                                 <div className="space-y-3 mt-1">
                                     <button className="flex w-full items-center justify-center gap-2 rounded-sm border border-gray-200 bg-white px-4 py-2.5 text-[9px] font-medium uppercase tracking-widest text-[#444] transition-all hover:bg-gray-50 sm:text-[10px]">
@@ -94,6 +119,75 @@ export default function BookAppointment() {
                     </div>
                 </div>
             </div>
+            {isAppointmentModalOpen ? (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 px-4"
+                    onClick={() => setIsAppointmentModalOpen(false)}
+                >
+                    <div
+                        className="w-full max-w-[420px] bg-[#f1f1f1] p-6 shadow-xl"
+                        onClick={(event) => event.stopPropagation()}
+                    >
+                        <div className="flex items-center justify-between border-b border-gray-200 pb-3">
+                            <h2 className="text-[26px] font-light text-gray-800">Book Appointment</h2>
+                            <button
+                                type="button"
+                                onClick={() => setIsAppointmentModalOpen(false)}
+                                className="rounded p-1 text-gray-600 hover:bg-gray-100 hover:text-black"
+                                aria-label="Close book appointment form"
+                            >
+                                <X size={18} />
+                            </button>
+                        </div>
+
+                        <p className="mb-4 text-xs text-gray-600">
+                            Need assistance or have questions? We&apos;re here to help! Fill out the details below, and we&apos;ll get back to you as soon as possible.
+                        </p>
+
+                        <form className="space-y-3" onSubmit={handleAppointmentSubmit}>
+                            <div>
+                                <label className="mb-1 block text-sm text-gray-700">Name</label>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(event) => setName(event.target.value)}
+                                    className="w-full border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="mb-1 block text-sm text-gray-700">Email</label>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(event) => setEmail(event.target.value)}
+                                    className="w-full border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="mb-1 block text-sm text-gray-700">Phone</label>
+                                <div className="flex items-center border border-[#CCCCCC] bg-white px-3 py-2">
+                                    <span className="mr-2 text-sm text-gray-600">+1</span>
+                                    <input
+                                        type="tel"
+                                        value={phone}
+                                        onChange={(event) => setPhone(event.target.value)}
+                                        className="w-full text-sm focus:outline-none"
+                                    />
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="mt-2 w-full bg-[#cf2d4c] py-2 text-sm font-semibold text-white hover:bg-[#b0223d]"
+                            >
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            ) : null}
         </div>
     );
 }
