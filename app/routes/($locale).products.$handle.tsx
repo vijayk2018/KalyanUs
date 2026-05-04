@@ -13,7 +13,7 @@ import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {useState, useEffect, useRef, useMemo, type FormEvent} from 'react';
-import {ChevronUp, ChevronDown, ChevronLeft, ChevronRight, VideoIcon, StoreIcon, EyeIcon, HeartIcon, PhoneIcon, X, ShieldCheck, RefreshCcw, BadgeDollarSign, Info, MapPin} from "lucide-react";
+import {ChevronUp, ChevronDown, ChevronLeft, VideoIcon, ChevronRight, StoreIcon, EyeIcon, HeartIcon, PhoneIcon, X, ShieldCheck, RefreshCcw, BadgeDollarSign, Info, MapPin} from "lucide-react";
 import ImageModal from '~/components/ImageCarousal';
 import { FaWhatsapp } from "react-icons/fa";
 import levelNew from '../assets/levelnew.png';
@@ -25,6 +25,8 @@ import certificateGuideImage from '../assets/CertificateDetails.jpg';
 import {useToast} from '~/components/useToast';
 import { ToastContainer } from '~/components/Toast';
 import { addToWishlist, isInWishlist, loadWishlist, removeFromWishlist } from '~/lib/wishlist';
+import {SaleAssistButton} from '~/components/SaleAssistButton';
+import { SaleAssistFloatingButton } from '~/components/SaleAssistFloatingButton';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return [
@@ -264,6 +266,8 @@ export default function Product() {
   const shouldShowDelivery = product.showDelivery?.value
     ? product.showDelivery.value.toLowerCase() === 'true'
     : true;
+  const saleAssistWidgetId = product.saleAssistWidgetId?.value?.trim() || '6a332aee-f9a2-4163-9fc2-a37720137da4';
+
   const shouldShowDiamondCertificateGuide = product.diamondCertificateGuide?.value
     ? product.diamondCertificateGuide.value.toLowerCase() === 'true'
     : false;
@@ -839,13 +843,18 @@ export default function Product() {
                 <span className="text-lg font-semibold font-sans">Live Video Call</span>
               </div>
 
-              <button
+              {/* <button
                 type="button"
                 onClick={() => setIsVideoCallOpen(true)}
                 className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer"
               >
                 <span className="text-lg font-medium uppercase font-sans">Schedule a Video Call</span>
-              </button>
+              </button> */}
+              <SaleAssistButton
+                widgetId={saleAssistWidgetId}
+                label="Video Call Us"
+                variant="pdp"
+              />
 
               <div className="text-[#000000] flex items-center justify-center gap-2">
                 <StoreIcon size={22} />
@@ -895,13 +904,21 @@ export default function Product() {
             </div>
 
             <div className="hidden md:grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                onClick={() => setIsVideoCallOpen(true)}
-                className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer"
-              >
-                <span className="text-lg font-medium uppercase font-sans">Schedule a Video Call</span>
-              </button>
+              {/* {!saleAssistWidgetId ?
+                <button
+                  type="button"
+                  onClick={() => setIsVideoCallOpen(true)}
+                  className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer"
+                >
+                  <span className="text-lg font-medium uppercase font-sans">Schedule a Video Call</span>
+                </button>
+              : */}
+                <SaleAssistButton
+                  widgetId={saleAssistWidgetId}
+                  label="Video Call Us"
+                  variant="pdp"
+                />
+              {/* } */}
 
               <button className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer">
                 <span className="text-lg font-medium uppercase font-sans">Find in Store</span>
@@ -1455,6 +1472,10 @@ export default function Product() {
         toasts={toasts}
         onRemoveToast={removeToast}
       />
+
+      {saleAssistWidgetId ? (
+        <SaleAssistFloatingButton widgetId={saleAssistWidgetId} />
+      ) : null}
     </div>
   );
 }
@@ -1544,6 +1565,9 @@ const PRODUCT_FRAGMENT = `#graphql
       value
     }
     diamondCertificateGuide: metafield(namespace: "custom", key: "diamond_certificate_guide") {
+      value
+    }
+    saleAssistWidgetId: metafield(namespace: "custom", key: "saleassist_widget_id") {
       value
     }
 
