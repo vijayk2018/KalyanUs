@@ -16,6 +16,7 @@ import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import tailwindCss from './styles/tailwind.css?url';
+import saleassistCss from '~/styles/saleassist.css?url';
 import {PageLayout} from './components/PageLayout';
 
 export type RootLoader = typeof loader;
@@ -84,10 +85,15 @@ export async function loader(args: Route.LoaderArgs) {
 
   const {storefront, env} = args.context;
 
+  const defaultSaleAssistFloatId = '6a332aee-f9a2-4163-9fc2-a37720137da4';
+  const saleAssistFloatingWidgetId =
+    env.PUBLIC_SALEASSIST_FLOATING_WIDGET_ID?.trim() || defaultSaleAssistFloatId;
+
   return {
     ...deferredData,
     ...criticalData,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
+    saleAssistFloatingWidgetId,
     shop: getShopAnalytics({
       storefront,
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
@@ -162,11 +168,22 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={tailwindCss}></link>
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
+        <link rel="stylesheet" href={saleassistCss}></link>
         <Meta />
         <Links />
       </head>
       <body>
         {children}
+        <script
+          src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+          defer
+          nonce={nonce}
+        ></script>
+        <script
+          src="https://static.saleassist.ai/widgets/widget.js"
+          defer
+          nonce={nonce}
+        ></script>
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
       </body>

@@ -23,31 +23,31 @@ import categoryImage from '~/assets/bw.jpg';
 
 const gemstoneRows = [
   [
-    {name: 'Amethyst', image: stone11},
-    {name: 'Aquamarine', image: stone10},
-    {name: 'Blue Sapphire', image: stone9},
-    {name: 'Citrine', image: stone8},
-    {name: 'Emerald', image: stone7},
-    {name: 'Garnet', image: stone6},
+    { name: 'Amethyst', image: stone11 },
+    { name: 'Aquamarine', image: stone10 },
+    { name: 'Blue Sapphire', image: stone9 },
+    { name: 'Citrine', image: stone8 },
+    { name: 'Emerald', image: stone7 },
+    { name: 'Garnet', image: stone6 },
   ],
   [
-    {name: 'Ruby', image: stone2},
-    {name: 'Tanzanite', image: stone1},
-    {name: 'Tourmaline', image: stonePink},
-    {name: 'Yellow Sapphire', image: stone5},
-    {name: 'Peridot', image: stone4},
-    {name: 'Pink sapphire', image: stone3},
+    { name: 'Ruby', image: stone2 },
+    { name: 'Tanzanite', image: stone1 },
+    { name: 'Tourmaline', image: stonePink },
+    { name: 'Yellow Sapphire', image: stone5 },
+    { name: 'Peridot', image: stone4 },
+    { name: 'Pink sapphire', image: stone3 },
   ],
   [
-    {name: 'Pearl', image: pearl},
-    {name: 'Coral', image: coral},
+    { name: 'Pearl', image: pearl },
+    { name: 'Coral', image: coral },
   ],
 ];
 
 export default function Gemstone() {
   return (
     <div className="w-full bg-[#f4f7fa] text-[#1f1f1f]">
-      <section className="relative w-full overflow-hidden" style={{aspectRatio: '1024 / 283'}}>
+      <section className="relative w-full overflow-hidden" style={{ aspectRatio: '1024 / 283' }}>
         <img
           src={gemstoneHero}
           alt="Gemstone education banner"
@@ -91,9 +91,8 @@ export default function Gemstone() {
           {gemstoneRows.map((row, rowIndex) => (
             <div
               key={rowIndex}
-              className={`grid gap-y-2 ${
-                rowIndex < 2 ? 'mx-auto max-w-[1500px] grid-cols-2 sm:grid-cols-3 md:grid-cols-6' : 'mx-auto max-w-[520px] grid-cols-2'
-              }`}
+              className={`grid gap-y-2 ${rowIndex < 2 ? 'mx-auto max-w-[1500px] grid-cols-2 sm:grid-cols-3 md:grid-cols-6' : 'mx-auto max-w-[520px] grid-cols-2'
+                }`}
             >
               {row.map((gem) => (
                 <div key={gem.name} className="flex flex-col items-center text-center">
@@ -186,9 +185,9 @@ export default function Gemstone() {
 
           <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
             {[
-              {image: stone10, alt: 'Diamond size'},
-              {image: pearl, alt: 'Pearl size'},
-              {image: stone7, alt: 'Emerald size'},
+              { image: stone10, alt: 'Diamond size' },
+              { image: pearl, alt: 'Pearl size' },
+              { image: stone7, alt: 'Emerald size' },
             ].map((item) => (
               <div key={item.alt} className="flex flex-col items-center">
                 <div className="flex h-[78px] sm:h-[88px] md:h-[98px] w-full max-w-[300px] items-start justify-center border border-white/30">
