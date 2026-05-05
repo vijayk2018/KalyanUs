@@ -814,7 +814,7 @@ export default function Product() {
 
                 {selectedVariant?.compareAtPrice && (
                   <span className="line-through text-gray-400 xl:text-lg lg:text-md font-sans">
-                    ₹{selectedVariant.compareAtPrice.amount}
+                    ${selectedVariant.compareAtPrice.amount}
                   </span>
                 )}
               </div>
