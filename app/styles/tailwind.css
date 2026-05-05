@@ -6,6 +6,8 @@
   --font-sans: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-serif: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-heading: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-cormorant: 'Cormorant', serif;
+  --font-lato: 'Lato', sans-serif;
 }
 
 @keyframes text-scroll {
@@ -50,5 +52,15 @@
     url('/fonts/HelveticaNeue-Bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cormorant';
+  src:
+    local('Cormorant'),
+    url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&display=swap') format('woff2');
+  font-style: normal;
+  font-weight: 400;
   font-display: swap;
 }

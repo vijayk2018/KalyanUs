@@ -644,6 +644,7 @@ export function HeaderMenu({
           const isDiamondMenu = item.title.trim().toLowerCase() === 'diamond';
           const isGoldMenu = item.title.trim().toLowerCase() === 'gold';
           const isOccasionMenu = item.title.trim().toLowerCase() === 'occasion';
+          const isJewelryOrOccasionMenu = isJewelryMenu || isOccasionMenu;
           const shouldShowPromoCard = Boolean(viewAllItem);
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
@@ -726,7 +727,9 @@ export function HeaderMenu({
                   >
                     <div
                       className={`grid gap-6 ${
-                        isPriceRangeMenu
+                        isJewelryOrOccasionMenu
+                          ? 'grid-cols-5'
+                          : isPriceRangeMenu
                           ? 'grid-cols-1'            
                           : groupedItems.length >= 4 || isMuhuratMenu
                             ? 'grid-cols-4'
@@ -759,7 +762,11 @@ export function HeaderMenu({
                         <div
                           key={group.id}
                           className={`space-y-3 ${
-                             isCategory && isMuhuratMenu ? 'col-span-2' : 'col-span-1'
+                             isJewelryOrOccasionMenu && isCategory
+                               ? 'col-span-2'
+                               : isCategory && isMuhuratMenu
+                                 ? 'col-span-2'
+                                 : 'col-span-1'
                           }`}
                         >
                           <p className="font-semibold tracking-[0.08em] text-[13px] w-30 underline decoration-[#cf254a] underline-offset-4">
