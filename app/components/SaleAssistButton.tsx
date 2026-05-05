@@ -198,7 +198,7 @@ export function SaleAssistButton({widgetId, label = 'Live Demo', variant = 'pdp'
   if (!widgetId) return null;
 
   const pdpClasses =
-    'text-[#000000] flex items-center justify-center gap-2 ';
+    'text-[#000000] flex items-center justify-center gap-2 -mb-[1rem]';
 
   const trigger = (
     <button
