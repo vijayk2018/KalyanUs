@@ -17,6 +17,7 @@ import whiteGold31 from '~/assets/White-Gold-3_1.webp';
 import roseGold1 from '~/assets/Rose-Gold-1.webp';
 import roseGold2 from '~/assets/Rose-Gold-2.webp';
 import roseGold3 from '~/assets/Rose-Gold-3.webp';
+import roseGoldDetails from '~/assets/Rose Gold details.webp';
 
 // Platinum assets
 import platinum1 from '~/assets/Platinum-1.webp';
@@ -169,6 +170,7 @@ type Slide = {
   rightImageClassName?: string;
   tableLeft?: CompTableLeft;
   tableRight?: CompTableRight;
+  tableImage?: string;
 };
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -257,8 +259,8 @@ const slides: Slide[] = [
     leftImage: whiteGold3,    // White-Gold-3.webp  = couple illustration
     rightImage: whiteGold31,  // White-Gold-3_1.webp = diamond engagement rings
     showBrowseButton: true,
-    leftImageClassName: 'max-w-[315px] max-h-[345px]',
-    rightImageClassName: 'mt-5 max-w-[420px] w-full h-auto max-h-[336px] object-contain block mx-auto',
+    leftImageClassName: 'max-w-[515px] max-h-[445px]',
+    rightImageClassName: 'mt-5 max-w-[420px] w-full h-auto max-h-[236px] object-contain block mx-auto',
   },
 
   /* ── 9. Rose Gold ──────────────────────────────────────────────────────── */
@@ -280,22 +282,7 @@ const slides: Slide[] = [
       'The more copper used in the mix the more intense the color is, and the less is the purity, for e.g. 18k rose gold will have higher purity than 10k rose gold.',
       'Rose gold is more durable than yellow or white gold, but less than platinum and does not necessarily require rhodium as its color is quite naturally pink.',
     ],
-    tableLeft: {
-      rows: [
-        ['18K Red Gold', '75% Gold and 25% Copper'],
-        ['18K Rose Gold', '75% Gold, 22.5% Copper and 2.5% Silver'],
-        ['18K Pink Gold', '75% Gold, 20% Copper and 5% Silver'],
-      ],
-    },
-    tableRight: {
-      headers: ['18K Yellow Gold', '18K White Gold', '18K Rose Gold'],
-      rows: [
-        { label: '% Gold', values: ['75%', '75%', '75%'] },
-        { label: '% Silver', values: ['10-20%', '18.50%', '2.75%'] },
-        { label: '% Copper', values: ['5-15%', '1%', '25.25%'] },
-        { label: '% Zinc', values: ['0%', '5.25%', '0%'] },
-      ],
-    },
+    tableImage: roseGoldDetails,
   },
 
   /* ── 11. Rose Hues ─────────────────────────────────────────────────────── */
@@ -482,83 +469,32 @@ export default function MetalGuide() {
 
         {/* ══════════ text-only ══════════ */}
         {slide.layout === 'text-only' && (
-          <div className="w-full max-w-[860px] py-16 mx-auto text-center">
+          <div className="w-full max-w-[860px] py-16 mx-auto flex flex-col items-center text-center px-4">
             {slide.title && (
-              <h1 className="text-3xl md:text-4xl uppercase tracking-[0.06em] mb-8 font-light">
+              <h1 className="text-3xl md:text-[36px] uppercase tracking-[0.04em] mb-10 font-light text-[#222]">
                 {slide.title}
               </h1>
             )}
 
             {/* Bullets */}
             {slide.bullets && (
-              <ul className="text-left space-y-3 mb-8">
+              <div className="w-full flex flex-col space-y-4 mb-8 text-center">
                 {slide.bullets.map((bullet, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-[#666] text-sm leading-7">
-                    <span className="shrink-0 mt-1">*</span>
-                    <span>{bullet}</span>
-                  </li>
+                  <p key={idx} className="text-[#555] text-[14px] font-light leading-[26px]">
+                    * {bullet}
+                  </p>
                 ))}
-              </ul>
+              </div>
             )}
 
-            {/* Composition tables — Rose Gold Facts */}
-            {(slide.tableLeft || slide.tableRight) && (
-              <div className="flex flex-col md:flex-row gap-6 mt-4">
-
-                {/* Left comparison table */}
-                {slide.tableLeft && (
-                  <div className="flex-1 overflow-x-auto">
-                    <table className="w-full text-xs border-collapse">
-                      <tbody>
-                        {slide.tableLeft.rows.map(([type, comp], i) => (
-                          <tr key={i}>
-                            <td className="border border-[#ddd] bg-white px-3 py-2 font-medium text-[#333]">
-                              {type}
-                            </td>
-                            <td className="border border-[#ddd] bg-white px-3 py-2 text-[#666]">
-                              {comp}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-
-                {/* Right alloy breakdown table */}
-                {slide.tableRight && (
-                  <div className="flex-1 overflow-x-auto">
-                    <table className="w-full text-xs border-collapse">
-                      <thead>
-                        <tr>
-                          <th className="border border-[#ddd] bg-[#f9dcdc] px-3 py-2 text-left text-[#333]" />
-                          {slide.tableRight.headers.map((h, i) => (
-                            <th
-                              key={i}
-                              className="border border-[#ddd] bg-[#f9dcdc] px-3 py-2 text-[#333] font-medium"
-                            >
-                              {h}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {slide.tableRight.rows.map((row, i) => (
-                          <tr key={i}>
-                            <td className="border border-[#ddd] bg-white px-3 py-2 font-medium text-[#333]">
-                              {row.label}
-                            </td>
-                            {row.values.map((v, j) => (
-                              <td key={j} className="border border-[#ddd] bg-white px-3 py-2 text-[#666]">
-                                {v}
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
+            {/* Composition tables — Rose Gold Facts Image */}
+            {slide.tableImage && (
+              <div className="w-full flex justify-center mt-2">
+                <img
+                  src={slide.tableImage}
+                  alt="Composition Details"
+                  className="w-full h-auto object-contain block"
+                />
               </div>
             )}
           </div>
