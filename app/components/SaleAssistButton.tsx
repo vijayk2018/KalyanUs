@@ -150,50 +150,50 @@ export function SaleAssistButton({widgetId, label = 'Live Demo', variant = 'pdp'
     setModalOpen(true);
   }
 
-  // const modalPortal =
-  //   modalOpen &&
-  //   typeof document !== 'undefined' &&
-  //   widgetId &&
-  //   createPortal(
-  //     <div
-  //       className="saleassist-pdp-modal-backdrop"
-  //       role="presentation"
-  //       onMouseDown={(e) => {
-  //         if (e.target === e.currentTarget) closeModal();
-  //       }}
-  //     >
-  //       <div
-  //         className="saleassist-pdp-modal-shell"
-  //         role="dialog"
-  //         aria-modal="true"
-  //         aria-labelledby="saleassist-pdp-modal-title"
-  //         onMouseDown={(e) => e.stopPropagation()}
-  //       >
-  //         <header className="saleassist-pdp-modal-header">
-  //           <h2 id="saleassist-pdp-modal-title" className="saleassist-pdp-modal-title">
-  //             {label}
-  //           </h2>
-  //           <button
-  //             type="button"
-  //             className="saleassist-pdp-modal-close"
-  //             onClick={closeModal}
-  //             aria-label="Close live demo"
-  //           >
-  //             <span aria-hidden="true">×</span>
-  //           </button>
-  //         </header>
-  //         <div className="saleassist-pdp-modal-mount-wrap">
-  //           {mountPending ? (
-  //             <p className="saleassist-pdp-modal-loading" role="status">
-  //               Loading live demo…
-  //             </p>
-  //           ) : null}
-  //           <div id={captureElId} className="saleassist-pdp-modal-mount" />
-  //         </div>
-  //       </div>
-  //     </div>,
-  //     document.body,
-  //   );
+  const modalPortal =
+    modalOpen &&
+    typeof document !== 'undefined' &&
+    widgetId &&
+    createPortal(
+      <div
+        className="saleassist-pdp-modal-backdrop"
+        role="presentation"
+        onMouseDown={(e) => {
+          if (e.target === e.currentTarget) closeModal();
+        }}
+      >
+        <div
+          className="saleassist-pdp-modal-shell"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="saleassist-pdp-modal-title"
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <header className="saleassist-pdp-modal-header">
+            <h2 id="saleassist-pdp-modal-title" className="saleassist-pdp-modal-title">
+              {label}
+            </h2>
+            <button
+              type="button"
+              className="saleassist-pdp-modal-close"
+              onClick={closeModal}
+              aria-label="Close live demo"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </header>
+          <div className="saleassist-pdp-modal-mount-wrap">
+            {mountPending ? (
+              <p className="saleassist-pdp-modal-loading" role="status">
+                Loading live demo…
+              </p>
+            ) : null}
+            <div id={captureElId} className="saleassist-pdp-modal-mount" />
+          </div>
+        </div>
+      </div>,
+      document.body,
+    );
 
   if (!widgetId) return null;
 
@@ -227,6 +227,7 @@ export function SaleAssistButton({widgetId, label = 'Live Demo', variant = 'pdp'
   return (
     <>
 
+      {modalPortal}
       {variant === 'sticky' ? <div className="saleassist-sticky-footer">{trigger}</div> : trigger}
     </>
   );
