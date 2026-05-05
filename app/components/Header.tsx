@@ -7,7 +7,7 @@ import {
 } from '@shopify/hydrogen';
 import type { HeaderQuery, CartApiQueryFragment } from 'storefrontapi.generated';
 import { useAside } from '~/components/Aside';
-import { HeartIcon, Menu, Search, Store, UserIcon, X } from 'lucide-react';
+import {  Menu, Search, X } from 'lucide-react';
 import kalyanLogo from '../assets/kalyanLogo.svg';
 import jewelryMegaMenuPromo from '../assets/menuJewellery.jpg';
 import menuPriceImage from '../assets/menuPrice.jpg';
@@ -29,8 +29,8 @@ import necklacesMenuImage from '../assets/necklaces.jpg';
 import religiousMenuImage from '../assets/religious.jpg';
 import ringsMenuImage from '../assets/rings.jpg';
 import womenMenuImage from '../assets/Women.jpg';
-import goldMenuImage from '../assets/gold.jpg'
-import mudhraSideMenuImage  from '../assets/menuMuhurat.jpg'
+import goldMenuImage from '../assets/gold.jpg';
+import mudhraSideMenuImage from '../assets/menuMuhurat.jpg';
 import menuNecklaceImage from '../assets/menuNecklace.jpg';
 import bridalNecklaceMenuImage from '../assets/bridalNecklace.jpg';
 import charmNecklaceMenuImage from '../assets/charmNecklace.jpg';
@@ -154,6 +154,9 @@ import { FaStore } from 'react-icons/fa';
 import { clearWishlistCache, getWishlist, loadWishlist } from '~/lib/wishlist';
 import WishlistDrawer from './WishlistDrawer';
 import StoreAuthModal from './StoreAuthModal';
+import StoreIcon from '../assets/store.svg'
+import HeartIcon from '../assets/heart.svg'
+import UserIcon from '../assets/person.svg'
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -337,7 +340,6 @@ export function Header({
 }: HeaderProps) {
   const { shop, menu } = header;
   const logoUrl = shop.brand?.logo?.image?.url || kalyanLogo;
-  const loginUrl = 'https://shopify.com/66607317088/account'
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -363,10 +365,10 @@ export function Header({
 
     void loadWishlist().then(updateWishlistCount);
 
-    window.addEventListener("wishlistUpdated", updateWishlistCount);
+    window.addEventListener('wishlistUpdated', updateWishlistCount);
 
     return () => {
-      window.removeEventListener("wishlistUpdated", updateWishlistCount);
+      window.removeEventListener('wishlistUpdated', updateWishlistCount);
     };
   }, []);
 
@@ -400,10 +402,9 @@ export function Header({
     }
   }, [navigation.formAction, navigation.state]);
 
-
   return (
     <>
-      {/* Mobile header */}
+      {/* ─── MOBILE HEADER ─── */}
       <header className="lg:hidden w-full">
         <div className="bg-[#e8e4d1] px-4 py-2">
           <div className="flex items-center justify-around">
@@ -414,46 +415,44 @@ export function Header({
               aria-label="Open search"
             >
               <Search size={28} strokeWidth={1.8} />
-              {/* <span className="text-[11px] mt-1">&nbsp;</span> */}
             </button>
             <button
-              onClick={() => {isUserLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true)}}
+              onClick={() => {
+                isUserLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true);
+              }}
               className="flex flex-col items-center text-[#202020] relative cursor-pointer hover:text-[#650827]"
             >
-              <HeartIcon size={24} strokeWidth={1.8} />
+              <img src={HeartIcon} alt={'Heart'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
               {wishlistCount > 0 && (
                 <span className="absolute top-0 right-2 bg-red-500 text-white text-[10px] px-1 rounded-full">
                   {wishlistCount}
                 </span>
               )}
-              <span className="text-[12px] mt-1 font-serif">Wishlist</span>
+              <span className="text-[12px] font-serif">Wishlist</span>
             </button>
-            <NavLink to="/experience-centre" className="flex flex-col items-center text-[#202020]">
-              <Store size={22} strokeWidth={1.8} />
-              <span className="text-[12px] mt-1 font-serif">Store</span>
+            <NavLink
+              to="/experience-centre"
+              className="flex flex-col items-center text-[#202020]"
+            >
+              <img src={StoreIcon} alt={'Store'}  className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+              <span className="text-[12px] font-serif">Store</span>
             </NavLink>
-            {/* <button
-              type="button"
-              onClick={() => setIsStoreModalOpen(true)}
-              className="flex flex-col items-center text-[#202020]"
-            >
-              <UserIcon size={22} strokeWidth={1.8} />
-              <span className="text-[12px] mt-1 font-serif">Profile</span>
-            </button> */}
-            
             <button
-              onClick={() => {isUserLoggedIn ? window.location.href = '/account' : setIsStoreModalOpen(true)}}
+              onClick={() => {
+                isUserLoggedIn
+                  ? (window.location.href = '/account')
+                  : setIsStoreModalOpen(true);
+              }}
               className="flex flex-col items-center text-[#202020]"
             >
-              <UserIcon size={22} strokeWidth={1.8} />
-              <span className="text-[12px] mt-1 font-serif">Profile</span>
+              <img src={UserIcon} alt={'User'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+              <span className="text-[12px] font-serif">Profile</span>
             </button>
-           
           </div>
         </div>
 
         {isMobileSearchOpen ? (
-          <form action="/search" method="get" className="">
+          <form action="/search" method="get">
             <div className="relative">
               <input
                 name="q"
@@ -485,7 +484,11 @@ export function Header({
             </button>
             <NavLink prefetch="intent" to="/" end>
               {logoUrl ? (
-                <img src={logoUrl} alt={`${shop.name} logo`} className="h-[86px] mx-auto" />
+                <img
+                  src={logoUrl}
+                  alt={`${shop.name} logo`}
+                  className="h-[86px] mx-auto"
+                />
               ) : (
                 <span className="font-serif text-2xl text-white">{shop.name}</span>
               )}
@@ -528,46 +531,78 @@ export function Header({
         ) : null}
       </header>
 
-      {/* Desktop header */}
-      <div className='hidden lg:block '>
-        <header className="lg:flex header justify-between 2xl:pb-[8rem] 2xl:px-[4rem] 2xl:pt-[3rem] lg:pb-[8rem] lg:px-[5rem] lg:pt-[3rem]">
-          <NavLink prefetch="intent" to="/" style={activeLinkStyle} end className="2xl:mt-[7rem] lg:mt-[6rem] ml-[2.5vw]">
+      {/* ─── DESKTOP HEADER ─── */}
+      {/*
+        KEY LAYOUT CHANGE:
+        The desktop header is now split into TWO sibling rows inside a single
+        bg-[#650827] wrapper:
+
+        Row 1  →  Logo (left)  +  CTAs search/wishlist/store/profile (right)
+                  This row uses rem/px sizing so it SCALES normally with browser zoom.
+
+        Row 2  →  Nav menu bar that spans 100 % of the viewport.
+                  It uses vw-based font-size + gap so it stays visually stable
+                  (does NOT grow/shrink) when the user zooms in or out.
+      */}
+      <div className="hidden lg:block bg-[#650827]">
+
+        {/* ── Row 1: Logo + CTAs (scales with zoom) ── */}
+        <div className="flex justify-between items-start">
+          <NavLink
+            prefetch="intent"
+            to="/"
+            end
+            className="xl:mt-[2rem] pt-3 lg:mt-[1rem] ml-[5.6vw] xl:mb-[1.4rem] lg:mb-[1.3rem]"
+          >
             {logoUrl ? (
               <img
                 src={logoUrl}
                 alt={`${shop.name} logo`}
-                className="mx-auto 2xl:h-[101px] xl:h-[86px] lg:h-[86px] translate-x-[2px] translate-y-[2px]"
+                className="mx-auto translate-x-[2px] translate-y-[2px]"
+                style={{ width: 110 }}
               />
             ) : (
               <span className="font-serif text-2xl text-white">{shop.name}</span>
             )}
           </NavLink>
-          <div className='flex flex-col space-y-6 hidden lg:block '>
-            <HeaderCtas
-              isLoggedIn={isUserLoggedIn}
-              cart={cart}
-              wishlistCount={wishlistCount}
-              setIsWishlistOpen={setIsWishlistOpen}
-              setIsStoreModalOpen={setIsStoreModalOpen}
-            />
-            <HeaderMenu
-              menu={menu}
-              viewport="desktop"
-              primaryDomainUrl={header.shop.primaryDomain.url}
-              publicStoreDomain={publicStoreDomain}
-            />
+
+          <div className='flex-1 mr-[5.5vw]'>
+            <div className=' mb-[2rem]'>
+              <HeaderCtas
+                isLoggedIn={isUserLoggedIn}
+                cart={cart}
+                wishlistCount={wishlistCount}
+                setIsWishlistOpen={setIsWishlistOpen}
+                setIsStoreModalOpen={setIsStoreModalOpen}
+              />
+            </div>
+            <div className=" bg-[#650827] relative">
+              <div className="flex justify-end">
+                <div className="w-auto">
+                  <HeaderMenu
+                    menu={menu}
+                    viewport="desktop"
+                    primaryDomainUrl={header.shop.primaryDomain.url}
+                    publicStoreDomain={publicStoreDomain}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-        </header>
+        </div>
+
+        {/* ── Row 2: Nav menu (zoom-stable via vw units + 100vw width) ── */}
+        {/*
+          We break out of any padding with negative margins so the nav always
+          touches the left and right edges of the viewport.
+          font-size and gap are expressed in vw so zooming the browser does
+          NOT reflow or resize the nav items.
+        */}
+        
       </div>
 
-      <WishlistDrawer
-        open={isWishlistOpen}
-        onClose={() => setIsWishlistOpen(false)}
-      />
-      <StoreAuthModal
-        open={isStoreModalOpen}
-        onClose={() => setIsStoreModalOpen(false)}
-      />
+      <WishlistDrawer open={isWishlistOpen} onClose={() => setIsWishlistOpen(false)} />
+      <StoreAuthModal open={isStoreModalOpen} onClose={() => setIsStoreModalOpen(false)} />
     </>
   );
 }
@@ -583,20 +618,31 @@ export function HeaderMenu({
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
-  const className = `header-menu-${viewport} text-white 2xl:space-x-6 xl:space-x-4 lg:space-x-2 2xl:text-[16px] xl:text-[15px] lg:text-[12px] ${viewport === 'mobile' ? 'flex-col space-y-4' : 'flex'}`;
-  const {close} = useAside();
-  const [activeDesktopMenuId, setActiveDesktopMenuId] = useState<string | null>(
-    null,
-  );
+  /*
+    Desktop nav className:
+    - Uses vw-based font-size (0.72vw) and gap (1vw) so the nav items stay
+      at the same visual size regardless of browser zoom level.
+    - `whitespace-nowrap` prevents wrapping at any zoom.
+  */
+  const className =
+    viewport === 'mobile'
+      ? 'header-menu-mobile flex-col space-y-4'
+      : 'header-menu-desktop flex items-center';
+
+  const { close } = useAside();
+  const [activeDesktopMenuId, setActiveDesktopMenuId] = useState<string | null>(null);
   const [desktopMenuLeftOffset, setDesktopMenuLeftOffset] = useState(0);
   const [desktopMenuWidth, setDesktopMenuWidth] = useState(0);
+
   const menuItems = (menu || FALLBACK_HEADER_MENU).items;
+
   const getItemUrl = (url: string) =>
     url.includes('myshopify.com') ||
-    url.includes(publicStoreDomain) ||
-    url.includes(primaryDomainUrl)
+      url.includes(publicStoreDomain) ||
+      url.includes(primaryDomainUrl)
       ? new URL(url).pathname
       : url;
+
   const getDisplayTitle = (title: string) => title.toUpperCase();
 
   useEffect(() => {
@@ -608,18 +654,34 @@ export function HeaderMenu({
   }, []);
 
   return (
-    <nav className={className} role="navigation">
+    <nav
+      className={className}
+      role="navigation"
+      /*
+        Inline styles for the desktop nav so the vw values are applied directly
+        and cannot be overridden by Tailwind's rem-based utilities.
+        font-size: 0.72vw  ← stays constant on zoom
+        gap: 1vw           ← stays constant on zoom
+      */
+     style={
+      viewport === 'desktop'
+        ? {
+            fontSize: '.83333vw',
+            lineHeight: '1.09375vw',
+            padding: '.52083vw 0',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '2vw'
+          }
+        : undefined
+    }
+    >
       {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={close}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
+        <NavLink end onClick={close} prefetch="intent" style={activeLinkStyle} to="/">
           Home
         </NavLink>
       )}
+
       {menuItems.map((item) => {
         if (!item.url) return null;
 
@@ -656,7 +718,9 @@ export function HeaderMenu({
               className="group relative"
               onMouseEnter={(event) => {
                 setActiveDesktopMenuId(item.id);
-                setDesktopMenuLeftOffset(event.currentTarget.getBoundingClientRect().left);
+                setDesktopMenuLeftOffset(
+                  event.currentTarget.getBoundingClientRect().left,
+                );
                 if (typeof window !== 'undefined') {
                   setDesktopMenuWidth(window.innerWidth);
                 }
@@ -664,7 +728,7 @@ export function HeaderMenu({
               onMouseLeave={() => setActiveDesktopMenuId(null)}
             >
               <NavLink
-                className="text-white font-serif"
+                className="text-white font-serif font-normal tracking-[0.01em] whitespace-nowrap"
                 end
                 onClick={close}
                 prefetch="intent"
@@ -674,10 +738,10 @@ export function HeaderMenu({
                 {item.title}
               </NavLink>
 
+              {/* Dropdown panel */}
               <div
-                className={`absolute top-full z-50 pt-2 ${
-                  activeDesktopMenuId === item.id ? 'block' : 'hidden'
-                }`}
+                className={`absolute top-full z-50 pt-2 ${activeDesktopMenuId === item.id ? 'block' : 'hidden'
+                  }`}
                 style={{
                   left: `${-desktopMenuLeftOffset}px`,
                   width: desktopMenuWidth ? `${desktopMenuWidth}px` : '100vw',
@@ -720,194 +784,205 @@ export function HeaderMenu({
                       })}
                     </div>
                   ) : (
-                  <div
-                    className={`mx-auto grid w-full gap-8 ${
-                      shouldShowPromoCard ? 'grid-cols-[1fr_320px]' : 'grid-cols-1'
-                    }`}
-                  >
                     <div
-                      className={`grid gap-6 ${
-                        isJewelryOrOccasionMenu
+                      className={`mx-auto grid w-full gap-8 ${shouldShowPromoCard ? 'grid-cols-[1fr_320px]' : 'grid-cols-1'
+                        }`}
+                    >
+                      <div
+                        className={`grid gap-6 ${isJewelryOrOccasionMenu
                           ? 'grid-cols-5'
                           : isPriceRangeMenu
-                          ? 'grid-cols-1'            
-                          : groupedItems.length >= 4 || isMuhuratMenu
-                            ? 'grid-cols-4'
-                            : groupedItems.length === 3
-                              ? 'grid-cols-3'
-                              : groupedItems.length === 2
-                                ? 'grid-cols-2'
-                                : 'grid-cols-1'
-                      }`}
-                    >
-                      {groupedItems.map((group) => {
-                        const normalizedGroupTitle = group.title
-                          .trim()
-                          .toLowerCase();
-                        const isCategory = normalizedGroupTitle === 'category';
-                        const isAllJewelryGroup = normalizedGroupTitle === 'all jewelry';
-                        const isShopForGroup = normalizedGroupTitle === 'shop for';
-                        const items = group.items ?? [];
-                        const isSingleCategoryLayout =
-                          groupedItems.length === 1 && isCategory;
-                        const isPriceRangeGroup = isPriceRangeMenu;
-                        const splitIndex = Math.ceil(items.length / 2);
-                        const columnA = isCategory
-                          ? items.slice(0, splitIndex)
-                          : items;
-                        const columnB = isCategory ? items.slice(splitIndex) : [];
-                        const isAll = isCategory && isAllJewelryGroup && isShopForGroup;
-
-                        return (
-                        <div
-                          key={group.id}
-                          className={`space-y-3 ${
-                             isJewelryOrOccasionMenu && isCategory
-                               ? 'col-span-2'
-                               : isCategory && isMuhuratMenu
-                                 ? 'col-span-2'
-                                 : 'col-span-1'
+                            ? 'grid-cols-1'
+                            : groupedItems.length >= 4 || isMuhuratMenu
+                              ? 'grid-cols-4'
+                              : groupedItems.length === 3
+                                ? 'grid-cols-3'
+                                : groupedItems.length === 2
+                                  ? 'grid-cols-2'
+                                  : 'grid-cols-1'
                           }`}
-                        >
-                          <p className="font-semibold tracking-[0.08em] text-[13px] w-30 underline decoration-[#cf254a] underline-offset-4">
-                            {getDisplayTitle(group.title)}
-                          </p>
-                          <div
-                            className={
-                              isPriceRangeGroup
-                                ? 'grid grid-cols-1 gap-y-3'
-                                : isSingleCategoryLayout
-                                ? 'grid grid-cols-4 gap-x-8 gap-y-3'
-                                : isCategory
-                                  ? 'grid grid-cols-2 gap-x-6 gap-y-2'
-                                  : 'space-y-2'
-                            }
-                          >
-                            {(isSingleCategoryLayout
-                              ? items
-                              : isPriceRangeGroup
-                                ? [group]
-                              : columnA.length
-                                ? columnA
-                                : [group]
-                            ).map((subItem) => {
-                              const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
-                              const normalizedSubItemTitle = subItem.title.trim().toLowerCase();
-                              const menuImage =
-                                (isOccasionMenu &&
-                                  OCCASION_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                (isJewelryMenu &&
-                                  JEWELRY_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                (isGoldMenu &&
-                                  GOLD_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                (isDiamondMenu &&
-                                  DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                (isCollectionMenu &&
-                                  COLLECTION_MENU_IMAGES[normalizedSubItemTitle]) ||
-                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu || isDiamondMenu || isOccasionMenu) &&
-                                  HEADER_MENU_ITEM_IMAGES[normalizedSubItemTitle]);
-                              return (
-                                <NavLink
-                                  key={subItem.id}
-                                  to={subUrl}
-                                  prefetch="intent"
-                                  onClick={() => setActiveDesktopMenuId(null)}
-                                  className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${
-                                    menuImage ? 'flex items-center gap-2' : 'block'
-                                  }`}
-                                >
-                                  {menuImage ? (
-                                    <img
-                                      src={menuImage}
-                                      alt={subItem.title}
-                                      className="h-8 w-8  object-cover"
-                                    />
-                                  ) : null}
-                                  {subItem.title}
-                                </NavLink>
-                              );
-                            })}
-                            {!isSingleCategoryLayout &&
-                              columnB.map((subItem) => {
-                              const subUrl = resolveMenuUrl(subItem.url, resolveMenuUrl(group.url));
-                              const normalizedSubItemTitle = subItem.title.trim().toLowerCase();
-                              const menuImage =
-                                (isOccasionMenu &&
-                                  OCCASION_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                (isJewelryMenu &&
-                                  JEWELRY_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                (isGoldMenu &&
-                                  GOLD_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                (isDiamondMenu &&
-                                  DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                (isCollectionMenu &&
-                                  COLLECTION_MENU_IMAGES[normalizedSubItemTitle]) ||
-                                ((isMuhuratMenu || isJewelryMenu || isNecklaceMenu || isRingsMenu || isEarringsMenu || isDiamondMenu || isOccasionMenu) &&
-                                  HEADER_MENU_ITEM_IMAGES[normalizedSubItemTitle]);
-                              return (
-                                <NavLink
-                                  key={subItem.id}
-                                  to={subUrl}
-                                  prefetch="intent"
-                                  onClick={() => setActiveDesktopMenuId(null)}
-                                  className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${
-                                    menuImage ? 'flex items-center gap-2' : 'block'
-                                  }`}
-                                >
-                                  {menuImage ? (
-                                    <img
-                                      src={menuImage}
-                                      alt={subItem.title}
-                                      className="h-8 w-8  object-cover"
-                                    />
-                                  ) : null}
-                                  {subItem.title}
-                                </NavLink>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )})}
-                    </div>
-
-                    {shouldShowPromoCard ? (
-                      <NavLink
-                        to={resolveMenuUrl(viewAllItem?.url, url)}
-                        prefetch="intent"
-                        onClick={() => setActiveDesktopMenuId(null)}
-                        className="block overflow-hidden rounded-md"
                       >
-                        <img
-                          src={
-                            isPriceRangeMenu
-                              ? menuPriceImage
-                              : isCollectionMenu
-                                ? moreCollectionsImage
-                                : isMuhuratMenu 
-                                  ? mudhraSideMenuImage
-                                  : isNecklaceMenu
-                                    ? menuNecklaceImage
-                                    : isRingsMenu
-                                      ? menuRingImage
-                                      : isEarringsMenu
-                                        ? menuEarringsImage
-                                        : isDiamondMenu
-                                          ? menuDiamondImage
-                                          : isGoldMenu
-                                            ? menuGoldImage
-                                            : isOccasionMenu
-                                              ? menuOccasionImage
-                                  : jewelryMegaMenuPromo
-                          }
-                          alt={`${item.title} collection`}
-                          className="h-[180px] w-full rounded-md object-cover"
-                        />
-                        <span className="mt-3 inline-block text-[13px] font-semibold uppercase tracking-[0.08em] text-[#202020] border-t border-[#cf254a] pt-1">
-                          View All Designs
-                        </span>
-                      </NavLink>
-                    ) : null}
-                  </div>
+                        {groupedItems.map((group) => {
+                          const normalizedGroupTitle = group.title.trim().toLowerCase();
+                          const isCategory = normalizedGroupTitle === 'category';
+                          const items = group.items ?? [];
+                          const isSingleCategoryLayout =
+                            groupedItems.length === 1 && isCategory;
+                          const isPriceRangeGroup = isPriceRangeMenu;
+                          const splitIndex = Math.ceil(items.length / 2);
+                          const columnA = isCategory ? items.slice(0, splitIndex) : items;
+                          const columnB = isCategory ? items.slice(splitIndex) : [];
+
+                          return (
+                            <div
+                              key={group.id}
+                              className={`space-y-3 ${isJewelryOrOccasionMenu && isCategory
+                                ? 'col-span-2'
+                                : isCategory && isMuhuratMenu
+                                  ? 'col-span-2'
+                                  : 'col-span-1'
+                                }`}
+                            >
+                              <p className="font-semibold tracking-[0.08em] text-[13px] w-30 underline decoration-[#cf254a] underline-offset-4">
+                                {getDisplayTitle(group.title)}
+                              </p>
+                              <div
+                                className={
+                                  isPriceRangeGroup
+                                    ? 'grid grid-cols-1 gap-y-3'
+                                    : isSingleCategoryLayout
+                                      ? 'grid grid-cols-4 gap-x-8 gap-y-3'
+                                      : isCategory
+                                        ? 'grid grid-cols-2 gap-x-6 gap-y-2'
+                                        : 'space-y-2'
+                                }
+                              >
+                                {(isSingleCategoryLayout
+                                  ? items
+                                  : isPriceRangeGroup
+                                    ? [group]
+                                    : columnA.length
+                                      ? columnA
+                                      : [group]
+                                ).map((subItem) => {
+                                  const subUrl = resolveMenuUrl(
+                                    subItem.url,
+                                    resolveMenuUrl(group.url),
+                                  );
+                                  const normalizedSubItemTitle = subItem.title
+                                    .trim()
+                                    .toLowerCase();
+                                  const menuImage =
+                                    (isOccasionMenu &&
+                                      OCCASION_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
+                                    (isJewelryMenu &&
+                                      JEWELRY_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
+                                    (isGoldMenu &&
+                                      GOLD_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
+                                    (isDiamondMenu &&
+                                      DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
+                                    (isCollectionMenu &&
+                                      COLLECTION_MENU_IMAGES[normalizedSubItemTitle]) ||
+                                    ((isMuhuratMenu ||
+                                      isJewelryMenu ||
+                                      isNecklaceMenu ||
+                                      isRingsMenu ||
+                                      isEarringsMenu ||
+                                      isDiamondMenu ||
+                                      isOccasionMenu) &&
+                                      HEADER_MENU_ITEM_IMAGES[normalizedSubItemTitle]);
+                                  return (
+                                    <NavLink
+                                      key={subItem.id}
+                                      to={subUrl}
+                                      prefetch="intent"
+                                      onClick={() => setActiveDesktopMenuId(null)}
+                                      className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${menuImage ? 'flex items-center gap-2' : 'block'
+                                        }`}
+                                    >
+                                      {menuImage ? (
+                                        <img
+                                          src={menuImage}
+                                          alt={subItem.title}
+                                          className="h-8 w-8 object-cover"
+                                        />
+                                      ) : null}
+                                      {subItem.title}
+                                    </NavLink>
+                                  );
+                                })}
+                                {!isSingleCategoryLayout &&
+                                  columnB.map((subItem) => {
+                                    const subUrl = resolveMenuUrl(
+                                      subItem.url,
+                                      resolveMenuUrl(group.url),
+                                    );
+                                    const normalizedSubItemTitle = subItem.title
+                                      .trim()
+                                      .toLowerCase();
+                                    const menuImage =
+                                      (isOccasionMenu &&
+                                        OCCASION_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
+                                      (isJewelryMenu &&
+                                        JEWELRY_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
+                                      (isGoldMenu &&
+                                        GOLD_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
+                                      (isDiamondMenu &&
+                                        DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
+                                      (isCollectionMenu &&
+                                        COLLECTION_MENU_IMAGES[normalizedSubItemTitle]) ||
+                                      ((isMuhuratMenu ||
+                                        isJewelryMenu ||
+                                        isNecklaceMenu ||
+                                        isRingsMenu ||
+                                        isEarringsMenu ||
+                                        isDiamondMenu ||
+                                        isOccasionMenu) &&
+                                        HEADER_MENU_ITEM_IMAGES[normalizedSubItemTitle]);
+                                    return (
+                                      <NavLink
+                                        key={subItem.id}
+                                        to={subUrl}
+                                        prefetch="intent"
+                                        onClick={() => setActiveDesktopMenuId(null)}
+                                        className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${menuImage ? 'flex items-center gap-2' : 'block'
+                                          }`}
+                                      >
+                                        {menuImage ? (
+                                          <img
+                                            src={menuImage}
+                                            alt={subItem.title}
+                                            className="h-8 w-8 object-cover"
+                                          />
+                                        ) : null}
+                                        {subItem.title}
+                                      </NavLink>
+                                    );
+                                  })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {shouldShowPromoCard ? (
+                        <NavLink
+                          to={resolveMenuUrl(viewAllItem?.url, url)}
+                          prefetch="intent"
+                          onClick={() => setActiveDesktopMenuId(null)}
+                          className="block overflow-hidden rounded-md"
+                        >
+                          <img
+                            src={
+                              isPriceRangeMenu
+                                ? menuPriceImage
+                                : isCollectionMenu
+                                  ? moreCollectionsImage
+                                  : isMuhuratMenu
+                                    ? mudhraSideMenuImage
+                                    : isNecklaceMenu
+                                      ? menuNecklaceImage
+                                      : isRingsMenu
+                                        ? menuRingImage
+                                        : isEarringsMenu
+                                          ? menuEarringsImage
+                                          : isDiamondMenu
+                                            ? menuDiamondImage
+                                            : isGoldMenu
+                                              ? menuGoldImage
+                                              : isOccasionMenu
+                                                ? menuOccasionImage
+                                                : jewelryMegaMenuPromo
+                            }
+                            alt={`${item.title} collection`}
+                            className="h-[180px] w-full rounded-md object-cover"
+                          />
+                          <span className="mt-3 inline-block text-[13px] font-semibold uppercase tracking-[0.08em] text-[#202020] border-t border-[#cf254a] pt-1">
+                            View All Designs
+                          </span>
+                        </NavLink>
+                      ) : null}
+                    </div>
                   )}
                 </div>
               </div>
@@ -917,7 +992,7 @@ export function HeaderMenu({
 
         return (
           <NavLink
-            className="text-white font-serif"
+            className="text-white font-serif font-normal tracking-[0.01em] whitespace-nowrap"
             end
             key={item.id}
             onClick={close}
@@ -945,9 +1020,6 @@ function HeaderCtas({
   setIsWishlistOpen: (isOpen: boolean) => void;
   setIsStoreModalOpen: (isOpen: boolean) => void;
 }) {
-
-  const loginUrl = 'https://shopify.com/66607317088/account'
-
   useEffect(() => {
     const onWishlistAddAttempt = (event: Event) => {
       if (isLoggedIn) return;
@@ -962,78 +1034,91 @@ function HeaderCtas({
     };
   }, [isLoggedIn, setIsStoreModalOpen]);
 
-  
   return (
-    // <div className='lg:block hidden'>
-    <nav className="header-ctas max-w-[35vw] flex items-center bg-[#e8e4d1] pt-4 2xl:px-8 lg:px-4 2xl:pb-[10px] xl:pb-2 lg:pb-[5px] rounded-b-3xl mt-4" role="navigation">
-      <form action="/search" method="get" className="relative flex-1 flex items-center mr-8 rounded-full">
+    <nav
+      className="header-ctas max-w-[33vw] flex items-center justify-between bg-[#e8e4d1] lg:py-4 lg:pt-2 lg:px-4 xl:rounded-b-4xl lg:rounded-b-3xl"
+      role="navigation"
+    >
+      <form
+        action="/search"
+        method="get"
+        className="relative flex-1 mx-1 flex items-center rounded-full"
+      >
         <input
           name="q"
           type="search"
           placeholder="Search entire store here..."
           aria-label="Search entire store"
-          className="header-search-input px-4 py-2 pr-10 bg-white rounded-full w-full 2xl:h-[30px] xl:h-[25px] lg:h-[20px] font-serif font-normal text-[14px] outline-none placeholder:text-gray-300"
+          className="header-search-input px-4 py-2.5 pr-10 bg-white rounded-full w-full 2xl:h-[35px] xl:h-[30px] lg:h-[25px] font-serif font-normal text-[14px] outline-none placeholder:text-gray-300"
         />
         <button
           type="submit"
           aria-label="Search"
           className="absolute right-1 p-2 text-gray-600 hover:text-black font-serif"
         >
-          <Search size={18} />
+          <Search size={18} className='text-gray-400'/>
         </button>
       </form>
       <HeaderMenuMobileToggle />
 
-      {/* <CartToggle cart={cart} /> */}
-      <div className="flex items-center 2xl:gap-8 xl:gap-6 lg:gap-4">
+      <div className="flex items-center xl:gap-5 lg:gap-4">
         <button
           type="button"
-          onClick={() => {isLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true)}}
+          onClick={() => {
+            isLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true);
+          }}
           className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition cursor-pointer"
         >
-          <div className="relative flex justify-center mb-1">
-            <HeartIcon size={24} className="text-black" />
-
+          <div className="relative flex justify-center ">
+            <img src={HeartIcon} alt={'Heart'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
             {wishlistCount > 0 && (
-              <span className="absolute -top-3 -right-1 bg-red-500 text-white text-[10px] px-2 py-1 rounded-full">
+              <span className="absolute -top-3 -right-1 bg-red-500 text-white text-[9px] px-2 py-1 rounded-full">
                 {wishlistCount}
               </span>
             )}
           </div>
-          <p className='text-center text-[#000000]  2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Wishlist</p>
+          <p className="text-center text-[#333] 2xl:text-[12px] xl:text-[11px] lg:text-[9px] font-serif">
+            Wishlist
+          </p>
         </button>
-        <NavLink to="/experience-centre" className="flex flex-col items-center space-x-2 text-center transition cursor-pointer">
-          <div className='flex justify-center mb-1'>
-            <FaStore size={24} className='text-black' />
+
+        <NavLink
+          to="/experience-centre"
+          className="flex flex-col items-center space-x-2 text-center transition cursor-pointer"
+        >
+          <div className="flex justify-center ">
+            <img src={StoreIcon} alt={'Store'}  className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
           </div>
-          <p className='text-center text-[#000000]  2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Store</p>
+          <p className="text-center text-[#333] 2xl:text-[12px] xl:text-[11px] lg:text-[9px] font-serif">
+            Store
+          </p>
         </NavLink>
+
         <button
           type="button"
-          onClick={() => {isLoggedIn ? window.location.href = '/account' : setIsStoreModalOpen(true)}}
-          className="flex flex-col items-center space-x-2  text-center transition cursor-pointer"
+          onClick={() => {
+            isLoggedIn
+              ? (window.location.href = '/account')
+              : setIsStoreModalOpen(true);
+          }}
+          className="flex flex-col items-center space-x-2 text-center transition cursor-pointer"
         >
-          <div className="mb-1">
-            <UserIcon className='text-black' size={24} /> 
+          <div className="">
+            <img src={UserIcon} alt={'User'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
           </div>
-          <p className='text-center text-[#000000] 2xl:text-[15px] xl:text-[14px] lg:text-[13px] font-serif'>Profile</p>
+          <p className="text-center text-[#333] 2xl:text-[12px] xl:text-[11px] lg:text-[10px] font-serif">
+            Profile
+          </p>
         </button>
-
       </div>
     </nav>
-    // </div>
   );
 }
-
-
 
 function HeaderMenuMobileToggle() {
   const { open } = useAside();
   return (
-    <button
-      className="header-menu-mobile-toggle reset"
-      onClick={() => open('mobile')}
-    >
+    <button className="header-menu-mobile-toggle reset" onClick={() => open('mobile')}>
       <h3>☰</h3>
     </button>
   );
@@ -1102,11 +1187,11 @@ const FALLBACK_HEADER_MENU = {
           type: 'HTTP',
           url: '/collections/jewelry',
           items: [
-            {id: '1-1-1', title: 'Gold', type: 'HTTP', url: '/collections/gold', items: []},
-            {id: '1-1-2', title: 'Diamond', type: 'HTTP', url: '/collections/diamond', items: []},
-            {id: '1-1-3', title: 'Rose Gold', type: 'HTTP', url: '/collections/rose-gold', items: []},
-            {id: '1-1-4', title: 'Two Tone', type: 'HTTP', url: '/collections/two-tone', items: []},
-            {id: '1-1-5', title: 'Tri Tone', type: 'HTTP', url: '/collections/tri-tone', items: []},
+            { id: '1-1-1', title: 'Gold', type: 'HTTP', url: '/collections/gold', items: [] },
+            { id: '1-1-2', title: 'Diamond', type: 'HTTP', url: '/collections/diamond', items: [] },
+            { id: '1-1-3', title: 'Rose Gold', type: 'HTTP', url: '/collections/rose-gold', items: [] },
+            { id: '1-1-4', title: 'Two Tone', type: 'HTTP', url: '/collections/two-tone', items: [] },
+            { id: '1-1-5', title: 'Tri Tone', type: 'HTTP', url: '/collections/tri-tone', items: [] },
           ],
         },
         {
@@ -1115,12 +1200,12 @@ const FALLBACK_HEADER_MENU = {
           type: 'HTTP',
           url: '/collections/category',
           items: [
-            {id: '1-2-1', title: 'Earrings', type: 'HTTP', url: '/collections/earrings', items: []},
-            {id: '1-2-2', title: 'Pendants', type: 'HTTP', url: '/collections/pendants', items: []},
-            {id: '1-2-3', title: 'Bangles', type: 'HTTP', url: '/collections/bangles', items: []},
-            {id: '1-2-4', title: 'Mangalsutras', type: 'HTTP', url: '/collections/mangalsutras', items: []},
-            {id: '1-2-5', title: 'Maang Tikka', type: 'HTTP', url: '/collections/maang-tikka', items: []},
-            {id: '1-2-6', title: 'Pendant With Chain', type: 'HTTP', url: '/collections/pendant-with-chain', items: []},
+            { id: '1-2-1', title: 'Earrings', type: 'HTTP', url: '/collections/earrings', items: [] },
+            { id: '1-2-2', title: 'Pendants', type: 'HTTP', url: '/collections/pendants', items: [] },
+            { id: '1-2-3', title: 'Bangles', type: 'HTTP', url: '/collections/bangles', items: [] },
+            { id: '1-2-4', title: 'Mangalsutras', type: 'HTTP', url: '/collections/mangalsutras', items: [] },
+            { id: '1-2-5', title: 'Maang Tikka', type: 'HTTP', url: '/collections/maang-tikka', items: [] },
+            { id: '1-2-6', title: 'Pendant With Chain', type: 'HTTP', url: '/collections/pendant-with-chain', items: [] },
           ],
         },
         {
@@ -1129,12 +1214,12 @@ const FALLBACK_HEADER_MENU = {
           type: 'HTTP',
           url: '/collections/curated-shop',
           items: [
-            {id: '1-3-1', title: 'Necklaces', type: 'HTTP', url: '/collections/necklaces', items: []},
-            {id: '1-3-2', title: 'Rings', type: 'HTTP', url: '/collections/rings', items: []},
-            {id: '1-3-3', title: 'Bracelets', type: 'HTTP', url: '/collections/bracelets', items: []},
-            {id: '1-3-4', title: 'Chains', type: 'HTTP', url: '/collections/chains', items: []},
-            {id: '1-3-5', title: 'Anklet', type: 'HTTP', url: '/collections/anklets', items: []},
-            {id: '1-3-6', title: 'Waist Chain', type: 'HTTP', url: '/collections/waist-chain', items: []},
+            { id: '1-3-1', title: 'Necklaces', type: 'HTTP', url: '/collections/necklaces', items: [] },
+            { id: '1-3-2', title: 'Rings', type: 'HTTP', url: '/collections/rings', items: [] },
+            { id: '1-3-3', title: 'Bracelets', type: 'HTTP', url: '/collections/bracelets', items: [] },
+            { id: '1-3-4', title: 'Chains', type: 'HTTP', url: '/collections/chains', items: [] },
+            { id: '1-3-5', title: 'Anklet', type: 'HTTP', url: '/collections/anklets', items: [] },
+            { id: '1-3-6', title: 'Waist Chain', type: 'HTTP', url: '/collections/waist-chain', items: [] },
           ],
         },
         {
@@ -1143,27 +1228,27 @@ const FALLBACK_HEADER_MENU = {
           type: 'HTTP',
           url: '/collections/shop-for',
           items: [
-            {id: '1-4-1', title: 'Bridal Jewelry', type: 'HTTP', url: '/collections/bridal-jewelry', items: []},
-            {id: '1-4-2', title: 'Groom Jewelry', type: 'HTTP', url: '/collections/groom-jewelry', items: []},
-            {id: '1-4-3', title: 'Gifts', type: 'HTTP', url: '/collections/gifts', items: []},
-            {id: '1-4-4', title: 'Women', type: 'HTTP', url: '/collections/women', items: []},
-            {id: '1-4-5', title: 'Men', type: 'HTTP', url: '/collections/men', items: []},
-            {id: '1-4-6', title: 'Kids', type: 'HTTP', url: '/collections/kids', items: []},
-            {id: '1-4-7', title: 'Unisex', type: 'HTTP', url: '/collections/unisex', items: []},
+            { id: '1-4-1', title: 'Bridal Jewelry', type: 'HTTP', url: '/collections/bridal-jewelry', items: [] },
+            { id: '1-4-2', title: 'Groom Jewelry', type: 'HTTP', url: '/collections/groom-jewelry', items: [] },
+            { id: '1-4-3', title: 'Gifts', type: 'HTTP', url: '/collections/gifts', items: [] },
+            { id: '1-4-4', title: 'Women', type: 'HTTP', url: '/collections/women', items: [] },
+            { id: '1-4-5', title: 'Men', type: 'HTTP', url: '/collections/men', items: [] },
+            { id: '1-4-6', title: 'Kids', type: 'HTTP', url: '/collections/kids', items: [] },
+            { id: '1-4-7', title: 'Unisex', type: 'HTTP', url: '/collections/unisex', items: [] },
           ],
         },
       ],
     },
-    {id: '2', title: 'Gold', type: 'HTTP', url: '/collections/gold', items: []},
-    {id: '3', title: 'Diamond', type: 'HTTP', url: '/collections/diamond', items: []},
-    {id: '4', title: 'Earrings', type: 'HTTP', url: '/collections/earrings', items: []},
-    {id: '5', title: 'Rings', type: 'HTTP', url: '/collections/rings', items: []},
-    {id: '6', title: 'Necklace', type: 'HTTP', url: '/collections/necklace', items: []},
-    {id: '7', title: 'Muhurat', type: 'HTTP', url: '/muhurat', items: []},
-    {id: '8', title: 'Collection', type: 'HTTP', url: '/collections', items: []},
-    {id: '9', title: 'Occasion', type: 'HTTP', url: '/collections/occasion', items: []},
-    {id: '10', title: 'Price Range', type: 'HTTP', url: '/search?price_range=all', items: []},
-    {id: '11', title: 'More', type: 'HTTP', url: '/#more', items: []},
+    { id: '2', title: 'Gold', type: 'HTTP', url: '/collections/gold', items: [] },
+    { id: '3', title: 'Diamond', type: 'HTTP', url: '/collections/diamond', items: [] },
+    { id: '4', title: 'Earrings', type: 'HTTP', url: '/collections/earrings', items: [] },
+    { id: '5', title: 'Rings', type: 'HTTP', url: '/collections/rings', items: [] },
+    { id: '6', title: 'Necklace', type: 'HTTP', url: '/collections/necklace', items: [] },
+    { id: '7', title: 'Muhurat', type: 'HTTP', url: '/muhurat', items: [] },
+    { id: '8', title: 'Collection', type: 'HTTP', url: '/collections', items: [] },
+    { id: '9', title: 'Occasion', type: 'HTTP', url: '/collections/occasion', items: [] },
+    { id: '10', title: 'Price Range', type: 'HTTP', url: '/search?price_range=all', items: [] },
+    { id: '11', title: 'More', type: 'HTTP', url: '/#more', items: [] },
   ],
 };
 
@@ -1175,7 +1260,7 @@ function activeLinkStyle({
   isPending: boolean;
 }) {
   return {
-    fontWeight: isActive ? 'bold' : undefined,
+    fontWeight: isActive ? '' : undefined,
     color: isPending ? '#ccc' : '#fff',
   };
 }
