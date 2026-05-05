@@ -66,7 +66,7 @@ const TextCarousel: React.FC = () => {
   );
 };
 
-const ROTATION_INTERVAL = 3000;
+const ROTATION_INTERVAL = 60000;
 
 type HomePageProps = MediaItem;
 
@@ -79,6 +79,14 @@ const HomePage: React.FC<HomePageProps> = ({
 }) => {
   const location = useLocation();
   const [index, setIndex] = useState(0);
+  const getYouTubeEmbedUrl = (url: string): string => {
+    const match = url.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube-nocookie\.com\/embed\/)([^&?/]+)/
+    );
+    return match
+      ? `https://www.youtube-nocookie.com/embed/${match[1]}?autoplay=1&mute=1&enablejsapi=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1`
+      : url;
+  };
   const items: CarouselItem[] = useMemo(
     () =>
       [
@@ -126,29 +134,32 @@ const HomePage: React.FC<HomePageProps> = ({
       
         {/* IMAGE CAROUSEL (CLOCKWISE) */}
         <div className="absolute w-full h-full flex items-center justify-center">
-            {items.map((_, i) => {
-                const item = items[getImageIndex(i)];
+        {items.map((item, i) => {
+          const isActive = i === 0; // since getImageIndex(0) is always the current
+          const currentItem = items[getImageIndex(i)];
+          const isVideo =
+            currentItem.image.includes("youtube.com") ||
+            currentItem.image.includes("youtu.be") ||
+            currentItem.image.includes("youtube-nocookie.com");
 
-                const isVideo = item.image.includes("youtube.com") || item.image.includes("youtube-nocookie.com");
-
-                return isVideo ? (
-                <iframe
-                    key={i}
-                    src={item.image}
-                    title={`carousel-video-${i}`}   // ✅ unique title
-                    className="absolute w-full h-full rounded-xl"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                />
-                ) : (
-                <img
-                    key={i}
-                    src={item.image}
-                    alt=""
-                    className="absolute w-full h-full object-cover rounded-xl shadow-lg transition-all duration-700"
-                />
-                );
-            })}
+          return isVideo ? (
+            <iframe
+              key={i}
+              src={getYouTubeEmbedUrl(currentItem.image)}
+              title={`carousel-video-${i}`}
+              className={`absolute w-full h-full transition-opacity duration-700 pointer-events-none`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <img
+              key={i}
+              src={currentItem.image}
+              alt=""
+              className={`absolute w-full h-full object-cover shadow-lg transition-opacity duration-700 `}
+            />
+          );
+        })}
         </div>
         {/* CONTROLS */}
         <div className="absolute top-1/2 left-0 w-full flex justify-between px-6 -translate-y-1/2">
