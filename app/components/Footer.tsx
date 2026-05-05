@@ -13,6 +13,12 @@ interface FooterProps {
 
 type AccordionId = 'who' | 'help' | 'policies' | 'useful' | 'connect';
 
+const WRITE_TO_US_URL =
+  'https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=customercare.usa@kalyanjewellers.net';
+const CALL_US_URL = 'tel:+18482009694';
+const WHATSAPP_URL =
+  'https://api.whatsapp.com/send/?phone=18482009694&text&type=phone_number&app_absent=0';
+
 const SOCIAL_LINKS = [
   {
     label: 'Facebook',
@@ -127,7 +133,7 @@ export function Footer({
                           </li>
                           <li>
                             <Link
-                              to="/pages/muhurat"
+                              to="/collections/muhurat"
                               className="font-serif text-[#999] transition hover:text-white"
                             >
                               Muhurat
@@ -249,7 +255,12 @@ export function Footer({
                       </h3>
 
                       <div className="mb-6 flex items-center gap-[5rem] text-sm">
-                        <div className="flex flex-col text-center transition">
+                        <a
+                          href={WRITE_TO_US_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex flex-col text-center transition"
+                        >
                           <div className="mb-2 flex justify-center">
                             <Mail
                               size={28}
@@ -260,8 +271,11 @@ export function Footer({
                           <p className="text-center font-serif text-[#999] hover:text-white">
                             Write to us
                           </p>
-                        </div>
-                        <div className="flex flex-col items-center text-center transition">
+                        </a>
+                        <a
+                          href={CALL_US_URL}
+                          className="flex flex-col items-center text-center transition"
+                        >
                           <div className="mb-2 flex justify-center">
                             <Phone
                               size={28}
@@ -272,8 +286,13 @@ export function Footer({
                           <p className="text-center font-serif text-[#999] hover:text-white">
                             Call us
                           </p>
-                        </div>
-                        <div className="flex flex-col items-center text-center transition">
+                        </a>
+                        <a
+                          href={WHATSAPP_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex flex-col items-center text-center transition"
+                        >
                           <div className="mb-2 flex justify-center">
                             <FaWhatsapp
                               size={28}
@@ -284,7 +303,7 @@ export function Footer({
                           <p className="text-center font-serif text-[#999] hover:text-white">
                             Whatsapp
                           </p>
-                        </div>
+                        </a>
                       </div>
 
                       <div className="mb-6 max-w-[23rem] border-t-2 border-white pt-6">
@@ -402,7 +421,7 @@ function MobileAccordion({
           </li>
           <li>
             <Link
-              to="/pages/muhurat"
+              to="/collections/muhurat"
               className="block py-0.5 transition hover:text-white"
             >
               Muhurat
@@ -496,24 +515,37 @@ function MobileAccordion({
         'connect',
         'Connect now:',
         <div className="flex justify-around gap-4 pt-1">
-          <div className="flex flex-col items-center gap-2 text-center">
+          <a
+            href={WRITE_TO_US_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center gap-2 text-center"
+          >
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white">
               <Mail size={22} aria-hidden />
             </span>
             <span className="text-xs">Write to us</span>
-          </div>
-          <div className="flex flex-col items-center gap-2 text-center">
+          </a>
+          <a
+            href={CALL_US_URL}
+            className="flex flex-col items-center gap-2 text-center"
+          >
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white">
               <Phone size={22} aria-hidden />
             </span>
             <span className="text-xs">Call us</span>
-          </div>
-          <div className="flex flex-col items-center gap-2 text-center">
+          </a>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center gap-2 text-center"
+          >
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white">
               <FaWhatsapp size={22} aria-hidden className="text-white" />
             </span>
             <span className="text-xs">Whatsapp</span>
-          </div>
+          </a>
         </div>,
       )}
     </nav>

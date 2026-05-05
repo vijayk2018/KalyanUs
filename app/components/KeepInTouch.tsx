@@ -46,13 +46,13 @@ const KeepInTouch: React.FC = () => {
             <div className="relative z-10 flex justify-center gap-5">
 
               {/* BOOK APPOINTMENT */}
-              <div className="flex flex-col items-center gap-3 cursor-pointer hover:opacity-80">
+              <div className="flex flex-col items-center gap-3 cursor-pointer hover:opacity-80" onClick={() => window.open('/experience-centre', '_blank')}>
                 <img src={BookAppointment} alt="Book Appointment" className="lg:w-15 lg:h-15 h-7 w-7 fill-white" />
                 <p className="text-sm tracking-wide font-medium font-serif">BOOK APPOINTMENT</p>
               </div>
 
               {/* GET DIRECTION */}
-              <div className="flex flex-col items-center gap-3 cursor-pointer hover:opacity-80">
+              <div className="flex flex-col items-center gap-3 cursor-pointer hover:opacity-80" onClick={() => window.open('/experience-centre', '_blank')}>
                 <img src={GetDirection} alt="Get Direction" className="lg:w-15 lg:h-15 h-7 w-7 text-white fill-white" />
                 <p className="text-sm tracking-wide font-medium font-serif">GET DIRECTION</p>
               </div>
