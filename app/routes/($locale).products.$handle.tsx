@@ -510,12 +510,14 @@ export default function Product() {
   return (
     <div className='bg-[#fdfaf5] 2xl:px-[5rem] lg:px-[4rem]'>
       <p className='text-[14px] text-gray-400 px-6 pt-4 font-sans'><a href='/'> Home</a> | <span className='text-black'>{product.title}</span></p>
+      
       {reviewSuccessBanner ? (
         <div className="mx-6 mt-4 flex items-center gap-3 bg-[#e2ede2] px-4 py-3 text-[#14813f]">
           <span className="text-lg leading-none">✓</span>
           <span className="font-sans text-base">{reviewSuccessBanner}</span>
         </div>
       ) : null}
+
       <div className="mx-auto px-6 py-10 w-full flex flex-col lg:flex-row lg:gap-[5rem] items-center">
         
         {/* LEFT SIDE */}
@@ -838,23 +840,24 @@ export default function Product() {
             </div>
 
             <div className="grid grid-cols-1 gap-3 md:hidden">
-              <div className="text-[#000000] flex items-center justify-center gap-2">
+              {/* <div className="text-[#000000] flex items-center justify-center gap-2">
                 <VideoIcon size={22} />
                 <span className="text-lg font-semibold font-sans">Live Video Call</span>
-              </div>
+              </div> */}
+              <SaleAssistButton
+                widgetId={saleAssistWidgetId}
+                label="Live Video Call"
+                variant="pdp"
+              />
 
-              {/* <button
+              <button
                 type="button"
                 onClick={() => setIsVideoCallOpen(true)}
                 className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer"
               >
                 <span className="text-lg font-medium uppercase font-sans">Schedule a Video Call</span>
-              </button> */}
-              <SaleAssistButton
-                widgetId={saleAssistWidgetId}
-                label="Video Call Us"
-                variant="pdp"
-              />
+              </button>
+              
 
               <div className="text-[#000000] flex items-center justify-center gap-2">
                 <StoreIcon size={22} />
@@ -892,10 +895,15 @@ export default function Product() {
             </div>
 
             <div className="hidden md:grid grid-cols-2 gap-4">
-              <div className="text-[#000000] flex items-center justify-center gap-2 ">
+              {/* <div className="text-[#000000] flex items-center justify-center gap-2 ">
                 <VideoIcon size={22} />
                 <span className="text-lg font-semibold font-sans ">Live Video Call</span>
-              </div>
+              </div> */}
+              <SaleAssistButton
+                widgetId={saleAssistWidgetId}
+                label="Live Video Call"
+                variant="pdp"
+              />
 
               <div className="text-[#000000] flex items-center justify-center gap-2 ">
                 <StoreIcon size={22} />
@@ -904,7 +912,7 @@ export default function Product() {
             </div>
 
             <div className="hidden md:grid grid-cols-2 gap-4">
-              {/* {!saleAssistWidgetId ?
+              
                 <button
                   type="button"
                   onClick={() => setIsVideoCallOpen(true)}
@@ -912,14 +920,7 @@ export default function Product() {
                 >
                   <span className="text-lg font-medium uppercase font-sans">Schedule a Video Call</span>
                 </button>
-              : */}
-                <SaleAssistButton
-                  widgetId={saleAssistWidgetId}
-                  label="Video Call Us"
-                  variant="pdp"
-                />
-              {/* } */}
-
+              
               <button className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer">
                 <span className="text-lg font-medium uppercase font-sans">Find in Store</span>
               </button>
@@ -949,6 +950,7 @@ export default function Product() {
           }}
         />
       </div>
+
       {/* PRODUCT DETAILS + REVIEW SECTION */}
       <div className="bg-white rounded-xl p-6 space-y-6">
         <div className='grid lg:grid-cols-5  gap-16'>
@@ -1172,6 +1174,8 @@ export default function Product() {
         </div>
 
       </div>
+
+
       {/* New Section */}
       <section className="lg:mt-8 2xl:px-[5rem] lg:px-[4rem] lg:py-48 lg:mb-0 mb-6 py-5 mt-0 bg-white">
         <div className="mx-auto relative">
@@ -1219,6 +1223,7 @@ export default function Product() {
           </div>
         </div>
       </section>
+
       {isOpen && (
         <ImageModal
           images={images}
@@ -1227,6 +1232,7 @@ export default function Product() {
           onClose={() => setIsOpen(false)}
         />
       )}
+
       {isCallbackOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
@@ -1318,6 +1324,7 @@ export default function Product() {
           </div>
         </div>
       )}
+
       {isVideoCallOpen && (
         <div
           className="fixed inset-0 z-50 flex items-start pt-[4rem] justify-center bg-black/50 px-4"
@@ -1440,6 +1447,7 @@ export default function Product() {
           </div>
         </div>
       )}
+
       {isDiamondCertificateGuideOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
