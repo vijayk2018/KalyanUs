@@ -259,8 +259,8 @@ const slides: Slide[] = [
     leftImage: whiteGold3,    // White-Gold-3.webp  = couple illustration
     rightImage: whiteGold31,  // White-Gold-3_1.webp = diamond engagement rings
     showBrowseButton: true,
-    leftImageClassName: 'max-w-[315px] max-h-[345px]',
-    rightImageClassName: 'mt-5 max-w-[420px] w-full h-auto max-h-[336px] object-contain block mx-auto',
+    leftImageClassName: 'max-w-[515px] max-h-[445px]',
+    rightImageClassName: 'mt-5 max-w-[420px] w-full h-auto max-h-[236px] object-contain block mx-auto',
   },
 
   /* ── 9. Rose Gold ──────────────────────────────────────────────────────── */
