@@ -64,20 +64,21 @@ export default function DiamondGuide() {
 
     const shapes = [
         {
-            name: 'Round', icon: roundIcon, image: roundImg,
-            desc: "The round brilliant cut is the most popular diamond shape, representing approximately 75% of all diamonds sold. Due to the mechanics of its shape, the round diamond is generally superior to fancy shapes at reflecting light, maximizing potential brightness."
+            name: 'Round Solitaire', icon: roundIcon, image: roundImg,
+            desc: "Also known as the brilliant cut, round diamonds are the most traditional shapes and that's why they're perfect for a classic look. The round cut diamond is the most popular shape and has evolved from the Old European Cut."
         },
         {
             name: 'Princess', icon: princessIcon, image: princessImg,
-            desc: "One of the most popular fancy cut shapes, the princess cut is traditional and elegant. Its unique square shape and brilliant facets make it a perfect choice for engagement rings that stand out with modern brilliance."
+            desc: "Known for its sharp geometric edges, the Princess cut is a much loved contemporary design. Despite being classified as a \"fancy shape,\" princess cut diamonds typically have a lower cost per carat compared to round diamonds."
+
         },
         {
             name: 'Cushion', icon: cushionIcon, image: cushionImg,
-            desc: "The cushion cut is an antique style of cut that has been around for centuries. It combines a square cut with rounded corners, much like a pillow (hence the name). It's known for its incredible fire and romantic appeal."
+            desc: "Often mistaken for the Princess cut, Cushion shaped diamonds are actually more romantic as they are round edged. While round cut diamonds may outshine them in brilliance, these diamonds reveal a spectrum of vivid colors when observed from various angles."
         },
         {
             name: 'Pear', icon: pearIcon, image: pearImg,
-            desc: "Shaped like a raindrop, they're unique and attractive and perfect if you're looking for a distinctive jewel. The most popular way to wear a pear shape is to position the pointed top towards your fingertips, while the rounded bottom faces your hand."
+            desc: "Shaped like a raindrop, they’re unique and attractive and perfect if you’re looking for a distinctive jewel. The most popular way to wear a pear shape is to position the pointed top towards your fingertips, while the rounded bottom faces your hand."
         },
         {
             name: 'Heart', icon: heartIcon, image: heartImg,
@@ -85,15 +86,15 @@ export default function DiamondGuide() {
         },
         {
             name: 'Marquise', icon: marquiseIcon, image: marquiseImg,
-            desc: "The shape of a marquise diamond can maximize carat weight, giving you a much larger-looking diamond. This brilliant-cut diamond is curved on the sides and comes to a point on each end."
+            desc: "Elongated and narrow-shaped, Marquise diamonds can create the illusion of appearing greater than they are. That's why they're perfect for those who love to flaunt their jewels."
         },
         {
             name: 'Emerald', icon: emeraldIcon, image: emeraldImg,
-            desc: "The emerald cut diamond is a step cut that highlights the clarity of the diamond. Its flat surface and long, rectangular facets create a unique mirror-like effect, offering a hall-of-mirrors look."
+            desc: "The Emerald cut flaunts an elongated rectangular shape with cut corners. Technically speaking, it is an elegantly shaped octagon and has a commanding appearance. If you love power, you will love the Emerald cut!"
         },
         {
             name: 'Radiant', icon: radiantIcon, image: radiantImg,
-            desc: "Radiant cut diamonds feature a vibrant and lively brilliance. This shape combines the elegance of the emerald shape with the brilliance of the round cut, featuring trimmed corners for extra durability."
+            desc: "Similar to the silhouette of an Emerald cut diamond, Radiant cut diamonds are full of effervescent sparkle because its facets are cut more like a round brilliant cut. If you wish to captivate, Radiant cut is for you."
         }
     ];
 
@@ -204,7 +205,7 @@ export default function DiamondGuide() {
             </div>
 
             {/* STICKY NAV — pill buttons (image 1) */}
-            <div className="sticky top-0 bg-white z-50 border-b border-gray-200/80">
+            <div className="sticky top-0 bg-white z-50 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
                 <div className={`${contentMax} flex items-stretch justify-between gap-2 sm:gap-3 md:gap-4 overflow-x-auto no-scrollbar py-3 sm:py-4 md:py-5`}>
                     {navItems.map((item) => (
                         <button
