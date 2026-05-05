@@ -13,7 +13,7 @@ import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {useState, useEffect, useRef, useMemo, type FormEvent} from 'react';
-import {ChevronUp, ChevronDown, ChevronLeft, VideoIcon, ChevronRight, StoreIcon, EyeIcon, HeartIcon, PhoneIcon, X, ShieldCheck, RefreshCcw, BadgeDollarSign, Info, MapPin} from "lucide-react";
+import {ChevronUp, ChevronDown, ChevronLeft, VideoIcon, ChevronRight, StoreIcon, EyeIcon, HeartIcon, PhoneIcon, X, ShieldCheck, RefreshCcw, BadgeDollarSign, Info, MapPin, Copy, Check} from "lucide-react";
 import ImageModal from '~/components/ImageCarousal';
 import { FaWhatsapp } from "react-icons/fa";
 import levelNew from '../assets/levelnew.png';
@@ -237,8 +237,33 @@ export default function Product() {
   const [videoCallIsdCode, setVideoCallIsdCode] = useState('+1');
   const [videoCallPhone, setVideoCallPhone] = useState('');
   const [isVideoCallSubmitting, setIsVideoCallSubmitting] = useState(false);
+  const [videoCallInlineError, setVideoCallInlineError] = useState('');
   const videoCallTimeSlots = ['11:39 pm', '3:00 pm', '12:00 pm', '5:00 pm'];
+  const todayDate = useMemo(() => new Date().toISOString().split('T')[0], []);
   const {showSuccess, showError, toasts, removeToast} = useToast();
+  const availableVideoCallTimeSlots = useMemo(() => {
+    if (videoCallScheduleMode !== 'today') {
+      return videoCallTimeSlots;
+    }
+
+    const now = new Date();
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+    return videoCallTimeSlots.filter((slot) => {
+      const [timePart, meridiem] = slot.trim().split(' ');
+      const [rawHour, rawMinute] = timePart.split(':');
+      let hour = Number(rawHour);
+      const minute = Number(rawMinute);
+
+      if (Number.isNaN(hour) || Number.isNaN(minute)) return false;
+      const meridiemLower = meridiem?.toLowerCase();
+      if (meridiemLower === 'pm' && hour !== 12) hour += 12;
+      if (meridiemLower === 'am' && hour === 12) hour = 0;
+
+      const slotMinutes = hour * 60 + minute;
+      return slotMinutes >= nowMinutes;
+    });
+  }, [videoCallScheduleMode, videoCallTimeSlots]);
   const productTabs = useMemo(
     () => ({
       summary: parseTabRows(product.tabSummary?.value),
@@ -267,6 +292,8 @@ export default function Product() {
     ? product.showDelivery.value.toLowerCase() === 'true'
     : true;
   const saleAssistWidgetId = product.saleAssistWidgetId?.value?.trim() || '6a332aee-f9a2-4163-9fc2-a37720137da4';
+  const styleNumber = product.styleNo?.value || selectedVariant?.sku || '—';
+  const [isSkuCopied, setIsSkuCopied] = useState(false);
 
   const shouldShowDiamondCertificateGuide = product.diamondCertificateGuide?.value
     ? product.diamondCertificateGuide.value.toLowerCase() === 'true'
@@ -313,6 +340,22 @@ export default function Product() {
     setIsDiamondCertificateGuideOpen(true);
   };
 
+  const handleCopySku = async () => {
+    if (!styleNumber || styleNumber === '—') {
+      showError('SKU not available to copy.');
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(styleNumber);
+      setIsSkuCopied(true);
+      showSuccess('SKU copied.');
+      window.setTimeout(() => setIsSkuCopied(false), 1500);
+    } catch {
+      showError('Unable to copy SKU.');
+    }
+  };
+
   const handleReviewSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const reviewFormElement = event.currentTarget;
@@ -352,6 +395,7 @@ export default function Product() {
       }
 
       setReviewSuccessBanner('You submitted your review for moderation.');
+      window.scrollTo({top: 0, behavior: 'smooth'});
       setReviewNickname('');
       setReviewSummary('');
       setReviewText('');
@@ -362,6 +406,26 @@ export default function Product() {
     } finally {
       setIsReviewSubmitting(false);
     }
+  };
+
+  const closeCallbackModal = () => {
+    setIsCallbackOpen(false);
+    setCallbackName('');
+    setCallbackEmail('');
+    setCallbackPhone('');
+    setCallbackStoreLocation('');
+  };
+
+  const closeVideoCallModal = () => {
+    setIsVideoCallOpen(false);
+    setVideoCallInlineError('');
+    setVideoCallScheduleMode('');
+    setVideoCallDate('');
+    setVideoCallTime('');
+    setVideoCallName('');
+    setVideoCallEmail('');
+    setVideoCallIsdCode('+1');
+    setVideoCallPhone('');
   };
 
   const handleCallbackSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -400,12 +464,8 @@ export default function Product() {
         return;
       }
 
-      setIsCallbackOpen(false);
+      closeCallbackModal();
       showSuccess('Callback request submitted successfully.');
-      setCallbackName('');
-      setCallbackEmail('');
-      setCallbackPhone('');
-      setCallbackStoreLocation('');
     } catch {
       showError('Failed to submit callback request. Please try again.');
     } finally {
@@ -425,28 +485,67 @@ export default function Product() {
 
   const handleVideoCallSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (
-      !videoCallScheduleMode ||
-      !videoCallName.trim() ||
-      !videoCallEmail.trim() ||
-      !videoCallPhone.trim() ||
-      !videoCallIsdCode.trim() ||
-      (videoCallScheduleMode === 'today' && !videoCallTime.trim()) ||
-      (videoCallScheduleMode === 'pick_date' && !videoCallDate)
-    ) {
-      showError('Please fill all required video call fields.');
+    const trimmedName = videoCallName.trim();
+    const trimmedEmail = videoCallEmail.trim();
+    const trimmedPhone = videoCallPhone.trim();
+    const isPastDateSelection = videoCallScheduleMode === 'pick_date' && videoCallDate < todayDate;
+    const isPastTimeForToday =
+      videoCallScheduleMode === 'today' &&
+      videoCallTime.trim() &&
+      !availableVideoCallTimeSlots.includes(videoCallTime);
+    const isPhoneTenDigits = /^\d{10}$/.test(trimmedPhone);
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
+
+    if (!videoCallScheduleMode) {
+      setVideoCallInlineError('Please select Today or Pick A Date.');
+      return;
+    }
+
+    if (videoCallScheduleMode === 'today' && !videoCallTime.trim()) {
+      setVideoCallInlineError('Please select a time slot.');
+      return;
+    }
+
+    if (videoCallScheduleMode === 'pick_date' && !videoCallDate) {
+      setVideoCallInlineError('Please select a date.');
+      return;
+    }
+
+    if (isPastDateSelection || isPastTimeForToday) {
+      setVideoCallInlineError('Please choose a current or future slot.');
+      return;
+    }
+
+    if (!trimmedName) {
+      setVideoCallInlineError('Please enter your name.');
+      return;
+    }
+
+    if (!trimmedEmail || !isValidEmail) {
+      setVideoCallInlineError('Please enter your email address.');
+      return;
+    }
+
+    if (!trimmedPhone) {
+      setVideoCallInlineError('The phone number format is invalid.');
+      return;
+    }
+
+    if (!isPhoneTenDigits) {
+      setVideoCallInlineError('Please enter a valid phone number (10 digits).');
       return;
     }
     try {
+      setVideoCallInlineError('');
       setIsVideoCallSubmitting(true);
       const payload = {
         schedule_mode: videoCallScheduleMode,
         appointment_date: videoCallScheduleMode === 'pick_date' ? videoCallDate : '',
         appointment_time: videoCallScheduleMode === 'today' ? videoCallTime : '',
-        name: videoCallName.trim(),
-        email: videoCallEmail.trim(),
+        name: trimmedName,
+        email: trimmedEmail,
         isd_code: videoCallIsdCode.trim(),
-        phone: videoCallPhone.trim(),
+        phone: trimmedPhone,
         product_title: product.title,
         product_handle: product.handle,
         product_id: product.id,
@@ -460,21 +559,14 @@ export default function Product() {
       const result = (await response.json()) as {ok?: boolean; error?: string};
 
       if (!response.ok || !result.ok) {
-        showError(result.error || 'Failed to submit video call request.');
+        setVideoCallInlineError(result.error || 'Failed to submit video call request.');
         return;
       }
 
-      setIsVideoCallOpen(false);
+      closeVideoCallModal();
       showSuccess('Video call request submitted successfully.');
-      setVideoCallScheduleMode('');
-      setVideoCallDate('');
-      setVideoCallTime('');
-      setVideoCallName('');
-      setVideoCallEmail('');
-      setVideoCallIsdCode('+1');
-      setVideoCallPhone('');
     } catch {
-      showError('Failed to submit video call request. Please try again.');
+      setVideoCallInlineError('Failed to submit video call request. Please try again.');
     } finally {
       setIsVideoCallSubmitting(false);
     }
@@ -657,7 +749,7 @@ export default function Product() {
             {/* SKU + Rating + Review */}
             <div className="flex items-start justify-between">
               <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 text-[18px] text-black">
-                <span className="font-sans">SKU {product.styleNo?.value || selectedVariant?.sku || '—'}</span>
+                <span className="font-sans">SKU {styleNumber}</span>
                 <div className="flex items-center gap-3">
                   <div
                     className="flex items-center gap-1 text-2xl"
@@ -709,6 +801,23 @@ export default function Product() {
                   </button>
                 </div>
               </div>
+              
+            </div>
+
+            {/* Price Section */}
+            <div className="flex items-center justify-between">
+
+              <div className="flex items-center gap-3">
+                <span className="xl:text-3xl lg:text-lg font-semibold text-black font-sans">
+                  ${selectedVariant?.price.amount}
+                </span>
+
+                {selectedVariant?.compareAtPrice && (
+                  <span className="line-through text-gray-400 xl:text-lg lg:text-md font-sans">
+                    ₹{selectedVariant.compareAtPrice.amount}
+                  </span>
+                )}
+              </div>
               {product.offerText?.value && (
                 <div className="relative inline-block">
                   <div className="bg-[#cf254a] text-white text-[14px] px-4 py-2 font-sans font-bold">
@@ -719,22 +828,6 @@ export default function Product() {
                   <div className="absolute left-0 top-0 w-0 h-0 border-t-[18px] border-b-[18px] border-r-[18px] border-t-transparent border-b-transparent border-r-[#cf254a] -translate-x-full"></div>
                 </div>
               )}
-            </div>
-
-            {/* Price Section */}
-            <div className="flex items-center justify-between">
-
-              <div className="flex items-center gap-3">
-                <span className="text-3xl font-semibold text-black font-sans">
-                  ${selectedVariant?.price.amount}
-                </span>
-
-                {selectedVariant?.compareAtPrice && (
-                  <span className="line-through text-gray-400 text-lg font-sans">
-                     ${selectedVariant.compareAtPrice.amount}
-                  </span>
-                )}
-              </div>
 
               
             </div>
@@ -905,9 +998,9 @@ export default function Product() {
                 variant="pdp"
               />
 
-              <div className="text-[#000000] flex items-center justify-center gap-2 ">
+              <div className="text-[#000000] flex items-center justify-center gap-2 -mb-[1rem]">
                 <StoreIcon size={22} />
-                <span className="text-lg font-semibold font-sans">Store Availablity</span>
+                <span className="text-lg font-medium font-sans">Store Availablity</span>
               </div>
             </div>
 
@@ -964,9 +1057,16 @@ export default function Product() {
 
               {/* Style Number */}
               <div className="flex flex-wrap items-center gap-3 text-lg font-medium text-red-500 font-sans">
-                <p>
-                  Style No. {product.styleNo?.value || selectedVariant?.sku || '—'}
-                </p>
+                <p>Style No. {styleNumber}</p>
+                <button
+                  type="button"
+                  onClick={handleCopySku}
+                  className="inline-flex items-center justify-center text-[#cf254a] hover:text-[#a61e3d]"
+                  aria-label="Copy style number"
+                  title="Copy SKU"
+                >
+                  {isSkuCopied ? <Check size={18} /> : <Copy size={18} />}
+                </button>
                 {shouldShowDiamondCertificateGuide ? (
                   <button
                     type="button"
@@ -1082,7 +1182,7 @@ export default function Product() {
             </div>
 
             {/* Help Section */}
-            <div className="bg-[#fdfaf5] rounded-lg p-4 md:flex flex-1  justify-between items-center text-sm mt-5">
+            <div className="bg-[#fdfaf5] rounded-lg p-4 md:flex flex-1  md:justify-between md:items-center text-sm mt-5">
               <div className='space-y-2 md:space-y-0'>
                 <p className="font-medium text-gray-800 font-sans md:whitespace-nowrap">
                   Need help to find the best jewellery for you?
@@ -1092,15 +1192,31 @@ export default function Product() {
                 </p>
               </div>
 
-              <div className="flex flex-col md:flex-row gap-4 text-gray-600 mt-5 md:mt-0 w-full justify-center items-center">
-                <button className="hover:text-black flex items-center gap-1 font-sans">
-                  <FaWhatsapp size={24} className='text-gray-500'/>
+              <div className="flex flex-col md:flex-row gap-4 text-gray-600 mt-5 md:mt-0 justify-center items-center">
+
+                {/* WhatsApp */}
+                <a
+                  href="https://api.whatsapp.com/send?phone=919920024599&text=Hey%20Alia%2C%20Let%E2%80%99s%20Start!"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-1 font-sans"
+                >
+                  <FaWhatsapp
+                    size={24}
+                    className="text-gray-500 group-hover:text-red-500 transition-colors duration-200"
+                  />
                   <span>Chat with Experts</span>
-                </button>
-                <button className="hover:text-black flex items-center gap-1 font-sans">
-                  <PhoneIcon size={18} /> 
+                </a>
+
+                {/* Call Back */}
+                <button className="group flex items-center gap-1 font-sans">
+                  <PhoneIcon
+                    size={18}
+                    className="text-gray-500 group-hover:text-red-500 transition-colors duration-200"
+                  />
                   <span>Request a Callback</span>
                 </button>
+
               </div>
             </div>
           </div>
@@ -1236,7 +1352,7 @@ export default function Product() {
       {isCallbackOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
-          onClick={() => setIsCallbackOpen(false)}
+          onClick={closeCallbackModal}
         >
           <div
             className="w-full max-w-[430px] rounded-md bg-gray-100 p-5 shadow-xl"
@@ -1246,7 +1362,7 @@ export default function Product() {
               <h3 className="text-3xl font-light text-gray-800">Request a Callback</h3>
               <button
                 type="button"
-                onClick={() => setIsCallbackOpen(false)}
+                onClick={closeCallbackModal}
                 className="rounded p-1 text-gray-500 transition hover:bg-gray-100 hover:text-black"
                 aria-label="Close callback form"
               >
@@ -1328,17 +1444,17 @@ export default function Product() {
       {isVideoCallOpen && (
         <div
           className="fixed inset-0 z-50 flex items-start pt-[4rem] justify-center bg-black/50 px-4"
-          onClick={() => setIsVideoCallOpen(false)}
+          onClick={closeVideoCallModal}
         >
           <div
-            className="w-full max-w-[620px] rounded-md bg-white p-8 shadow-xl"
+            className="w-full max-w-[620px] bg-white p-8 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between border-b pb-3">
-              <h3 className="text-3xl font-light text-gray-800">Schedule a Video Call</h3>
+              <p className="text-[25px] font-normal text-gray-800">Schedule a Video Call</p>
               <button
                 type="button"
-                onClick={() => setIsVideoCallOpen(false)}
+                onClick={closeVideoCallModal}
                 className="rounded p-1 text-gray-500 transition hover:bg-gray-100 hover:text-black"
                 aria-label="Close video call form"
               >
@@ -1346,27 +1462,33 @@ export default function Product() {
               </button>
             </div>
 
-            <p className="mb-3 text-xs text-gray-600 px-5">Available days: Monday</p>
+            <p className="mb-3 text-[14px] text-gray-600 px-5">Available days: Monday</p>
 
             <div className='px-5 flex gap-3'>
               <button
                 type="button"
-                onClick={() => setVideoCallScheduleMode('today')}
+                onClick={() => {
+                  setVideoCallScheduleMode('today');
+                  if (videoCallInlineError) setVideoCallInlineError('');
+                }}
                 className={`mb-3 rounded border px-4 py-2 text-sm ${
                   videoCallScheduleMode === 'today'
                     ? 'bg-[#cf254a] text-white border-[#cf254a]'
-                    : 'bg-white text-black border-[#cccccc]'
+                    : 'bg-gray-100 text-black border-[#cccccc]'
                 }`}
               >
                 Today
               </button>
               <button
                 type="button"
-                onClick={() => setVideoCallScheduleMode('pick_date')}
+                onClick={() => {
+                  setVideoCallScheduleMode('pick_date');
+                  if (videoCallInlineError) setVideoCallInlineError('');
+                }}
                 className={`mb-3 rounded border px-4 py-2 text-sm ${
                   videoCallScheduleMode === 'pick_date'
                     ? 'bg-[#cf254a] text-white border-[#cf254a]'
-                    : 'bg-white text-black border-[#cccccc]'
+                    : 'bg-gray-100 text-black border-[#cccccc]'
                 }`}
               >
                 Pick A Date
@@ -1374,16 +1496,22 @@ export default function Product() {
             </div>
 
             <form className="space-y-3 px-5" onSubmit={handleVideoCallSubmit}>
-              {videoCallScheduleMode ? null : (
-                <p className="text-xs text-gray-600">Please select Today or Pick A Date.</p>
-              )}
+              {videoCallInlineError ? (
+                <p className="rounded bg-[#f8dfe2] px-3 py-2 text-sm text-[#c63b57]">
+                  {videoCallInlineError}
+                </p>
+              ) : null}
+              
               {videoCallScheduleMode === 'today' ? (
                 <div className="mb-1 flex flex-wrap gap-3">
-                  {videoCallTimeSlots.map((slot) => (
+                  {availableVideoCallTimeSlots.map((slot) => (
                     <button
                       key={slot}
                       type="button"
-                      onClick={() => setVideoCallTime(slot)}
+                      onClick={() => {
+                        setVideoCallTime(slot);
+                        if (videoCallInlineError) setVideoCallInlineError('');
+                      }}
                       className={`rounded border px-4 py-2 text-sm ${
                         videoCallTime === slot
                           ? 'border-[#cf254a] bg-[#cf254a] text-white'
@@ -1393,13 +1521,22 @@ export default function Product() {
                       {slot}
                     </button>
                   ))}
+                  {availableVideoCallTimeSlots.length === 0 ? (
+                    <p className="text-xs text-gray-600">
+                      No slots available for today. Please pick a date.
+                    </p>
+                  ) : null}
                 </div>
               ) : null}
               {videoCallScheduleMode === 'pick_date' ? (
                 <input
                   type="date"
+                  min={todayDate}
                   value={videoCallDate}
-                  onChange={(event) => setVideoCallDate(event.target.value)}
+                  onChange={(event) => {
+                    setVideoCallDate(event.target.value);
+                    if (videoCallInlineError) setVideoCallInlineError('');
+                  }}
                   className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                 />
               ) : null}
@@ -1407,20 +1544,29 @@ export default function Product() {
                 type="text"
                 placeholder="Your Name"
                 value={videoCallName}
-                onChange={(event) => setVideoCallName(event.target.value)}
+                onChange={(event) => {
+                  setVideoCallName(event.target.value);
+                  if (videoCallInlineError) setVideoCallInlineError('');
+                }}
                 className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
               />
               <input
                 type="email"
                 placeholder="Your Email"
                 value={videoCallEmail}
-                onChange={(event) => setVideoCallEmail(event.target.value)}
+                onChange={(event) => {
+                  setVideoCallEmail(event.target.value);
+                  if (videoCallInlineError) setVideoCallInlineError('');
+                }}
                 className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
               />
               <div className="flex items-center gap-2">
                 <select
                   value={videoCallIsdCode}
-                  onChange={(event) => setVideoCallIsdCode(event.target.value)}
+                  onChange={(event) => {
+                    setVideoCallIsdCode(event.target.value);
+                    if (videoCallInlineError) setVideoCallInlineError('');
+                  }}
                   className="w-[130px] rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                 >
                   <option value="+1">+1</option>
@@ -1432,7 +1578,10 @@ export default function Product() {
                   type="tel"
                   placeholder="Mobile Number"
                   value={videoCallPhone}
-                  onChange={(event) => setVideoCallPhone(event.target.value)}
+                  onChange={(event) => {
+                    setVideoCallPhone(event.target.value);
+                    if (videoCallInlineError) setVideoCallInlineError('');
+                  }}
                   className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                 />
               </div>
