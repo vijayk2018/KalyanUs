@@ -650,7 +650,7 @@ export default function Product() {
           <div className="space-y-6">
 
             {/* Title */}
-            <p className="text-4xl text-[#000] font-serif font-regular">
+            <p className="text-[35px] font-normal text-[#000] font-regular font-helvetica-otf">
               {product.title}
             </p>
 
