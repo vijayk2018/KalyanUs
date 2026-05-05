@@ -7,7 +7,7 @@ import {
 } from '@shopify/hydrogen';
 import type { HeaderQuery, CartApiQueryFragment } from 'storefrontapi.generated';
 import { useAside } from '~/components/Aside';
-import { HeartIcon, Menu, Search, Store, UserIcon, X } from 'lucide-react';
+import {  Menu, Search, X } from 'lucide-react';
 import kalyanLogo from '../assets/kalyanLogo.svg';
 import jewelryMegaMenuPromo from '../assets/menuJewellery.jpg';
 import menuPriceImage from '../assets/menuPrice.jpg';
@@ -154,6 +154,9 @@ import { FaStore } from 'react-icons/fa';
 import { clearWishlistCache, getWishlist, loadWishlist } from '~/lib/wishlist';
 import WishlistDrawer from './WishlistDrawer';
 import StoreAuthModal from './StoreAuthModal';
+import StoreIcon from '../assets/store.svg'
+import HeartIcon from '../assets/heart.svg'
+import UserIcon from '../assets/person.svg'
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -419,20 +422,20 @@ export function Header({
               }}
               className="flex flex-col items-center text-[#202020] relative cursor-pointer hover:text-[#650827]"
             >
-              <HeartIcon size={24} strokeWidth={1.8} />
+              <img src={HeartIcon} alt={'Heart'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
               {wishlistCount > 0 && (
                 <span className="absolute top-0 right-2 bg-red-500 text-white text-[10px] px-1 rounded-full">
                   {wishlistCount}
                 </span>
               )}
-              <span className="text-[12px] mt-1 font-serif">Wishlist</span>
+              <span className="text-[12px] font-serif">Wishlist</span>
             </button>
             <NavLink
               to="/experience-centre"
               className="flex flex-col items-center text-[#202020]"
             >
-              <Store size={22} strokeWidth={1.8} />
-              <span className="text-[12px] mt-1 font-serif">Store</span>
+              <img src={StoreIcon} alt={'Store'}  className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+              <span className="text-[12px] font-serif">Store</span>
             </NavLink>
             <button
               onClick={() => {
@@ -442,8 +445,8 @@ export function Header({
               }}
               className="flex flex-col items-center text-[#202020]"
             >
-              <UserIcon size={22} strokeWidth={1.8} />
-              <span className="text-[12px] mt-1 font-serif">Profile</span>
+              <img src={UserIcon} alt={'User'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+              <span className="text-[12px] font-serif">Profile</span>
             </button>
           </div>
         </div>
@@ -549,7 +552,7 @@ export function Header({
             prefetch="intent"
             to="/"
             end
-            className="2xl:mt-[2.5rem] pt-3 lg:mt-[2.5rem] ml-[5.6vw] xl:mb-[1.4rem] lg:mb-[1.3rem]"
+            className="xl:mt-[2rem] pt-3 lg:mt-[1rem] ml-[5.6vw] xl:mb-[1.4rem] lg:mb-[1.3rem]"
           >
             {logoUrl ? (
               <img
@@ -564,7 +567,7 @@ export function Header({
           </NavLink>
 
           <div className='flex-1 mr-[5.5vw]'>
-            <div className=' mb-[1.5rem]'>
+            <div className=' mb-[2rem]'>
               <HeaderCtas
                 isLoggedIn={isUserLoggedIn}
                 cart={cart}
@@ -1033,13 +1036,13 @@ function HeaderCtas({
 
   return (
     <nav
-      className="header-ctas max-w-[33vw] flex items-center justify-between bg-[#e8e4d1] 2xl:pt-4 lg:pt-2 2xl:px-6 lg:px-4 2xl:pb-5 xl:pb-4 lg:pb-3 rounded-b-4xl"
+      className="header-ctas max-w-[33vw] flex items-center justify-between bg-[#e8e4d1] lg:py-4 lg:pt-2 lg:px-4 xl:rounded-b-4xl lg:rounded-b-3xl"
       role="navigation"
     >
       <form
         action="/search"
         method="get"
-        className="relative flex-1 flex items-center mr-4 rounded-full"
+        className="relative flex-1 mx-1 flex items-center rounded-full"
       >
         <input
           name="q"
@@ -1066,8 +1069,8 @@ function HeaderCtas({
           }}
           className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition cursor-pointer"
         >
-          <div className="relative flex justify-center mb-1">
-            <HeartIcon className="text-[#333] xl:w-6 xl:h-6 lg:w-5 lg:h-5" />
+          <div className="relative flex justify-center ">
+            <img src={HeartIcon} alt={'Heart'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
             {wishlistCount > 0 && (
               <span className="absolute -top-3 -right-1 bg-red-500 text-white text-[9px] px-2 py-1 rounded-full">
                 {wishlistCount}
@@ -1083,8 +1086,8 @@ function HeaderCtas({
           to="/experience-centre"
           className="flex flex-col items-center space-x-2 text-center transition cursor-pointer"
         >
-          <div className="flex justify-center mb-1">
-            <FaStore className="text-[#333] w-5 h-5" />
+          <div className="flex justify-center ">
+            <img src={StoreIcon} alt={'Store'}  className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
           </div>
           <p className="text-center text-[#333] 2xl:text-[12px] xl:text-[11px] lg:text-[9px] font-serif">
             Store
@@ -1100,8 +1103,8 @@ function HeaderCtas({
           }}
           className="flex flex-col items-center space-x-2 text-center transition cursor-pointer"
         >
-          <div className="mb-1">
-            <UserIcon className="text-[#333] w-5 h-5" />
+          <div className="">
+            <img src={UserIcon} alt={'User'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
           </div>
           <p className="text-center text-[#333] 2xl:text-[12px] xl:text-[11px] lg:text-[10px] font-serif">
             Profile
