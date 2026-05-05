@@ -1,6 +1,7 @@
 // PDP / sticky SaleAssist: modal shells + reposition SDK root (#saleassist-widget-{id}) into modal.
 // SaleAssist appends most widgets to document.body (parentElementId is only special-cased for a few IDs).
 
+import { VideoIcon } from 'lucide-react';
 import {useCallback, useEffect, useMemo, useState, type MouseEvent} from 'react';
 import {createPortal} from 'react-dom';
 
@@ -197,7 +198,7 @@ export function SaleAssistButton({widgetId, label = 'Live Demo', variant = 'pdp'
   if (!widgetId) return null;
 
   const pdpClasses =
-    'border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer uppercase font-sans';
+    'text-[#000000] flex items-center justify-center gap-2 ';
 
   const trigger = (
     <button
@@ -211,6 +212,7 @@ export function SaleAssistButton({widgetId, label = 'Live Demo', variant = 'pdp'
       data-saleassist-button="true"
       title={error ? 'Unable to load SaleAssist script. Check blockers/CSP.' : undefined}
     >
+      <VideoIcon size={22} />
       {variant === 'sticky' ? (
         <>
           <span className="saleassist-sticky-btn__dot" aria-hidden="true" />
@@ -224,6 +226,7 @@ export function SaleAssistButton({widgetId, label = 'Live Demo', variant = 'pdp'
 
   return (
     <>
+
       {modalPortal}
       {variant === 'sticky' ? <div className="saleassist-sticky-footer">{trigger}</div> : trigger}
     </>
