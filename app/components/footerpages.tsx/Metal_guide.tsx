@@ -24,6 +24,7 @@ import platinum3 from '~/assets/Platinum-3.webp';
 import platinum4 from '~/assets/Platinum-4.webp';
 import platinum4Alt from '~/assets/Platinum-4 (1).webp';
 import platinum42 from '~/assets/Platinum-4-2.webp';
+import arrowIcon from '~/assets/arrow.png';
 
 // Nav arrows
 import leftArrowImg from '~/assets/metal-arrow-left.svg';
@@ -165,6 +166,7 @@ type Slide = {
   rightImage?: string;
   showBrowseButton?: boolean;
   leftImageClassName?: string;
+  rightImageClassName?: string;
   tableLeft?: CompTableLeft;
   tableRight?: CompTableRight;
 };
@@ -255,6 +257,8 @@ const slides: Slide[] = [
     leftImage: whiteGold3,    // White-Gold-3.webp  = couple illustration
     rightImage: whiteGold31,  // White-Gold-3_1.webp = diamond engagement rings
     showBrowseButton: true,
+    leftImageClassName: 'max-w-[315px] max-h-[345px]',
+    rightImageClassName: 'mt-5 max-w-[420px] w-full h-auto max-h-[336px] object-contain block mx-auto',
   },
 
   /* ── 9. Rose Gold ──────────────────────────────────────────────────────── */
@@ -304,13 +308,7 @@ const slides: Slide[] = [
     showBrowseButton: true,
   },
 
-  /* ── 12. Pt 950 Annotated Ring  (full-image — annotation baked into asset) */
-  {
-    layout: 'image-full',
-    leftImage: platinum3,
-  },
-
-  /* ── 13. Platinum ──────────────────────────────────────────────────────── */
+  /* ── 12. Platinum ──────────────────────────────────────────────────────── */
   {
     layout: 'standard',
     title: 'PLATINUM',
@@ -320,7 +318,7 @@ const slides: Slide[] = [
     showBrowseButton: true,
   },
 
-  /* ── 14. Platinum Facts  (text-only, 3 bullets) ───────────────────────── */
+  /* ── 13. Platinum Facts  (text-only, 3 bullets) ───────────────────────── */
   {
     layout: 'text-only',
     title: 'PLATINUM FACTS',
@@ -329,6 +327,12 @@ const slides: Slide[] = [
       'Platinum can resist corrosion as a result on scratching and erosion there is no loss of metal, the metal is just displaced.',
       'The melting point of platinum is 1,769°C, and its density is 11% more than gold and about twice the density of silver.',
     ],
+  },
+
+  /* ── 14. Pt 950 Annotated Ring  (full-image — annotation baked into asset) */
+  {
+    layout: 'image-full',
+    leftImage: platinum3,
   },
 
   /* ── 15. Weddings Bands  (couple LEFT | text + bands image RIGHT) ──────── */
@@ -418,16 +422,12 @@ export default function MetalGuide() {
       <div className="relative min-h-[calc(100vh-64px)] sm:min-h-[calc(100vh-72px)] flex items-center justify-center px-[4%] sm:px-[5%]">
 
         {/* ← Prev */}
-        <button
-          type="button"
+        <img
+          src={arrowIcon}
+          alt="Previous slide"
           onClick={prevSlide}
-          aria-label="Previous slide"
-          className="absolute left-2 sm:left-[1%] z-20 flex h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-black items-center justify-center hover:bg-gray-800 transition flex-shrink-0"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
+          className="absolute left-2 sm:left-[1%] z-20 h-8 w-8 sm:h-10 sm:w-10 cursor-pointer object-contain scale-x-[-1]"
+        />
 
         {/* ══════════ standard ══════════ */}
         {slide.layout === 'standard' && (
@@ -464,7 +464,7 @@ export default function MetalGuide() {
                 <img
                   src={slide.rightImage}
                   alt={`${slide.title ?? ''} detail`}
-                  className="mt-5 max-w-[300px] w-full h-auto max-h-[240px] object-contain block"
+                  className={slide.rightImageClassName ?? "mt-5 max-w-[300px] w-full h-auto max-h-[240px] object-contain block"}
                   style={{ mixBlendMode: 'multiply' }}
                 />
               )}
@@ -606,16 +606,12 @@ export default function MetalGuide() {
         )}
 
         {/* → Next */}
-        <button
-          type="button"
+        <img
+          src={arrowIcon}
+          alt="Next slide"
           onClick={nextSlide}
-          aria-label="Next slide"
-          className="absolute right-2 sm:right-[1%] z-20 flex h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-black items-center justify-center hover:bg-gray-800 transition flex-shrink-0"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </button>
+          className="absolute right-2 sm:right-[1%] z-20 h-8 w-8 sm:h-10 sm:w-10 cursor-pointer object-contain"
+        />
       </div>
 
       {/* Slide indicators removed as per request */}
