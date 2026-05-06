@@ -83,7 +83,7 @@ const CollectionsGrid: React.FC<{ isFrom?: string }> = ({ isFrom }) => {
               <img
                 src={item.title}
                 alt={item.label}
-                className="w-[8vw] h-[8vh] object-cover"
+                className="w-[8vw] h-[8vh] object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
               />
             </div>
           </Link>
