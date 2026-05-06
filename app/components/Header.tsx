@@ -612,7 +612,6 @@ export function HeaderMenu({
           const isJewelryOrOccasionMenu = isJewelryMenu || isOccasionMenu;
           const shouldShowPromoCard = Boolean(viewAllItem);
 
-
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
             menuUrl ? getItemUrl(menuUrl) : fallback;
 
@@ -720,25 +719,25 @@ export function HeaderMenu({
                           return (
                             <div
                               key={group.id}
-                              className={`space-y-3 ${isJewelryOrOccasionMenu && isCategory
+                              className={`space-y-2 ${isJewelryOrOccasionMenu && isCategory
                                 ? 'col-span-2'
                                 : isCategory && isMuhuratMenu
                                   ? 'col-span-2'
                                   : 'col-span-1'
                                 }`}
                             >
-                              <p className="font-semibold tracking-[0.08em] text-[13px] w-30 underline decoration-[#cf254a] underline-offset-4">
+                              <p className="font-semibold tracking-[0.08em] text-[13px] w-30 underline decoration-[#cf254a] underline-offset-4 mb-5">
                                 {getDisplayTitle(group.title)}
                               </p>
                               <div
-                                className={isOccasionMenu ? 'grid grid-cols-1 gap-y-3' : 
+                                className={getDisplayTitle(group.title) == 'ALL JEWELRY' ? 'space-y-7' : getDisplayTitle(group.title) == 'SHOP FOR'  ? 'space-y-6' : isOccasionMenu ? 'grid grid-cols-1 gap-y-3' : 
                                   isPriceRangeGroup
                                     ? 'grid grid-cols-1 gap-y-3'
                                     : isSingleCategoryLayout
-                                      ? 'grid grid-cols-4 gap-x-8 gap-y-3'
+                                      ? 'grid grid-cols-4 gap-x-8 gap-y-4'
                                       : isCategory
-                                        ? 'grid grid-cols-2 gap-x-6 gap-y-2'
-                                        : 'space-y-2'
+                                        ? 'grid grid-cols-2 gap-x-6 gap-y-3'
+                                        : 'space-y-3'
                                 }
                               >
                                 {(isSingleCategoryLayout
@@ -760,22 +759,22 @@ export function HeaderMenu({
                                     subItem.tags,
                                     'meta:image:',
                                   );
-                                  const menuImage = adminMenuImage 
-                                   
+                                  const menuImage =  adminMenuImage 
+                                    
                                   return (
                                     <NavLink
                                       key={subItem.id}
                                       to={subUrl}
                                       prefetch="intent"
                                       onClick={() => setActiveDesktopMenuId(null)}
-                                      className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${menuImage ? 'flex items-center gap-2' : 'block'
+                                      className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${menuImage ? 'flex items-center gap-1.5' : 'block'
                                         }`}
                                     >
                                       {menuImage ? (
                                         <img
                                           src={menuImage}
                                           alt={subItem.title}
-                                          className="h-8 w-8 object-cover"
+                                          className={`${isSingleCategoryLayout ? 'h-12 w-12' : getDisplayTitle(group.title) == 'ALL JEWELRY' ? 'h-10 w-10' : getDisplayTitle(group.title) == 'SHOP FOR' ? 'h-8 w-8' : 'h-6 w-6'} object-cover`}
                                         />
                                       ) : null}
                                       {subItem.title}
@@ -795,7 +794,7 @@ export function HeaderMenu({
                                       subItem.tags,
                                       'meta:image:',
                                     );
-                                    const menuImage = adminMenuImage 
+                                    const menuImage = adminMenuImage ;
                                       
                                     return (
                                       <NavLink
@@ -803,14 +802,14 @@ export function HeaderMenu({
                                         to={subUrl}
                                         prefetch="intent"
                                         onClick={() => setActiveDesktopMenuId(null)}
-                                        className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${menuImage ? 'flex items-center gap-2' : 'block'
+                                        className={`text-[13px] uppercase leading-5 text-[#202020] transition-colors hover:text-[#8e0a35] ${menuImage ? 'flex items-center gap-1.5' : 'block'
                                           }`}
                                       >
                                         {menuImage ? (
                                           <img
                                             src={menuImage}
                                             alt={subItem.title}
-                                            className="h-8 w-8 object-cover"
+                                            className={`${isSingleCategoryLayout ? 'h-12 w-12' : getDisplayTitle(group.title) == 'ALL JEWELRY' ? 'h-10 w-10' : getDisplayTitle(group.title) == 'SHOP FOR' ? 'h-8 w-8' : 'h-6 w-6'} object-cover`}
                                           />
                                         ) : null}
                                         {subItem.title}
@@ -828,11 +827,30 @@ export function HeaderMenu({
                           to={resolveMenuUrl(viewAllItem?.url, url)}
                           prefetch="intent"
                           onClick={() => setActiveDesktopMenuId(null)}
-                          className="block overflow-hidden rounded-md"
+                          className="block self-start overflow-hidden rounded-md"
                         >
                           <img
                             src={
-                              getMetaTagUrl(viewAllItem?.tags, 'meta:promo:')
+                              getMetaTagUrl(viewAllItem?.tags, 'meta:promo:') ||
+                              (isPriceRangeMenu
+                                ? menuPriceImage
+                                : isCollectionMenu
+                                  ? moreCollectionsImage
+                                  : isMuhuratMenu
+                                    ? mudhraSideMenuImage
+                                    : isNecklaceMenu
+                                      ? menuNecklaceImage
+                                      : isRingsMenu
+                                        ? menuRingImage
+                                        : isEarringsMenu
+                                          ? menuEarringsImage
+                                          : isDiamondMenu
+                                            ? menuDiamondImage
+                                            : isGoldMenu
+                                              ? menuGoldImage
+                                              : isOccasionMenu
+                                                ? menuOccasionImage
+                                                : jewelryMegaMenuPromo)
                             }
                             alt={`${item.title} collection`}
                             className="h-[180px] w-full rounded-md object-cover"
