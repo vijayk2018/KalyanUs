@@ -827,35 +827,16 @@ export function HeaderMenu({
                           to={resolveMenuUrl(viewAllItem?.url, url)}
                           prefetch="intent"
                           onClick={() => setActiveDesktopMenuId(null)}
-                          className="block self-start overflow-hidden rounded-md"
+                          className="flex h-full flex-col"
                         >
                           <img
                             src={
-                              getMetaTagUrl(viewAllItem?.tags, 'meta:promo:') ||
-                              (isPriceRangeMenu
-                                ? menuPriceImage
-                                : isCollectionMenu
-                                  ? moreCollectionsImage
-                                  : isMuhuratMenu
-                                    ? mudhraSideMenuImage
-                                    : isNecklaceMenu
-                                      ? menuNecklaceImage
-                                      : isRingsMenu
-                                        ? menuRingImage
-                                        : isEarringsMenu
-                                          ? menuEarringsImage
-                                          : isDiamondMenu
-                                            ? menuDiamondImage
-                                            : isGoldMenu
-                                              ? menuGoldImage
-                                              : isOccasionMenu
-                                                ? menuOccasionImage
-                                                : jewelryMegaMenuPromo)
+                              getMetaTagUrl(viewAllItem?.tags, 'meta:promo:') 
                             }
                             alt={`${item.title} collection`}
-                            className="h-[180px] w-full rounded-md object-cover"
+                            className="min-h-[180px] w-full flex-1 rounded-md object-cover"
                           />
-                          <span className="mt-3 inline-block text-[13px] font-semibold uppercase tracking-[0.08em] text-[#202020] border-t border-[#cf254a] pt-1">
+                          <span className="mt-3 inline-block self-start text-[13px] font-semibold uppercase tracking-[0.08em] text-[#202020] border-t border-[#cf254a] pt-1">
                             View All Designs
                           </span>
                         </NavLink>
