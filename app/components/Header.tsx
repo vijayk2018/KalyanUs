@@ -156,7 +156,7 @@ function buildMenuFromHeaderMetaobjects(
                 items: [],
               };
             })
-            .filter((item) => Boolean(item.title) && item.url !== '#');
+            .filter((item) => Boolean(item.title));
 
           const groupTitle = (group.title?.value || group.handle || '').trim();
           const groupUrl = items[0]?.url ?? promoLink ?? '#';
@@ -611,6 +611,23 @@ export function HeaderMenu({
           const isOccasionMenu = item.title.trim().toLowerCase() === 'occasion';
           const isJewelryOrOccasionMenu = isJewelryMenu || isOccasionMenu;
           const shouldShowPromoCard = Boolean(viewAllItem);
+          const moreCards = isMoreMenu
+            ? groupedItems.flatMap((group) =>
+                group.items?.length
+                  ? group.items.map((subItem) => ({
+                      id: subItem.id,
+                      title: subItem.title,
+                      url: subItem.url,
+                    }))
+                  : [
+                      {
+                        id: group.id,
+                        title: group.title,
+                        url: group.url,
+                      },
+                    ],
+              )
+            : [];
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
             menuUrl ? getItemUrl(menuUrl) : fallback;
@@ -655,8 +672,8 @@ export function HeaderMenu({
                 <div className="rounded-b-md bg-white px-8 py-6 text-[#202020] shadow-2xl">
                   {isMoreMenu ? (
                     <div className="mx-auto grid w-full grid-cols-3 gap-6">
-                      {groupedItems.map((group) => {
-                        const normalizedTitle = group.title.trim().toLowerCase();
+                      {moreCards.map((card) => {
+                        const normalizedTitle = card.title.trim().toLowerCase();
                         const cardImage = normalizedTitle.includes('brand')
                           ? moreBrandStoryImage
                           : normalizedTitle.includes('collection')
@@ -664,11 +681,11 @@ export function HeaderMenu({
                             : moreBlogImage;
                         const cardUrl = normalizedTitle.includes('collection')
                           ? '/our-collections'
-                          : resolveMenuUrl(group.url, url);
+                          : resolveMenuUrl(card.url, url);
 
                         return (
                           <NavLink
-                            key={group.id}
+                            key={card.id}
                             to={cardUrl}
                             prefetch="intent"
                             onClick={() => setActiveDesktopMenuId(null)}
@@ -676,11 +693,11 @@ export function HeaderMenu({
                           >
                             <img
                               src={cardImage}
-                              alt={group.title}
+                              alt={card.title}
                               className="h-[210px] w-full rounded-md object-cover"
                             />
                             <span className="mt-2 block text-center text-[20px] font-semibold text-[#202020]">
-                              {group.title}
+                              {card.title}
                             </span>
                           </NavLink>
                         );
