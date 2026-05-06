@@ -379,6 +379,83 @@ export type HeaderQuery = {
   >;
 };
 
+export type HeaderMetaobjectMenuQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  first?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
+}>;
+
+export type HeaderMetaobjectMenuQuery = {
+  megaMenuPanels: {
+    nodes: Array<
+      Pick<StorefrontAPI.Metaobject, 'id' | 'handle'> & {
+        menuHandle?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+        promoLink?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+        promoText?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+        promoImage?: StorefrontAPI.Maybe<{
+          reference?: StorefrontAPI.Maybe<
+            | Pick<StorefrontAPI.GenericFile, 'url'>
+            | {image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>}
+          >;
+        }>;
+        enabled?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+        position?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MetaobjectField, 'value'>
+        >;
+        groupsList?: StorefrontAPI.Maybe<{
+          references?: StorefrontAPI.Maybe<{
+            nodes: Array<
+              Pick<StorefrontAPI.Metaobject, 'id' | 'handle'> & {
+                title?: StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.MetaobjectField, 'value'>
+                >;
+                position?: StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.MetaobjectField, 'value'>
+                >;
+                items?: StorefrontAPI.Maybe<{
+                  references?: StorefrontAPI.Maybe<{
+                    nodes: Array<
+                      Pick<StorefrontAPI.Metaobject, 'id' | 'handle'> & {
+                        label?: StorefrontAPI.Maybe<
+                          Pick<StorefrontAPI.MetaobjectField, 'value'>
+                        >;
+                        link?: StorefrontAPI.Maybe<
+                          Pick<StorefrontAPI.MetaobjectField, 'value'>
+                        >;
+                        image?: StorefrontAPI.Maybe<{
+                          reference?: StorefrontAPI.Maybe<
+                            | Pick<StorefrontAPI.GenericFile, 'url'>
+                            | {
+                                image?: StorefrontAPI.Maybe<
+                                  Pick<StorefrontAPI.Image, 'url'>
+                                >;
+                              }
+                          >;
+                        }>;
+                        position?: StorefrontAPI.Maybe<
+                          Pick<StorefrontAPI.MetaobjectField, 'value'>
+                        >;
+                      }
+                    >;
+                  }>;
+                }>;
+              }
+            >;
+          }>;
+        }>;
+      }
+    >;
+  };
+};
+
 export type FooterQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   footerMenuHandle: StorefrontAPI.Scalars['String']['input'];
@@ -1881,6 +1958,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  fragment Shop on Shop {\n    id\n    name\n    description\n    primaryDomain {\n      url\n    }\n    brand {\n      logo {\n        image {\n          url\n        }\n      }\n    }\n  }\n  query Header(\n    $country: CountryCode\n    $headerMenuHandle: String!\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    shop {\n      ...Shop\n    }\n    menu(handle: $headerMenuHandle) {\n      ...Menu\n    }\n  }\n  #graphql\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...MenuItem\n    }\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n\n': {
     return: HeaderQuery;
     variables: HeaderQueryVariables;
+  };
+  '#graphql\n  query HeaderMetaobjectMenu(\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int = 25\n  ) @inContext(language: $language, country: $country) {\n    megaMenuPanels: metaobjects(type: "mega_menu_panel", first: $first) {\n      nodes {\n        id\n        handle\n        menuHandle: field(key: "menu_handle") {\n          value\n        }\n        promoLink: field(key: "promo_link") {\n          value\n        }\n        promoText: field(key: "promo_text") {\n          value\n        }\n        promoImage: field(key: "promo_image") {\n          reference {\n            ... on MediaImage {\n              image {\n                url\n              }\n            }\n            ... on GenericFile {\n              url\n            }\n          }\n        }\n        enabled: field(key: "enabled") {\n          value\n        }\n        position: field(key: "position") {\n          value\n        }\n        groupsList: field(key: "groups_list") {\n          references(first: 25) {\n            nodes {\n              ... on Metaobject {\n                id\n                handle\n                title: field(key: "title") {\n                  value\n                }\n                position: field(key: "position") {\n                  value\n                }\n                items: field(key: "items") {\n                  references(first: 75) {\n                    nodes {\n                      ... on Metaobject {\n                        id\n                        handle\n                        label: field(key: "label") {\n                          value\n                        }\n                        link: field(key: "link") {\n                          value\n                        }\n                        image: field(key: "image") {\n                          reference {\n                            ... on MediaImage {\n                              image {\n                                url\n                              }\n                            }\n                            ... on GenericFile {\n                              url\n                            }\n                          }\n                        }\n                        position: field(key: "position") {\n                          value\n                        }\n                      }\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: HeaderMetaobjectMenuQuery;
+    variables: HeaderMetaobjectMenuQueryVariables;
   };
   '#graphql\n  query Footer(\n    $country: CountryCode\n    $footerMenuHandle: String!\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    menu(handle: $footerMenuHandle) {\n      ...Menu\n    }\n  }\n  #graphql\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...MenuItem\n    }\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n\n': {
     return: FooterQuery;

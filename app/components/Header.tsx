@@ -9,144 +9,6 @@ import type { HeaderQuery, CartApiQueryFragment } from 'storefrontapi.generated'
 import { useAside } from '~/components/Aside';
 import {  Menu, Search, X } from 'lucide-react';
 import kalyanLogo from '../assets/kalyanLogo.svg';
-import jewelryMegaMenuPromo from '../assets/menuJewellery.jpg';
-import menuPriceImage from '../assets/menuPrice.jpg';
-import apoorvaMenuImage from '../assets/apoorva.jpeg';
-import ziahMenuImage from '../assets/ziah.jpeg';
-import heraMenuImage from '../assets/hera.jpeg';
-import mudhraMenuImage from '../assets/mudhra.jpg';
-import nimahMenuImage from '../assets/nimah.jpg';
-import anokhiMenuImage from '../assets/anokhi.jpg';
-import rangMenuImage from '../assets/rang.jpg';
-import tejasviMenuImage from '../assets/tejasvi.jpeg';
-import banglesMenuImage from '../assets/bangles.jpg';
-import braceletsMenuImage from '../assets/bracelets.jpg';
-import bridalJewelryMenuImage from '../assets/bridalJewelry.jpg';
-import chainsMenuImage from '../assets/chains.jpg';
-import earringsMenuImage from '../assets/earrings.jpg';
-import giftsMenuImage from '../assets/gifts.jpg';
-import necklacesMenuImage from '../assets/necklaces.jpg';
-import religiousMenuImage from '../assets/religious.jpg';
-import ringsMenuImage from '../assets/rings.jpg';
-import womenMenuImage from '../assets/Women.jpg';
-import goldMenuImage from '../assets/gold.jpg';
-import mudhraSideMenuImage from '../assets/menuMuhurat.jpg';
-import menuNecklaceImage from '../assets/menuNecklace.jpg';
-import bridalNecklaceMenuImage from '../assets/bridalNecklace.jpg';
-import charmNecklaceMenuImage from '../assets/charmNecklace.jpg';
-import chokerNecklaceMenuImage from '../assets/chokerNecklace.jpg';
-import collarNecklaceMenuImage from '../assets/collarNecklace.jpg';
-import delicateNecklaceMenuImage from '../assets/delicateNecklace.jpg';
-import designerNecklaceMenuImage from '../assets/designerNecklace.jpg';
-import eternityNecklaceMenuImage from '../assets/eternityNecklace.jpg';
-import goldNecklaceMenuImage from '../assets/goldNecklace.jpg';
-import lariatNecklaceMenuImage from '../assets/lariatNecklace.jpeg';
-import longNecklaceMenuImage from '../assets/longNecklace.jpg';
-import multiLayerNecklaceMenuImage from '../assets/multiLayerNecklace.jpg';
-import pendantNecklaceMenuImage from '../assets/pendantNecklace.jpg';
-import diamondNecklaceMenuImage from '../assets/diamondNecklace.jpeg';
-import menuRingImage from '../assets/menuRing.jpg';
-import adjustableRingMenuImage from '../assets/adjustableRing.jpg';
-import broadRingMenuImage from '../assets/broadRing.jpeg';
-import cocktailRingMenuImage from '../assets/cocktailRing.jpg';
-import classicRingMenuImage from '../assets/classic.jpg';
-import casualRingMenuImage from '../assets/casual.jpeg';
-import engagementRingMenuImage from '../assets/engagementRing.jpg';
-import gapRingMenuImage from '../assets/gapRing.jpeg';
-import statementRingMenuImage from '../assets/statementRing.jpg';
-import twoFingerRingMenuImage from '../assets/twoFingerRing.jpg';
-import vRingMenuImage from '../assets/vRing.jpeg';
-import eternityMenuImage from '../assets/eternity.jpg';
-import coupleBandsMenuImage from '../assets/coupleBands.jpg';
-import weddingBandsMenuImage from '../assets/weddingBands.jpg';
-import menuEarringsImage from '../assets/menuEarrings.jpg';
-import chandBaliMenuImage from '../assets/chandBali.jpg';
-import chandelierMenuImage from '../assets/chandelier.jpg';
-import delicateEarringsMenuImage from '../assets/delicateEarrings.jpeg';
-import droopsDanglesMenuImage from '../assets/droopsDangles.jpeg';
-import earCuffsMenuImage from '../assets/earCuffs.jpg';
-import hoopsMenuImage from '../assets/hoops.jpeg';
-import jhumkaMenuImage from '../assets/jhumka.jpg';
-import longEarringsMenuImage from '../assets/longEarrings.jpeg';
-import missMatchMenuImage from '../assets/missMatch.jpeg';
-import multiStonesMenuImage from '../assets/multiStones.jpg';
-import statementEarringsMenuImage from '../assets/statementEarrings.jpg';
-import studMenuImage from '../assets/stud.jpeg';
-import menuDiamondImage from '../assets/menuDiamond.jpg';
-import banglesDiamondMenuImage from '../assets/bangles.jpeg';
-import braceletDiamondMenuImage from '../assets/bracelet.jpeg';
-import earringsDiamondMenuImage from '../assets/earrings.jpeg';
-import mangalsutraPendantMenuImage from '../assets/mangalsutraPendant.jpeg';
-import necklaceDiamondMenuImage from '../assets/necklace.jpeg';
-import pendantsDiamondMenuImage from '../assets/pendants.jpeg';
-import pendantWithChainDiamondMenuImage from '../assets/pendantWithChain.jpeg';
-import ringsDiamondMenuImage from '../assets/rings.jpeg';
-import tiePinMenuImage from '../assets/tiePin.jpeg';
-import menuGoldImage from '../assets/menuGold.jpg';
-import ankletGoldMenuImage from '../assets/ankletGold.jpg';
-import bajubandhGoldMenuImage from '../assets/bajubandhGold.jpg';
-import banglesGoldMenuImage from '../assets/banglesgold.jpg';
-import braceletGoldMenuImage from '../assets/braceletGold.jpg';
-import chainsGoldMenuImage from '../assets/chainsGold.jpg';
-import earringsGoldMenuImage from '../assets/earringsGold.jpg';
-import handsetGoldMenuImage from '../assets/handsetGold.jpg';
-import maangTikkaGoldMenuImage from '../assets/maangTikkaGold.jpg';
-import mangalsutraGoldMenuImage from '../assets/mangalsutraGold.jpg';
-import mugappuGoldMenuImage from '../assets/mugappuGold.jpg';
-import necklaceGoldMenuImage from '../assets/necklaceGold.jpg';
-import pendantsGoldMenuImage from '../assets/pendantsGold.jpg';
-import pendantWithChainGoldMenuImage from '../assets/pendantWithChaingold.jpg';
-import religiousGoldMenuImage from '../assets/religiousGold.jpg';
-import ringsGoldMenuImage from '../assets/ringsGold.jpg';
-import vankiGoldMenuImage from '../assets/vankiGold.jpg';
-import waistChainGoldMenuImage from '../assets/waistChainGold.jpg';
-import menuOccasionImage from '../assets/menuOccasion.jpg';
-import bridalJewelryOccasionMenuImage from '../assets/bridalJewelryOccasion.jpg';
-import giftsOccasionMenuImage from '../assets/giftsOccasion.jpg';
-import kidsOccasionMenuImage from '../assets/kidsOccasion.jpg';
-import menOccasionMenuImage from '../assets/MenOccasion.jpg';
-import unisexOccasionMenuImage from '../assets/unisexOccasion.jpg';
-import womenOccasionMenuImage from '../assets/womenOccasion.jpg';
-import weddingDiamondOccasionMenuImage from '../assets/weddingDiamond.jpeg';
-import weddingGoldOccasionMenuImage from '../assets/weddingGoldJewelry.jpg';
-import allEngagementRingsOccasionMenuImage from '../assets/allEngagementRings.jpg';
-import engagementJewelryForHimOccasionMenuImage from '../assets/engagementJewelryForHim.jpg';
-import engagementJewelryForHerOccasionMenuImage from '../assets/engagementJewelryForHer.jpg';
-import engagementRingsForMenOccasionMenuImage from '../assets/engagementRingsForMen.jpg';
-import engagementRingsForWomenOccasionMenuImage from '../assets/engagementRingsForWomen.jpg';
-import partyJewelryForMenOccasionMenuImage from '../assets/partyJewelryForMen.jpg';
-import partyJewelryForWomenOccasionMenuImage from '../assets/partyJewelryForWomen.jpeg';
-import ankletJewelryMenuImage from '../assets/ankletJewelry.jpg';
-import bajubandhJewelryMenuImage from '../assets/bajubandhJewelry.jpg';
-import banglesJewelryMenuImage from '../assets/banglesJewelry.jpg';
-import braceletsJewelryMenuImage from '../assets/braceletsJewelry.jpeg';
-import bridalJewelryJewelryMenuImage from '../assets/bridalJewelryJewelry.jpg';
-import chainsJewelryMenuImage from '../assets/chainsJewelry.jpg';
-import diamondJewelryMenuImage from '../assets/diamondJewelry.jpeg';
-import earringsJewelryMenuImage from '../assets/earringsJewelry.jpeg';
-import giftsJewelryMenuImage from '../assets/giftsJewelry.jpg';
-import goldJewelryMenuImage from '../assets/goldJewelry.jpg';
-import groomJewelryMenuImage from '../assets/groomJewelryJewelry.jpg';
-import handsetJewelryMenuImage from '../assets/handsetJewelry.jpg';
-import kidsJeweleryMenuImage from '../assets/kidsJewelry.jpg';
-import maangTikkaJewelryMenuImage from '../assets/maangTikkaJewelry.jpg';
-import mangalsutrasJewelryMenuImage from '../assets/mangalsutrasJewelry.jpg';
-import menJewelryMenuImage from '../assets/menJewelry.jpg';
-import mugappuJewelryMenuImage from '../assets/mugappuJewelry.jpg';
-import necklacesJewelryMenuImage from '../assets/necklacesJewelry.jpeg';
-import newArrivalJewelryMenuImage from '../assets/newArrivalJewelry.jpeg';
-import pendantWithChainJewelryMenuImage from '../assets/pendantWithChainJewelry.jpg';
-import pendantsJewelryMenuImage from '../assets/pendantsJewelry.jpg';
-import religiousJewelryMenuImage from '../assets/religiousJewelry.jpg';
-import ringsJewelryMenuImage from '../assets/ringsJewelry.jpg';
-import roseGoldJewelryMenuImage from '../assets/roseGoldJewelry.jpeg';
-import tiePinJewelryMenuImage from '../assets/tiePinJewelry.jpeg';
-import triToneJewelryMenuImage from '../assets/triToneJewelry.jpg';
-import twoToneJewelryMenuImage from '../assets/twoToneJewelry.jpg';
-import unisexJewelryMenuImage from '../assets/unisexJewelry.jpg';
-import vankiJewelryMenuImage from '../assets/vankiJewelry.jpg';
-import waistChainJewelryMenuImage from '../assets/waistChainJewelry.jpg';
-import womenJewelryMenuImage from '../assets/womenJewelry.jpg';
 import moreBrandStoryImage from '../assets/moreBrandStory.jpg';
 import moreCollectionsImage from '../assets/moreCollections.jpg';
 import moreBlogImage from '../assets/blogMainBanner.jpg';
@@ -159,7 +21,52 @@ import HeartIcon from '../assets/heart.svg'
 import UserIcon from '../assets/person.svg'
 
 interface HeaderProps {
-  header: HeaderQuery;
+  header: HeaderQuery & {
+    // Comes from `app/root.tsx` metaobject query so the header can render from
+    // your Shopify `mega_menu_panel` / `mega_menu_group` / `mega_menu_item` data.
+    metaMenuPanels?: Array<{
+      id: string;
+      handle?: string | null;
+      menuHandle?: {value?: string | null} | null;
+      promoLink?: {value?: string | null} | null;
+      promoText?: {value?: string | null} | null;
+      promoImage?: {
+        reference?: {
+          image?: {url?: string | null} | null;
+          url?: string | null;
+        } | null;
+      } | null;
+      enabled?: {value?: string | null} | null;
+      position?: {value?: string | null} | null;
+      groupsList?: {
+        references?: {
+          nodes?: Array<{
+            id: string;
+            handle?: string | null;
+            title?: {value?: string | null} | null;
+            position?: {value?: string | null} | null;
+            items?: {
+              references?: {
+                nodes?: Array<{
+                  id: string;
+                  handle?: string | null;
+                  label?: {value?: string | null} | null;
+                  link?: {value?: string | null} | null;
+                  image?: {
+                    reference?: {
+                      image?: {url?: string | null} | null;
+                      url?: string | null;
+                    } | null;
+                  } | null;
+                  position?: {value?: string | null} | null;
+                }> | null;
+              } | null;
+            } | null;
+          }> | null;
+        } | null;
+      } | null;
+    }> | null;
+  };
   cart: Promise<CartApiQueryFragment | null>;
   isLoggedIn: Promise<boolean>;
   publicStoreDomain: string;
@@ -167,170 +74,139 @@ interface HeaderProps {
 
 type Viewport = 'desktop' | 'mobile';
 
-const COLLECTION_MENU_IMAGES: Record<string, string> = {
-  apoorva: apoorvaMenuImage,
-  ziah: ziahMenuImage,
-  hera: heraMenuImage,
-  mudhra: mudhraMenuImage,
-  nimah: nimahMenuImage,
-  anokhi: anokhiMenuImage,
-  rang: rangMenuImage,
-  tejasvi: tejasviMenuImage,
+function parsePosition(raw?: string | null): number {
+  const parsed = Number(raw ?? '');
+  return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER;
+}
+
+function asPathUrl(url?: string | null): string {
+  const value = (url ?? '').trim();
+  if (!value) return '#';
+  if (value.startsWith('/')) return value;
+  try {
+    const parsed = new URL(value);
+    return parsed.pathname + parsed.search + parsed.hash;
+  } catch {
+    return value;
+  }
+}
+
+function getReferenceImageUrl(
+  field?: {
+    reference?: {
+      image?: {url?: string | null} | null;
+      url?: string | null;
+    } | null;
+  } | null,
+): string | null {
+  const mediaImageUrl = field?.reference?.image?.url?.trim();
+  if (mediaImageUrl) return mediaImageUrl;
+  const genericFileUrl = field?.reference?.url?.trim();
+  return genericFileUrl || null;
+}
+
+type BuiltMenuItem = {
+  id: string;
+  resourceId: string | null;
+  tags: string[];
+  title: string;
+  type: 'HTTP';
+  url: string;
+  items: BuiltMenuItem[];
 };
 
-const HEADER_MENU_ITEM_IMAGES: Record<string, string> = {
-  bangles: banglesMenuImage,
-  bracelets: braceletsMenuImage,
-  'bridal jewelry': bridalJewelryMenuImage,
-  bridaljewelry: bridalJewelryMenuImage,
-  chains: chainsMenuImage,
-  earrings: earringsMenuImage,
-  gifts: giftsMenuImage,
-  necklaces: necklacesMenuImage,
-  religious: religiousMenuImage,
-  rings: ringsMenuImage,
-  women: womenMenuImage,
-  gold: goldMenuImage,
-  'bridal necklace': bridalNecklaceMenuImage,
-  'charm necklace': charmNecklaceMenuImage,
-  'choker necklace': chokerNecklaceMenuImage,
-  'collar necklace': collarNecklaceMenuImage,
-  'diamond necklace': diamondNecklaceMenuImage,
-  'delicate necklace': delicateNecklaceMenuImage,
-  'designer necklace': designerNecklaceMenuImage,
-  'eternity necklace': eternityNecklaceMenuImage,
-  'gold necklace': goldNecklaceMenuImage,
-  'long necklace': longNecklaceMenuImage,
-  'lariat necklace': lariatNecklaceMenuImage,
-  'multi layer necklace': multiLayerNecklaceMenuImage,
-  multilayernecklace: multiLayerNecklaceMenuImage,
-  'pendant necklace': pendantNecklaceMenuImage,
-  'adjustable ring': adjustableRingMenuImage,
-  'broad ring': broadRingMenuImage,
-  casual: casualRingMenuImage,
-  classic: classicRingMenuImage,
-  eternity: eternityMenuImage,
-  'classic ring': classicRingMenuImage,
-  'cocktail ring': cocktailRingMenuImage,
-  'engagement ring': engagementRingMenuImage,
-  'gap ring': gapRingMenuImage,
-  'statement ring': statementRingMenuImage,
-  'two finger ring': twoFingerRingMenuImage,
-  'v ring': vRingMenuImage,
-  'couple bands': coupleBandsMenuImage,
-  'wedding bands': weddingBandsMenuImage,
-  'eternity ring': eternityMenuImage,
-  'chand bali': chandBaliMenuImage,
-  chandelier: chandelierMenuImage,
-  'delicate earrings': delicateEarringsMenuImage,
-  'droops and dangles': droopsDanglesMenuImage,
-  'drops dangles': droopsDanglesMenuImage,
-  'droops dangles': droopsDanglesMenuImage,
-  'ear cuffs': earCuffsMenuImage,
-  hoops: hoopsMenuImage,
-  jhumka: jhumkaMenuImage,
-  'long earrings': longEarringsMenuImage,
-  missmatch: missMatchMenuImage,
-  'miss-match': missMatchMenuImage,
-  'multi stones': multiStonesMenuImage,
-  'statement earrings': statementEarringsMenuImage,
-  stud: studMenuImage,
-  bracelet: braceletDiamondMenuImage,
-  mangalsutra: mangalsutraPendantMenuImage,
-  'mangalsutra pendant': mangalsutraPendantMenuImage,
-  pendants: pendantsDiamondMenuImage,
-  'tie pin': tiePinMenuImage,
-  tiepin: tiePinMenuImage,
-};
+function buildMenuFromHeaderMetaobjects(
+  panels: HeaderProps['header']['metaMenuPanels'],
+): {id: string; items: BuiltMenuItem[]} | null {
+  if (!panels?.length) return null;
 
-const DIAMOND_MENU_ITEM_IMAGES: Record<string, string> = {
-  bangles: banglesDiamondMenuImage,
-  earrings: earringsDiamondMenuImage,
-  necklace: necklaceDiamondMenuImage,
-  rings: ringsDiamondMenuImage,
-  'pendant with chain': pendantWithChainDiamondMenuImage,
-};
+  const topLevelItems = panels
+    .filter((panel) => panel.enabled?.value?.toLowerCase() !== 'false')
+    .slice()
+    .sort(
+      (a, b) =>
+        parsePosition(a.position?.value) - parsePosition(b.position?.value),
+    )
+    .map((panel): BuiltMenuItem => {
+      const promoLink = asPathUrl(panel.promoLink?.value);
 
-const GOLD_MENU_ITEM_IMAGES: Record<string, string> = {
-  anklet: ankletGoldMenuImage,
-  bajubandh: bajubandhGoldMenuImage,
-  bangles: banglesGoldMenuImage,
-  bracelet: braceletGoldMenuImage,
-  chains: chainsGoldMenuImage,
-  earrings: earringsGoldMenuImage,
-  handset: handsetGoldMenuImage,
-  'maang tikka': maangTikkaGoldMenuImage,
-  mangalsutra: mangalsutraGoldMenuImage,
-  mugappu: mugappuGoldMenuImage,
-  necklace: necklaceGoldMenuImage,
-  pendants: pendantsGoldMenuImage,
-  'pendant with chain': pendantWithChainGoldMenuImage,
-  religious: religiousGoldMenuImage,
-  rings: ringsGoldMenuImage,
-  vanki: vankiGoldMenuImage,
-  'waist chain': waistChainGoldMenuImage,
-};
+      const groups: BuiltMenuItem[] = (panel.groupsList?.references?.nodes ?? [])
+        .slice()
+        .sort(
+          (a, b) =>
+            parsePosition(a.position?.value) - parsePosition(b.position?.value),
+        )
+        .map((group): BuiltMenuItem => {
+          const items: BuiltMenuItem[] = (group.items?.references?.nodes ?? [])
+            .slice()
+            .sort(
+              (a, b) =>
+                parsePosition(a.position?.value) - parsePosition(b.position?.value),
+            )
+            .map((item): BuiltMenuItem => {
+              const title = (item.label?.value || item.handle || '').trim();
+              const imageUrl = getReferenceImageUrl(item.image);
+              return {
+                id: item.id,
+                resourceId: null,
+                tags: imageUrl ? [`meta:image:${imageUrl}`] : [],
+                title,
+                type: 'HTTP',
+                url: asPathUrl(item.link?.value),
+                items: [],
+              };
+            })
+            .filter((item) => Boolean(item.title) && item.url !== '#');
 
-const JEWELRY_MENU_ITEM_IMAGES: Record<string, string> = {
-  anklet: ankletJewelryMenuImage,
-  bajubandh: bajubandhJewelryMenuImage,
-  bangles: banglesJewelryMenuImage,
-  bracelets: braceletsJewelryMenuImage,
-  'bridal jewelry': bridalJewelryJewelryMenuImage,
-  chains: chainsJewelryMenuImage,
-  diamond: diamondJewelryMenuImage,
-  diomand: diamondJewelryMenuImage,
-  earrings: earringsJewelryMenuImage,
-  gifts: giftsJewelryMenuImage,
-  gold: goldJewelryMenuImage,
-  'groom jewelry': groomJewelryMenuImage,
-  handset: handsetJewelryMenuImage,
-  'maang tikka': maangTikkaJewelryMenuImage,
-  mangalsutra: mangalsutrasJewelryMenuImage,
-  mangalsutras: mangalsutrasJewelryMenuImage,
-  men: menJewelryMenuImage,
-  kids: kidsJeweleryMenuImage,
-  mugappu: mugappuJewelryMenuImage,
-  necklaces: necklacesJewelryMenuImage,
-  'new arrivals': newArrivalJewelryMenuImage,
-  'new arrival': newArrivalJewelryMenuImage,
-  'pendant with chain': pendantWithChainJewelryMenuImage,
-  pendants: pendantsJewelryMenuImage,
-  religious: religiousJewelryMenuImage,
-  rings: ringsJewelryMenuImage,
-  'rose gold': roseGoldJewelryMenuImage,
-  'tie pin': tiePinJewelryMenuImage,
-  tritone: triToneJewelryMenuImage,
-  'tri tone': triToneJewelryMenuImage,
-  twotone: twoToneJewelryMenuImage,
-  'two tone': twoToneJewelryMenuImage,
-  unisex: unisexJewelryMenuImage,
-  vanki: vankiJewelryMenuImage,
-  'waist chain': waistChainJewelryMenuImage,
-  women: womenJewelryMenuImage,
-};
+          const groupTitle = (group.title?.value || group.handle || '').trim();
+          const groupUrl = items[0]?.url ?? promoLink ?? '#';
 
-const OCCASION_MENU_ITEM_IMAGES: Record<string, string> = {
-  'wedding diamond jewelry': weddingDiamondOccasionMenuImage,
-  'wedding gold jewelry': weddingGoldOccasionMenuImage,
-  mangalsutras: mangalsutrasJewelryMenuImage,
-  'all engagement rings': allEngagementRingsOccasionMenuImage,
-  'engagement jewelry for him': engagementJewelryForHimOccasionMenuImage,
-  'engagement jewelry for her': engagementJewelryForHerOccasionMenuImage,
-  'engagement rings for men': engagementRingsForMenOccasionMenuImage,
-  'engagement rings for women': engagementRingsForWomenOccasionMenuImage,
-  'party jewelry for men': partyJewelryForMenOccasionMenuImage,
-  'party jewelry for women': partyJewelryForWomenOccasionMenuImage,
-  'bridal jewelry': bridalJewelryOccasionMenuImage,
-  'groom jewelry': groomJewelryMenuImage,
-  'groom jewellery': groomJewelryMenuImage,
-  'groom jewlery': groomJewelryMenuImage,
-  gifts: giftsOccasionMenuImage,
-  kids: kidsOccasionMenuImage,
-  men: menOccasionMenuImage,
-  unisex: unisexOccasionMenuImage,
-  women: womenOccasionMenuImage,
-};
+          return {
+            id: group.id,
+            resourceId: null,
+            tags: [],
+            title: groupTitle,
+            type: 'HTTP',
+            url: groupUrl,
+            items,
+          };
+        })
+        .filter((group) => Boolean(group.title));
+
+      const promoText = panel.promoText?.value?.trim();
+      const promoImageUrl = getReferenceImageUrl(panel.promoImage);
+      if (promoText && promoLink && promoLink !== '#') {
+        groups.push({
+          id: `${panel.id}-view-all`,
+          resourceId: null,
+          tags: promoImageUrl ? [`meta:promo:${promoImageUrl}`] : [],
+          title: `View All ${promoText}`,
+          type: 'HTTP',
+          url: promoLink,
+          items: [],
+        });
+      }
+
+      const topTitle = (panel.menuHandle?.value || panel.handle || '').trim();
+      const topUrl = promoLink && promoLink !== '#'
+        ? promoLink
+        : groups[0]?.url ?? '#';
+
+      return {
+        id: panel.id,
+        resourceId: null,
+        tags: [],
+        title: topTitle,
+        type: 'HTTP',
+        url: topUrl,
+        items: groups,
+      };
+    })
+    .filter((item) => Boolean(item.title));
+
+  if (!topLevelItems.length) return null;
+  return {id: 'metaobject-header-menu', items: topLevelItems};
+}
 
 export function Header({
   header,
@@ -338,12 +214,14 @@ export function Header({
   cart,
   publicStoreDomain,
 }: HeaderProps) {
-  const { shop, menu } = header;
+  const {shop, menu, metaMenuPanels} = header;
   const logoUrl = shop.brand?.logo?.image?.url || kalyanLogo;
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const mobileMenuItems = (menu || FALLBACK_HEADER_MENU).items;
+  const metaMenu = buildMenuFromHeaderMetaobjects(metaMenuPanels);
+  const effectiveMenu = metaMenu ?? menu ?? FALLBACK_HEADER_MENU;
+  const mobileMenuItems = effectiveMenu.items;
   const getItemUrl = (url: string) =>
     url.includes('myshopify.com') ||
       url.includes(publicStoreDomain) ||
@@ -552,7 +430,7 @@ export function Header({
             prefetch="intent"
             to="/"
             end
-            className="xl:mt-[2rem] pt-3 lg:mt-[1rem] ml-[5.6vw] xl:mb-[1.4rem] lg:mb-[1.3rem]"
+            className="xl:mt-8 pt-3 lg:mt-4 ml-[5.6vw] xl:mb-[1.4rem] lg:mb-[1.3rem]"
           >
             {logoUrl ? (
               <img
@@ -567,7 +445,7 @@ export function Header({
           </NavLink>
 
           <div className='flex-1 mr-[5.5vw]'>
-            <div className=' mb-[2rem]'>
+            <div className=' mb-8'>
               <HeaderCtas
                 isLoggedIn={isUserLoggedIn}
                 cart={cart}
@@ -580,7 +458,7 @@ export function Header({
               <div className="flex justify-end">
                 <div className="w-auto">
                   <HeaderMenu
-                    menu={menu}
+                    menu={effectiveMenu as any}
                     viewport="desktop"
                     primaryDomainUrl={header.shop.primaryDomain.url}
                     publicStoreDomain={publicStoreDomain}
@@ -643,7 +521,32 @@ export function HeaderMenu({
       ? new URL(url).pathname
       : url;
 
-  const getDisplayTitle = (title: string) => title.toUpperCase();
+  const getDisplayTitle = (title: string) => {
+    const normalized = title.trim().toUpperCase();
+
+    if (normalized.startsWith('ALL JEWELRY')) {
+      return 'ALL JEWELRY';
+    }
+
+    if (normalized.startsWith('SHOP FOR')) {
+      return 'SHOP FOR';
+    }
+
+    if (normalized.startsWith('CATEGORY')) {
+      return 'CATEGORY';
+    }
+
+    if (normalized.startsWith('CURATED SHOP')) {
+      return 'CURATED SHOP';
+    }
+
+    return title; // fallback
+  };
+
+  const getMetaTagUrl = (
+    tags: Array<string> | undefined,
+    prefix: 'meta:image:' | 'meta:promo:',
+  ) => tags?.find((tag) => tag.startsWith(prefix))?.slice(prefix.length) || null;
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -708,6 +611,7 @@ export function HeaderMenu({
           const isOccasionMenu = item.title.trim().toLowerCase() === 'occasion';
           const isJewelryOrOccasionMenu = isJewelryMenu || isOccasionMenu;
           const shouldShowPromoCard = Boolean(viewAllItem);
+
 
           const resolveMenuUrl = (menuUrl?: string, fallback = url) =>
             menuUrl ? getItemUrl(menuUrl) : fallback;
@@ -804,7 +708,7 @@ export function HeaderMenu({
                       >
                         {groupedItems.map((group) => {
                           const normalizedGroupTitle = group.title.trim().toLowerCase();
-                          const isCategory = normalizedGroupTitle === 'category';
+                          const isCategory = normalizedGroupTitle.startsWith('category');
                           const items = group.items ?? [];
                           const isSingleCategoryLayout =
                             groupedItems.length === 1 && isCategory;
@@ -827,7 +731,7 @@ export function HeaderMenu({
                                 {getDisplayTitle(group.title)}
                               </p>
                               <div
-                                className={
+                                className={isOccasionMenu ? 'grid grid-cols-1 gap-y-3' : 
                                   isPriceRangeGroup
                                     ? 'grid grid-cols-1 gap-y-3'
                                     : isSingleCategoryLayout
@@ -852,25 +756,12 @@ export function HeaderMenu({
                                   const normalizedSubItemTitle = subItem.title
                                     .trim()
                                     .toLowerCase();
-                                  const menuImage =
-                                    (isOccasionMenu &&
-                                      OCCASION_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                    (isJewelryMenu &&
-                                      JEWELRY_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                    (isGoldMenu &&
-                                      GOLD_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                    (isDiamondMenu &&
-                                      DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                    (isCollectionMenu &&
-                                      COLLECTION_MENU_IMAGES[normalizedSubItemTitle]) ||
-                                    ((isMuhuratMenu ||
-                                      isJewelryMenu ||
-                                      isNecklaceMenu ||
-                                      isRingsMenu ||
-                                      isEarringsMenu ||
-                                      isDiamondMenu ||
-                                      isOccasionMenu) &&
-                                      HEADER_MENU_ITEM_IMAGES[normalizedSubItemTitle]);
+                                  const adminMenuImage = getMetaTagUrl(
+                                    subItem.tags,
+                                    'meta:image:',
+                                  );
+                                  const menuImage = adminMenuImage 
+                                   
                                   return (
                                     <NavLink
                                       key={subItem.id}
@@ -900,25 +791,12 @@ export function HeaderMenu({
                                     const normalizedSubItemTitle = subItem.title
                                       .trim()
                                       .toLowerCase();
-                                    const menuImage =
-                                      (isOccasionMenu &&
-                                        OCCASION_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                      (isJewelryMenu &&
-                                        JEWELRY_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                      (isGoldMenu &&
-                                        GOLD_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                      (isDiamondMenu &&
-                                        DIAMOND_MENU_ITEM_IMAGES[normalizedSubItemTitle]) ||
-                                      (isCollectionMenu &&
-                                        COLLECTION_MENU_IMAGES[normalizedSubItemTitle]) ||
-                                      ((isMuhuratMenu ||
-                                        isJewelryMenu ||
-                                        isNecklaceMenu ||
-                                        isRingsMenu ||
-                                        isEarringsMenu ||
-                                        isDiamondMenu ||
-                                        isOccasionMenu) &&
-                                        HEADER_MENU_ITEM_IMAGES[normalizedSubItemTitle]);
+                                    const adminMenuImage = getMetaTagUrl(
+                                      subItem.tags,
+                                      'meta:image:',
+                                    );
+                                    const menuImage = adminMenuImage 
+                                      
                                     return (
                                       <NavLink
                                         key={subItem.id}
@@ -954,25 +832,7 @@ export function HeaderMenu({
                         >
                           <img
                             src={
-                              isPriceRangeMenu
-                                ? menuPriceImage
-                                : isCollectionMenu
-                                  ? moreCollectionsImage
-                                  : isMuhuratMenu
-                                    ? mudhraSideMenuImage
-                                    : isNecklaceMenu
-                                      ? menuNecklaceImage
-                                      : isRingsMenu
-                                        ? menuRingImage
-                                        : isEarringsMenu
-                                          ? menuEarringsImage
-                                          : isDiamondMenu
-                                            ? menuDiamondImage
-                                            : isGoldMenu
-                                              ? menuGoldImage
-                                              : isOccasionMenu
-                                                ? menuOccasionImage
-                                                : jewelryMegaMenuPromo
+                              getMetaTagUrl(viewAllItem?.tags, 'meta:promo:')
                             }
                             alt={`${item.title} collection`}
                             className="h-[180px] w-full rounded-md object-cover"
