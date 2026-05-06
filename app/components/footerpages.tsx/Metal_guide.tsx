@@ -187,6 +187,7 @@ const slides: Slide[] = [
       'Have been the centrepiece for adornments throughout history. Silver and Gold have been admired as jewellery & décor. While Gold takes the spotlight, silver, platinum, palladium are quite popular as well. The history of Gold finds its link to money which in course of time was replaced by currency, as we know of today; the Gold Standard was fixed that determined the value of their currencies in terms of a specified amount of gold.',
     leftImage: yellow1,
     showBrowseButton: true,
+    leftImageClassName: 'max-w-[340px] md:max-w-[390px] h-auto md:h-[480px] transform scale-x-75 scale-y-125',
   },
 
   /* ── 2. Gold ───────────────────────────────────────────────────────────── */
@@ -197,6 +198,7 @@ const slides: Slide[] = [
       "The word 'gold' comes from the Old English word \"geolu\" which means yellow. From the very beginning gold attracted civilizations all over the world. It has been treasured as an object of desire and beauty. Due to its golden color it often played an important role in Mythology and is considered a prized possession till date.",
     leftImage: yellow2,
     showBrowseButton: true,
+    leftImageClassName: 'max-w-[420px] max-h-[380px]',
   },
 
   /* ── 3. Gold Facts  (text-only, 4 bullets) ─────────────────────────────── */
@@ -418,58 +420,60 @@ export default function MetalGuide() {
 
         {/* ══════════ standard ══════════ */}
         {slide.layout === 'standard' && (
-          <div className="w-full max-w-[1200px] grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-12">
+          <div className="w-full max-w-[1550px] flex flex-col md:flex-row items-center py-12 px-3 md:px-0">
 
             {/* Left: image — mix-blend-mode:multiply blends any image background to white */}
-            <div className="flex justify-center items-center">
+            <div className="w-full md:w-[45%] flex justify-center items-center">
               {slide.leftImage && (
                 <img
                   src={slide.leftImage}
                   alt={slide.title ?? 'slide image'}
-                  className={`${slide.leftImageClassName ?? 'max-w-[420px] max-h-[460px]'} w-full h-auto object-contain block`}
-                  style={{ mixBlendMode: 'multiply' }}
+                  className={`${slide.leftImageClassName ?? 'max-w-[420px] max-h-[345px]'} w-full h-auto object-contain block`}
+                  style={{ mixBlendMode: 'multiply', maxHeight: slide.leftImageClassName ? undefined : '345px' }}
                 />
               )}
             </div>
 
             {/* Right: text content */}
-            <div className="flex flex-col items-center text-center">
-              {slide.subtitle && (
-                <p className="text-[11px] tracking-[0.28em] uppercase text-[#8a8a8a] mb-2">
-                  {slide.subtitle}
-                </p>
-              )}
-              {slide.title && (
-                <h1 className="text-3xl md:text-4xl uppercase tracking-[0.06em] mb-5 font-light">
-                  {slide.title}
-                </h1>
-              )}
-              {slide.description && (
-                <p className="text-[#666] text-sm leading-7 max-w-[480px]">{slide.description}</p>
-              )}
-              {slide.rightImage && (
-                <img
-                  src={slide.rightImage}
-                  alt={`${slide.title ?? ''} detail`}
-                  className={slide.rightImageClassName ?? "mt-5 max-w-[300px] w-full h-auto max-h-[240px] object-contain block"}
-                  style={{ mixBlendMode: 'multiply' }}
-                />
-              )}
-              {slide.showBrowseButton && (
-                <button
-                  type="button"
-                  className="mt-6 border border-[#1d1d1d] px-8 py-3 text-[11px] tracking-[0.12em] uppercase hover:bg-gray-50 transition"
-                >
-                  Browse Product
-                </button>
-              )}
+            <div className="w-full md:w-[55%] flex flex-col items-start pl-3 lg:pl-9">
+              <div className="max-w-[750px] flex flex-col items-center text-center">
+                {slide.subtitle && (
+                  <p className="text-[11px] tracking-[0.28em] uppercase text-[#8a8a8a] mb-3">
+                    {slide.subtitle}
+                  </p>
+                )}
+                {slide.title && (
+                  <h1 className="text-[32px] md:text-[38px] uppercase tracking-[0.06em] mb-6 font-light text-[#222]">
+                    {slide.title}
+                  </h1>
+                )}
+                {slide.description && (
+                  <p className="text-[#666] text-[14px] leading-[28px] font-light">{slide.description}</p>
+                )}
+                {slide.rightImage && (
+                  <img
+                    src={slide.rightImage}
+                    alt={`${slide.title ?? ''} detail`}
+                    className={slide.rightImageClassName ?? "mt-5 max-w-[300px] w-full h-auto max-h-[240px] object-contain block"}
+                    style={{ mixBlendMode: 'multiply' }}
+                  />
+                )}
+                {slide.showBrowseButton && (
+                  <button
+                    type="button"
+                    className="mt-8 border border-[#1d1d1d] px-8 py-3 text-[11px] tracking-[0.12em] uppercase hover:bg-gray-50 transition"
+                  >
+                    Browse Product
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )}
 
         {/* ══════════ text-only ══════════ */}
         {slide.layout === 'text-only' && (
-          <div className="w-full max-w-[860px] py-16 mx-auto flex flex-col items-center text-center px-4">
+          <div className="w-full py-16 mx-auto flex flex-col items-center text-center">
             {slide.title && (
               <h1 className="text-3xl md:text-[36px] uppercase tracking-[0.04em] mb-10 font-light text-[#222]">
                 {slide.title}
@@ -478,9 +482,9 @@ export default function MetalGuide() {
 
             {/* Bullets */}
             {slide.bullets && (
-              <div className="w-full flex flex-col space-y-4 mb-8 text-center">
+              <div className="w-full flex flex-col text-center">
                 {slide.bullets.map((bullet, idx) => (
-                  <p key={idx} className="text-[#555] text-[14px] font-light leading-[26px]">
+                  <p key={idx} className="text-[#888] text-[10px] md:text-[11px] font-light leading-[26px] whitespace-nowrap mb-[1px]">
                     * {bullet}
                   </p>
                 ))}
@@ -493,7 +497,7 @@ export default function MetalGuide() {
                 <img
                   src={slide.tableImage}
                   alt="Composition Details"
-                  className="w-full h-auto object-contain block"
+                  className="w-full max-w-[860px] h-auto object-contain block"
                 />
               </div>
             )}
