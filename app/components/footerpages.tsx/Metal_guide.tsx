@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router';
 import kalyanLogo from '~/assets/kalyanLogo.svg';
+import logo12 from '~/assets/logo-12.png';
 
 // Yellow Gold assets
 import yellow1 from '~/assets/Yellow-1.webp';
@@ -25,6 +27,7 @@ import platinum3 from '~/assets/Platinum-3.webp';
 import platinum4 from '~/assets/Platinum-4.webp';
 import platinum4Alt from '~/assets/Platinum-4 (1).webp';
 import platinum42 from '~/assets/Platinum-4-2.webp';
+import platinum6 from '~/assets/Platinum-6.webp';
 import arrowIcon from '~/assets/arrow.png';
 
 // Nav arrows
@@ -321,7 +324,8 @@ const slides: Slide[] = [
   /* ── 14. Pt 950 Annotated Ring  (full-image — annotation baked into asset) */
   {
     layout: 'image-full',
-    leftImage: platinum3,
+    leftImage: platinum6,
+    leftImageClassName: 'w-full max-w-[1000px] h-auto max-h-[800px] object-contain block',
   },
 
   /* ── 15. Weddings Bands  (couple LEFT | text + bands image RIGHT) ──────── */
@@ -369,10 +373,15 @@ export default function MetalGuide() {
 
   return (
     <section className="w-full bg-white text-[#1d1d1d]">
+      <style>{`
+        header, .lg\\:block.bg-\\[\\#650827\\] { display: none !important; }
+      `}</style>
 
       {/* ── Top Nav Bar ── */}
-      <div className="h-[64px] sm:h-[72px] bg-[#c8284d] px-3 sm:px-4 md:px-8 lg:px-16 flex items-center justify-between">
-        <img src={kalyanLogo} alt="Kalyan Jewellers" className="h-7 sm:h-9 w-auto" />
+      <div className="h-[90px] sm:h-[105px] bg-[#c8284d] px-3 sm:px-4 md:px-8 lg:pl-28 lg:pr-20 flex items-center justify-between">
+        <Link to="/">
+          <img src={logo12} alt="Kalyan Jewellers" className="h-11 sm:h-15 w-auto" />
+        </Link>
         <div className="md:hidden">
           <label htmlFor="metal-category" className="sr-only">
             Select metal category
@@ -393,7 +402,7 @@ export default function MetalGuide() {
             ))}
           </select>
         </div>
-        <nav className="hidden md:flex items-center gap-8 text-[11px] tracking-[0.12em] uppercase text-white">
+        <nav className="hidden md:flex items-center gap-8 text-[16px] tracking-[0.12em] uppercase text-white font-medium">
           {categoryAnchors.map((item) => (
             <button
               key={item.label}
@@ -409,7 +418,7 @@ export default function MetalGuide() {
       </div>
 
       {/* ── Slide Wrapper ── */}
-      <div className="relative overflow-hidden min-h-[calc(100vh-64px)] sm:min-h-[calc(100vh-72px)] flex items-center justify-center px-[4%] sm:px-[5%]">
+      <div className="relative overflow-hidden min-h-[calc(100vh-90px)] sm:min-h-[calc(100vh-105px)] flex items-center justify-center px-[4%] sm:px-[5%]">
 
         {/* ← Prev */}
         <img
@@ -462,7 +471,7 @@ export default function MetalGuide() {
                   )}
                   {slide.description && (
                     <p
-                      className="text-[#666] font-helvetica-neue-thin"
+                      className="text-[#888] text-[15px] font-regular font-helvetica-light"
                       style={{
                         fontSize: '0.836vw',
                         fontWeight: 100,
@@ -506,7 +515,17 @@ export default function MetalGuide() {
               {slide.bullets && (
                 <div className="w-full flex flex-col text-center">
                   {slide.bullets.map((bullet, idx) => (
-                    <p key={idx} className="text-[#888] text-[10px] md:text-[11px] font-light leading-[26px] whitespace-nowrap mb-[1px]">
+                    <p
+                      key={idx}
+                      className={`font-helvetica-neue-thin leading-[28px] mx-auto mb-[2px] px-2 ${slide.title === 'WHITE GOLD FACTS'
+                        ? 'text-[11px] md:text-[12.5px] w-full md:whitespace-nowrap tracking-[0.01em] text-[#888] '
+                        : slide.title === 'ROSE GOLD'
+                          ? 'text-[11px] md:text-[14px] max-w-[95%] md:max-w-[850px] tracking-[0.01em] text-[#444] '
+                          : 'text-[12px] md:text-[14px] max-w-[100%] md:max-w-[1600px] text-[#888] '
+                        }`}
+                      style={{ fontWeight: 100 }}
+                    >
+
                       * {bullet}
                     </p>
                   ))}
@@ -529,27 +548,34 @@ export default function MetalGuide() {
           {/* ══════════ dual-info ══════════ */}
           {slide.layout === 'dual-info' && (
             <div className="w-full max-w-[1200px] py-12 mx-auto">
-              {slide.title && (
-                <h1 className="text-2xl md:text-3xl uppercase tracking-[0.06em] mb-8 font-light text-center">
-                  {slide.title}
-                </h1>
-              )}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
                 <div className="flex justify-center">
                   <img
                     src={slide.leftImage}
                     alt="left visual"
-                    className="max-w-[480px] w-full h-auto object-contain block"
+                    className="max-w-[276px] w-full h-auto object-contain block transform scale-y-110"
                     style={{ mixBlendMode: 'multiply' }}
                   />
                 </div>
-                <div className="flex justify-center">
-                  <img
-                    src={slide.rightImage}
-                    alt="right visual"
-                    className="max-w-[480px] w-full h-auto object-contain block"
-                    style={{ mixBlendMode: 'multiply' }}
-                  />
+                <div className="flex flex-col items-start">
+                  {slide.title && (
+                    <h1
+                      className="text-xl md:text-[24px] uppercase tracking-[0.06em] mb-4 font-helvetica-neue-thin text-left whitespace-nowrap"
+                      style={{
+                        fontWeight: 100,
+                      }}
+                    >
+                      {slide.title}
+                    </h1>
+                  )}
+                  <div className="flex justify-start w-full">
+                    <img
+                      src={slide.rightImage}
+                      alt="right visual"
+                      className="max-w-[480px] w-full h-auto object-contain block"
+                      style={{ mixBlendMode: 'multiply' }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -557,12 +583,12 @@ export default function MetalGuide() {
 
           {/* ══════════ image-full  (Pt 950 annotated ring) ══════════ */}
           {slide.layout === 'image-full' && (
-            <div className="w-full max-w-[900px] py-12 mx-auto flex justify-center">
+            <div className="w-full max-w-[1200px] py-12 mx-auto flex justify-center">
               <img
                 src={slide.leftImage}
                 alt="platinum ring"
-                className="w-full max-w-[700px] h-auto max-h-[560px] object-contain block"
-                style={{ mixBlendMode: 'multiply' }}
+                className={slide.leftImageClassName || "w-full max-w-[700px] h-auto max-h-[560px] object-contain block"}
+                style={{ mixBlendMode: 'multiply', filter: 'brightness(1.08) contrast(1.02)' }}
               />
             </div>
           )}
