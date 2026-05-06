@@ -352,6 +352,7 @@ const categoryAnchors = [
    ───────────────────────────────────────────────────────────────────────────── */
 export default function MetalGuide() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<'right' | 'left'>('right');
 
   const activeCategory = useMemo(() => {
     let current = categoryAnchors[0].label;
@@ -361,8 +362,8 @@ export default function MetalGuide() {
     return current;
   }, [activeIndex]);
 
-  const nextSlide = () => setActiveIndex((p) => (p + 1) % slides.length);
-  const prevSlide = () => setActiveIndex((p) => (p - 1 + slides.length) % slides.length);
+  const nextSlide = () => {setSlideDirection('right'); setActiveIndex((p) => (p + 1) % slides.length);};
+  const prevSlide = () => {setSlideDirection('left'); setActiveIndex((p) => (p - 1 + slides.length) % slides.length);};
 
   const slide = slides[activeIndex];
 
@@ -381,7 +382,7 @@ export default function MetalGuide() {
             value={activeCategory}
             onChange={(e) => {
               const selected = categoryAnchors.find((item) => item.label === e.target.value);
-              if (selected) setActiveIndex(selected.index);
+              if (selected) {setSlideDirection(selected.index > activeIndex ? 'right' : 'left'); setActiveIndex(selected.index);}
             }}
             className="h-9 rounded bg-white/95 px-2 text-[11px] uppercase tracking-[0.08em] text-[#1d1d1d] outline-none"
           >
@@ -397,7 +398,7 @@ export default function MetalGuide() {
             <button
               key={item.label}
               type="button"
-              onClick={() => setActiveIndex(item.index)}
+              onClick={() => {setSlideDirection(item.index > activeIndex ? 'right' : 'left'); setActiveIndex(item.index);}}
               className={`transition border-b pb-0.5 ${activeCategory === item.label ? 'border-white' : 'border-transparent'
                 }`}
             >
@@ -408,7 +409,7 @@ export default function MetalGuide() {
       </div>
 
       {/* ── Slide Wrapper ── */}
-      <div className="relative min-h-[calc(100vh-64px)] sm:min-h-[calc(100vh-72px)] flex items-center justify-center px-[4%] sm:px-[5%]">
+      <div className="relative overflow-hidden min-h-[calc(100vh-64px)] sm:min-h-[calc(100vh-72px)] flex items-center justify-center px-[4%] sm:px-[5%]">
 
         {/* ← Prev */}
         <img
@@ -417,6 +418,18 @@ export default function MetalGuide() {
           onClick={prevSlide}
           className="absolute left-2 sm:left-[1%] z-20 h-8 w-8 sm:h-10 sm:w-10 cursor-pointer object-contain scale-x-[-1]"
         />
+
+        <div key={activeIndex} className="w-full flex-1 flex flex-col justify-center items-center" style={{ animation: `slideEnter${slideDirection === 'right' ? 'Right' : 'Left'} 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards` }}>
+          <style>{`
+            @keyframes slideEnterRight {
+              0% { opacity: 0; transform: translateX(150px) scale(0.95); }
+              100% { opacity: 1; transform: translateX(0) scale(1); }
+            }
+            @keyframes slideEnterLeft {
+              0% { opacity: 0; transform: translateX(-150px) scale(0.95); }
+              100% { opacity: 1; transform: translateX(0) scale(1); }
+            }
+          `}</style>
 
         {/* ══════════ standard ══════════ */}
         {slide.layout === 'standard' && (
@@ -544,6 +557,8 @@ export default function MetalGuide() {
             />
           </div>
         )}
+
+        </div>
 
         {/* → Next */}
         <img
