@@ -85,7 +85,7 @@ const JewelleryGuides: React.FC = () => {
           {guides.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-2xl shadow-md pl-6 py-6 flex items-center justify-between hover:shadow-lg transition"
+              className="bg-white rounded-2xl shadow-md pl-6 py-6 flex items-center justify-between transition-all duration-300 ease-out hover:scale-105 hover:shadow-xl"
             >
 
               {/* LEFT CONTENT */}

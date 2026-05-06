@@ -6,6 +6,9 @@
   --font-sans: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-serif: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-heading: 'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-cormorant: 'Cormorant', serif;
+  --font-lato: 'Lato', sans-serif;
+  --font-helvetica-otf: 'Helvetica Neue OTF', 'Helvetica Neue', Arial, sans-serif;
 }
 
 @keyframes text-scroll {
@@ -51,4 +54,29 @@
   font-weight: 700;
   font-style: normal;
   font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cormorant';
+  src:
+    local('Cormorant'),
+    url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&display=swap') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue OTF';
+  src: url('/app/font/HelveticaNeueUltraLight.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* Custom utility class for Helvetica Neue OTF */
+@layer utilities {
+  .font-helvetica-otf {
+    font-family: var(--font-helvetica-otf);
+  }
 }
