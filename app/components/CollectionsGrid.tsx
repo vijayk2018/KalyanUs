@@ -71,18 +71,20 @@ const CollectionsGrid: React.FC<{ isFrom?: string }> = ({ isFrom }) => {
                 <img
                     src={item.title}
                     alt={item.label}
-                    className="w-[8vw] h-[8vh] object-cover filter invert"
+                    className="w-[8vw] h-[8vh] object-cover "
                 />
             </div>
 
             {/* Hover Overlay */}
-            <div className="absolute inset-0 bg-[#b82042] flex flex-col items-center justify-center text-center text-white opacity-0 group-hover:opacity-100 transition-all duration-500">
-              {/* Image */}
-                <img
-                    src={item.title}
-                    alt={item.label}
-                    className="w-[8vw] h-[8vh]  object-cover filter invert"
-                />
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center 
+                bg-[#b82042]/0 group-hover:bg-[#b82042]/70 
+                transition-all duration-500">
+  
+              <img
+                src={item.title}
+                alt={item.label}
+                className="w-[8vw] h-[8vh] object-cover"
+              />
             </div>
           </Link>
         ))}
