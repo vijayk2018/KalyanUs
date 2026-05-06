@@ -113,11 +113,14 @@ function formatCategoryTitle(title: string) {
 }
 
 const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
+  const categoryCollections = categories.filter((item) =>
+    /^category_/i.test(item.title.trim()),
+  );
   const usedIds = new Set<string>();
   const orderedCategories = CATEGORY_ORDER.map((slot) => {
     const handleCandidates = CATEGORY_HANDLE_PRIORITY[slot];
 
-    const byHandle = categories.find((item) => {
+    const byHandle = categoryCollections.find((item) => {
       if (usedIds.has(item.id)) return false;
       return handleCandidates.some(
         (candidate) => handleMatchesCandidate(item.handle, candidate),
@@ -128,10 +131,10 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
       return byHandle;
     }
 
-    const byTitle = categories.find((item) => {
+    const byTitle = categoryCollections.find((item) => {
       if (usedIds.has(item.id)) return false;
       return CATEGORY_KEYWORDS[slot].some((keyword) =>
-        hasWholeWord(item.title, keyword),
+        hasWholeWord(formatCategoryTitle(item.title), keyword),
       );
     });
     if (byTitle) {
@@ -139,11 +142,12 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
       return byTitle;
     }
 
-    const byLoose = categories.find((item) => {
+    const byLoose = categoryCollections.find((item) => {
       if (usedIds.has(item.id)) return false;
       return CATEGORY_KEYWORDS[slot].some(
         (keyword) =>
-          hasLooseMatch(item.handle, keyword) || hasLooseMatch(item.title, keyword),
+          hasLooseMatch(item.handle, keyword) ||
+          hasLooseMatch(formatCategoryTitle(item.title), keyword),
       );
     });
     if (byLoose) {
