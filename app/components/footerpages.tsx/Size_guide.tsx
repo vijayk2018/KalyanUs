@@ -16,7 +16,7 @@ export default function SizeGuide() {
                 </h2>
 
                 {/* Paragraphs - Full center alignment like first image */}
-                <div className="max-w-[950px] mx-auto text-[#666] text-[14px] sm:text-[15px] leading-relaxed mb-10 sm:mb-12 md:mb-16 space-y-4 sm:space-y-6 text-center">
+                <div className="w-full max-w-[1240px] px-2 mx-auto text-[#666] text-[14px] sm:text-[15px] leading-relaxed mb-10 sm:mb-12 md:mb-16 space-y-4 sm:space-y-6 text-center">
                     <p>
                         At Candere, we like to make sure that your online shopping experience is as easy as possible. Whether you are buying a solitaire ring for yourself or a gorgeous eternity bangle for your
                         better half, we understand the importance of getting the size right.
@@ -30,9 +30,9 @@ export default function SizeGuide() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 md:gap-8 max-w-[1000px] mx-auto">
 
                     {/* Ring Card */}
-                    <div className="border border-gray-100 rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] p-4 sm:p-5 md:p-6 bg-white transition-shadow hover:shadow-lg">
+                    <div className="border border-gray-100 rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] p-4 sm:p-5 md:p-6 bg-white transition-transform duration-300 hover:scale-[1.02]">
                         <div className="mb-4">
-                            <a href="#" className="text-[#cf2d4c] font-normal text-[15px] hover:underline flex items-center gap-1 justify-center md:justify-start">
+                            <a href="/Ring_Sizer_Steps.pdf" target="_blank" rel="noopener noreferrer" className="text-[#cf2d4c] font-normal text-[15px] hover:underline flex items-center gap-1 justify-center md:justify-start">
                                 <span className="uppercase">RING SIZER GUIDE</span>
                                 <span>Download</span>
                             </a>
@@ -47,9 +47,9 @@ export default function SizeGuide() {
                     </div>
 
                     {/* Bangle Card */}
-                    <div className="border border-gray-100 rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] p-4 sm:p-5 md:p-6 bg-white transition-shadow hover:shadow-lg">
+                    <div className="border border-gray-100 rounded-lg shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] p-4 sm:p-5 md:p-6 bg-white transition-transform duration-300 hover:scale-[1.02]">
                         <div className="mb-4">
-                            <a href="#" className="text-[#cf2d4c] font-normal text-[15px] hover:underline flex items-center gap-1 justify-center md:justify-start">
+                            <a href="/Bangle_Sizer.pdf" target="_blank" rel="noopener noreferrer" className="text-[#cf2d4c] font-normal text-[15px] hover:underline flex items-center gap-1 justify-center md:justify-start">
                                 <span className="uppercase">BANGLE SIZER GUIDE</span>
                                 <span>Download</span>
                             </a>
