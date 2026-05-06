@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from 'react';
-import { Await, NavLink, useAsyncValue, useNavigation } from 'react-router';
+import { Await, NavLink, useAsyncValue, useNavigation, useSearchParams, useLocation } from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -356,6 +356,18 @@ export function Header({
   const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const navigation = useNavigation();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
+
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q) {
+      setSearchTerm(q);
+    } else if (location.pathname === '/') {
+      setSearchTerm('');
+    }
+  }, [searchParams, location.pathname]);
 
   useEffect(() => {
     const updateWishlistCount = () => {
@@ -457,6 +469,13 @@ export function Header({
               <input
                 name="q"
                 type="search"
+                value={searchTerm}
+                onChange={(e) => {
+                  if (e.target.value.length <= 130) {
+                    setSearchTerm(e.target.value);
+                  }
+                }}
+                maxLength={130}
                 placeholder="Search entire store here..."
                 aria-label="Search entire store"
                 className="header-search-input w-full rounded-sm px-3 py-2 pr-12 text-[22px] font-serif placeholder:text-[#d5d5d5] outline-none"
@@ -574,6 +593,8 @@ export function Header({
                 wishlistCount={wishlistCount}
                 setIsWishlistOpen={setIsWishlistOpen}
                 setIsStoreModalOpen={setIsStoreModalOpen}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
               />
             </div>
             <div className=" bg-[#650827] relative">
@@ -1014,11 +1035,15 @@ function HeaderCtas({
   wishlistCount,
   setIsWishlistOpen,
   setIsStoreModalOpen,
+  searchTerm,
+  setSearchTerm,
 }: Pick<HeaderProps, 'cart'> & {
   isLoggedIn: boolean;
   wishlistCount: number;
   setIsWishlistOpen: (isOpen: boolean) => void;
   setIsStoreModalOpen: (isOpen: boolean) => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
 }) {
   useEffect(() => {
     const onWishlistAddAttempt = (event: Event) => {
@@ -1047,6 +1072,13 @@ function HeaderCtas({
         <input
           name="q"
           type="search"
+          value={searchTerm}
+          onChange={(e) => {
+            if (e.target.value.length <= 130) {
+              setSearchTerm(e.target.value);
+            }
+          }}
+          maxLength={130}
           placeholder="Search entire store here..."
           aria-label="Search entire store"
           className="header-search-input px-4 py-2.5 pr-10 bg-white rounded-full w-full 2xl:h-[35px] xl:h-[30px] lg:h-[25px] font-serif font-normal text-[14px] outline-none placeholder:text-gray-300"
