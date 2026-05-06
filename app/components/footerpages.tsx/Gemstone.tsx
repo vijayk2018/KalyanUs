@@ -21,6 +21,10 @@ import cutImage from '~/assets/stone83.jpg';
 import showcaseImage from '~/assets/stone84.jpg';
 import categoryImage from '~/assets/bw.jpg';
 
+import customDiamond from '~/assets/diamond.png';
+import customPearl from '~/assets/pearl.png';
+import customEmerald from '~/assets/emerald.png';
+
 const gemstoneRows = [
   [
     { name: 'Amethyst', image: stone11 },
@@ -55,21 +59,22 @@ export default function Gemstone() {
           loading="eager"
         />
         <div className="absolute inset-0 flex items-center justify-center px-4">
-          <div className="flex w-full max-w-[680px] flex-col items-center text-center">
-            <p className="font-serif text-[12px] tracking-[0.2em] text-[#3f3f3f] sm:text-[20px] sm:tracking-[0.28em] md:text-[23px]">
-              GEMSTONE EDUCATION
-            </p>
-            <div className="mt-[4px] sm:mt-[6px] h-px w-[140px] sm:w-[220px] bg-[#3f3f3f]/60" />
+          <div className="flex w-full max-w-[900px] flex-col items-center text-center">
+            <div className="inline-block border-b border-[#3f3f3f]/60 pb-[4px] sm:pb-[6px]">
+              <p className="font-serif text-[12px] tracking-[0.2em] text-[#3f3f3f] sm:text-[20px] sm:tracking-[0.28em] md:text-[23px]">
+                GEMSTONE EDUCATION
+              </p>
+            </div>
             <p className="mt-2 sm:mt-3 font-serif text-[11px] font-semibold tracking-[0.06em] text-[#3f3f3f] sm:text-[20px] md:text-[23px]">
               WHAT ARE GEMSTONES?
             </p>
             <p className="mt-2 sm:mt-3 text-[8px] leading-[1.35] text-[#3f3f3f]/80 sm:text-[14px] sm:leading-[1.6] md:text-[16px]">
-              Gemstones are basically rocks and minerals found under the earth. Their characteristics, such as lustre, inclusions, color,
-              transparency and aesthetic value make them attractive, hence their usage in jewellery and related adornments.
+              Gemstones are basically rocks and minerals found under the earth. Their characteristics, such as lustre, inclusions, color, transparency and aesthetic value make them attractive, hence their usage in jewellery and related adornments.
+              Essentially, gemstones are rocks. The chemical composition, availability, rarity, demand and appearance categorize them as precious or semi- precious. Found in nearly every color imaginable to the human mind, several gemstones can also be categorized as birthstones.
             </p>
             <button
               type="button"
-              className="mt-2 sm:mt-4 border border-[#3f3f3f]/50 px-4 py-1.5 sm:px-8 sm:py-3 text-[9px] text-[#3f3f3f]/80 hover:bg-black/5 sm:text-[16px]"
+              className="mt-2 sm:mt-4 border border-[#3f3f3f]/50 px-4 py-1.5 sm:px-8 sm:py-3 text-[9px] text-[#3f3f3f]/80 transition-colors hover:bg-black hover:text-white hover:underline sm:text-[16px]"
             >
               Read More
             </button>
@@ -78,8 +83,8 @@ export default function Gemstone() {
       </section>
 
       <section className="w-full bg-white px-[5%] py-10">
-        <h2 className="text-center text-[22px] sm:text-[28px] md:text-[38px] font-light tracking-[0.03em] text-[#2a2a2a]">WHAT ARE BIRTHSTONES?</h2>
-        <p className="mx-auto mt-3 max-w-[1400px] text-center text-[12px] sm:text-[15px] md:text-[20px] leading-[1.55] sm:leading-[1.65] text-[#555]">
+        <h2 className="text-center text-[20px] sm:text-[26px] md:text-[36px] font-light tracking-[0.03em] text-[#2a2a2a]">WHAT ARE BIRTHSTONES?</h2>
+        <p className="mx-auto mt-3 max-w-[1400px] text-center text-[10px] sm:text-[13px] md:text-[18px] leading-[1.55] sm:leading-[1.65] text-[#555]">
           Birthstones are gemstones that have been associated each with one month of the year representing a person's birth month or zodiac.
           Some gemstones are said to represent the nine planets and are labelled as Astrological stones. Either of which is allegedly said
           to aid in various issues of health, fortune, love and luck as they reduce or enhance the effects of planets on the individual.
@@ -91,13 +96,13 @@ export default function Gemstone() {
           {gemstoneRows.map((row, rowIndex) => (
             <div
               key={rowIndex}
-              className={`grid gap-y-2 ${rowIndex < 2 ? 'mx-auto max-w-[1500px] grid-cols-2 sm:grid-cols-3 md:grid-cols-6' : 'mx-auto max-w-[520px] grid-cols-2'
+              className={`grid gap-y-2 ${rowIndex < 2 ? 'mx-auto max-w-[1300px] grid-cols-2 sm:grid-cols-3 md:grid-cols-6' : 'mx-auto max-w-[480px] grid-cols-2'
                 }`}
             >
               {row.map((gem) => (
                 <div key={gem.name} className="flex flex-col items-center text-center">
-                  <img src={gem.image} alt={gem.name} className="h-[88px] w-[88px] sm:h-[110px] sm:w-[110px] md:h-[130px] md:w-[130px] rounded-full object-cover" />
-                  <p className="mt-2 text-[12px] sm:text-[15px] md:text-[18px] text-[#444]">{gem.name}</p>
+                  <img src={gem.image} alt={gem.name} className="h-[78px] w-[78px] sm:h-[98px] sm:w-[98px] md:h-[118px] md:w-[118px] rounded-full object-cover" />
+                  <p className="mt-2 text-[10px] sm:text-[13px] md:text-[16px] text-[#444]">{gem.name}</p>
                 </div>
               ))}
             </div>
@@ -185,22 +190,37 @@ export default function Gemstone() {
 
           <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
             {[
-              { image: stone10, alt: 'Diamond size' },
-              { image: pearl, alt: 'Pearl size' },
-              { image: stone7, alt: 'Emerald size' },
+              { image: customDiamond, alt: 'Diamond size', imgClass: 'h-[80px] w-[80px] sm:h-[105px] sm:w-[105px] md:h-[135px] md:w-[135px]' },
+              { image: customPearl, alt: 'Pearl size', imgClass: 'h-[61px] w-[61px] sm:h-[76px] sm:w-[76px] md:h-[96px] md:w-[96px]' },
+              { image: customEmerald, alt: 'Emerald size', imgClass: 'h-[75px] w-[75px] sm:h-[100px] sm:w-[100px] md:h-[130px] md:w-[130px]' },
             ].map((item) => (
-              <div key={item.alt} className="flex flex-col items-center">
-                <div className="flex h-[78px] sm:h-[88px] md:h-[98px] w-full max-w-[300px] items-start justify-center border border-white/30">
-                  <p className="mt-3 text-[20px] sm:text-[24px] md:text-[30px] tracking-[0.06em] text-white/95">1 carat</p>
+              <div key={item.alt} className="relative mt-8 mb-16 sm:mb-20 flex h-[60px] sm:h-[70px] md:h-[80px] w-full max-w-[280px] md:max-w-[340px] flex-col items-center border-l border-r border-white/40 mx-auto">
+                <div className="absolute -left-px -right-px top-0 flex -translate-y-1/2 items-center">
+                  <div className="flex-1 border-t border-white/40"></div>
+                  <p className="px-3 sm:px-4 text-[18px] sm:text-[22px] md:text-[26px] tracking-[0.06em] text-white/95 leading-none">
+                    1 carat
+                  </p>
+                  <div className="flex-1 border-t border-white/40"></div>
                 </div>
-                <img src={item.image} alt={item.alt} className="-mt-2 h-[95px] w-[95px] sm:h-[108px] sm:w-[108px] md:h-[120px] md:w-[120px] object-contain" />
+
+                <div className="absolute -left-px -right-px bottom-0 flex translate-y-1/2 items-center">
+                  <div className="flex-1 border-t border-white/40"></div>
+                  <div className="flex items-center justify-center px-1 sm:px-3">
+                    <img
+                      src={item.image}
+                      alt={item.alt}
+                      className={`${item.imgClass} object-contain mix-blend-screen bg-transparent`}
+                    />
+                  </div>
+                  <div className="flex-1 border-t border-white/40"></div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="mt-[5px] grid w-full grid-cols-1 bg-white pb-16 md:grid-cols-2">
+      <section className="mt-[5px] grid w-full grid-cols-1 bg-white md:grid-cols-2">
         <div>
           <img src={categoryImage} alt="Gemstone category" className="h-full w-full object-cover" />
         </div>
@@ -208,12 +228,7 @@ export default function Gemstone() {
           <div className="max-w-[760px] text-center">
             <h3 className="text-[19px] sm:text-[22px] md:text-[26px] font-normal tracking-[0.05em] text-[#2a2a2a]">PRECIOUS GEMSTONES:</h3>
             <p className="mt-4 text-[12px] sm:text-[13px] md:text-[14px] font-normal leading-[1.65] text-[#666]">
-              Gemstones falling under two categories, precious and semi-precious. Let us find out the range of precious gemstones and why
-              they are called so. During different times in history pearls were considered most precious, although it lost its importance
-              with the increase of cultured pearls and gradual disappearance of naturally occurring pearls. Alexandrite too is a
-              precious/semi-precious stone for its color changing properties and rarity; its importance remains undecided. Tanzanites are
-              also extremely rare gemstones as they are available in only one place on earth; Mt.Kilimanjaro. Anyhow, irrespective of these
-              interesting facts technically there are only 4 precious gemstones; Ruby, Sapphire, Emerald and Diamond.
+              Gemstones fall under two categories, precious and semi-precious: Let us find out the range of precious gemstones and why they are called so. During different times in history pearls were considered most precious, although it lost its importance with the increase of cultured pearls and gradual disappearance of naturally occurring pearls. Alexandrite too is a precious/semiprecious stone for it color changing properties and rarity; its importance remains undecided. Tanzanites are also extremely rare gemstones as they are available in only one place on earth; Mt.Kilimanjaro. Anyhow, irrespective of these interesting facts technically there are only 4 precious gemstones; Ruby, Sapphire, Emerald and Diamond.
             </p>
           </div>
         </div>

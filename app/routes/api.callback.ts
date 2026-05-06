@@ -63,6 +63,22 @@ export async function action({request, context}: {request: Request; context: any
     );
   }
 
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(payload.email);
+  if (!isValidEmail) {
+    return Response.json(
+      {ok: false, error: 'The email format is invalid.'},
+      {status: 400},
+    );
+  }
+
+  const isValidPhone = /^\d{10}$/.test(payload.phone);
+  if (!isValidPhone) {
+    return Response.json(
+      {ok: false, error: 'The phone number format is invalid.'},
+      {status: 400},
+    );
+  }
+
 
   const configuredStoreDomain =
     context.env?.PUBLIC_STORE_DOMAIN || 'avi0gn-m1.myshopify.com';
