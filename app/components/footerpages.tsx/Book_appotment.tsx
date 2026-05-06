@@ -12,12 +12,16 @@ export default function BookAppointment() {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
 
-    const handleAppointmentSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const closeAppointmentModal = () => {
         setIsAppointmentModalOpen(false);
         setName('');
         setEmail('');
         setPhone('');
+    };
+
+    const handleAppointmentSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        closeAppointmentModal();
     };
 
     return (
@@ -122,7 +126,7 @@ export default function BookAppointment() {
             {isAppointmentModalOpen ? (
                 <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 px-4"
-                    onClick={() => setIsAppointmentModalOpen(false)}
+                    onClick={closeAppointmentModal}
                 >
                     <div
                         className="w-full max-w-[420px] bg-[#f1f1f1] p-6 shadow-xl"
@@ -132,7 +136,7 @@ export default function BookAppointment() {
                             <h2 className="text-[26px] font-light text-gray-800">Book Appointment</h2>
                             <button
                                 type="button"
-                                onClick={() => setIsAppointmentModalOpen(false)}
+                                onClick={closeAppointmentModal}
                                 className="rounded p-1 text-gray-600 hover:bg-gray-100 hover:text-black"
                                 aria-label="Close book appointment form"
                             >

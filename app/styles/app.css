@@ -766,3 +766,33 @@ body {
 .flag-select .flag-select__btn:focus {
   outline: none !important;
 }
+
+/*
+* --------------------------------------------------
+* Global Scrollbar Styling
+* --------------------------------------------------
+*/
+html,
+body {
+  scrollbar-width: auto;
+  scrollbar-color: #a8a8a8 #f5f5f5;
+}
+
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #a8a8a8;
+  border-radius: 999px;
+  border: 2px solid #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #8f8f8f;
+}

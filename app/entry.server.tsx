@@ -22,6 +22,7 @@ export default async function handleRequest(
     defaultSrc: ["'self'", 'https://*.saleassist.ai', 'https://cdn.shopify.com'],
     scriptSrc: [
       "'self'",
+      'https://cdn.shopify.com',
       'https://static.saleassist.ai',
       'https://*.saleassist.ai',
       'https://cdn.socket.io',
@@ -38,6 +39,7 @@ export default async function handleRequest(
     styleSrc: ["'self'", 'https://fonts.googleapis.com'],
     fontSrc: [
       "'self'",
+      'https://cdn.shopify.com',
       'https://fonts.gstatic.com',
       'https://static.saleassist.ai',
       'https://*.saleassist.ai',
