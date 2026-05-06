@@ -88,6 +88,11 @@ function hasLooseMatch(value: string, keyword: string) {
   return compactValue.includes(compactKeyword);
 }
 
+function formatCategoryTitle(title: string) {
+  const withoutPrefix = title.replace(/^category_/i, '');
+  return withoutPrefix.replace(/_/g, ' ').trim();
+}
+
 const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
   const usedIds = new Set<string>();
   const orderedCategories = CATEGORY_ORDER.map((slot) => {
@@ -138,11 +143,12 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
     if (!item) {
       return <div key={key} className="invisible h-full w-full " />;
     }
+    const displayTitle = formatCategoryTitle(item.title);
     const imageUrl = item.image?.url ?? item.products?.nodes?.[0]?.featuredImage?.url;
     const imageAlt =
       item.image?.altText ??
       item.products?.nodes?.[0]?.featuredImage?.altText ??
-      item.title;
+      displayTitle;
 
     return (
       <Link
@@ -160,7 +166,7 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
           />
         ) : (
           <div className="flex h-full min-h-[220px] w-full items-center justify-center rounded-xl bg-gray-200 p-4 text-center font-serif">
-            {item.title}
+            {displayTitle}
           </div>
         )}
       </Link>

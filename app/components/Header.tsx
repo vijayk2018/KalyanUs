@@ -302,7 +302,7 @@ export function Header({
             >
               <img src={HeartIcon} alt={'Heart'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
               {wishlistCount > 0 && (
-                <span className="absolute top-0 right-2 bg-red-500 text-white text-[10px] px-1 rounded-full">
+                <span className="absolute top-0 right-2 z-20 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold leading-none text-white ring-1 ring-white">
                   {wishlistCount}
                 </span>
               )}
@@ -948,7 +948,7 @@ function HeaderCtas({
           <div className="relative flex justify-center ">
             <img src={HeartIcon} alt={'Heart'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
             {wishlistCount > 0 && (
-              <span className="absolute -top-3 -right-1 bg-red-500 text-white text-[9px] px-2 py-1 rounded-full">
+              <span className="absolute -top-3 -right-1 z-20 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1.5 py-0.5 text-[9px] font-semibold leading-none text-white ring-1 ring-white">
                 {wishlistCount}
               </span>
             )}

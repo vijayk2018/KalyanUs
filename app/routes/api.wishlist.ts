@@ -1,6 +1,9 @@
 import type {WishlistItem} from '~/lib/wishlist';
 
 const WISHLIST_SESSION_KEY_PREFIX = 'wishlist:';
+const WISHLIST_NAMESPACE = 'custom';
+const WISHLIST_KEY = 'wishlist';
+const WISHLIST_COUNT_KEY = 'wishlist_count';
 
 const CUSTOMER_ID_QUERY = `
   query WishlistCustomerId {
@@ -43,6 +46,89 @@ const getWishlistSessionKey = async (context: any) => {
   return `${WISHLIST_SESSION_KEY_PREFIX}${customerId}`;
 };
 
+const ADMIN_GET_CUSTOMER_WISHLIST = `#graphql
+  query AdminGetCustomerWishlist($id: ID!) {
+    customer(id: $id) {
+      id
+      wishlist: metafield(namespace: "${WISHLIST_NAMESPACE}", key: "${WISHLIST_KEY}") {
+        value
+      }
+      wishlistCount: metafield(namespace: "${WISHLIST_NAMESPACE}", key: "${WISHLIST_COUNT_KEY}") {
+        value
+      }
+    }
+  }
+` as const;
+
+const ADMIN_SET_CUSTOMER_WISHLIST = `#graphql
+  mutation AdminSetCustomerWishlist($metafields: [MetafieldsSetInput!]!) {
+    metafieldsSet(metafields: $metafields) {
+      metafields {
+        id
+        key
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+` as const;
+
+const readWishlistFromCustomerMetafield = async (
+  context: any,
+  customerId: string,
+): Promise<WishlistItem[] | null> => {
+  if (!context.admin?.graphql) return null;
+
+  const response = await context.admin.graphql(ADMIN_GET_CUSTOMER_WISHLIST, {
+    variables: {id: customerId},
+  });
+  const payload = await response.json();
+  const rawWishlist = payload?.data?.customer?.wishlist?.value;
+
+  if (!rawWishlist) return [];
+
+  try {
+    return normalizeWishlist(JSON.parse(rawWishlist));
+  } catch {
+    return [];
+  }
+};
+
+const writeWishlistToCustomerMetafield = async (
+  context: any,
+  customerId: string,
+  items: WishlistItem[],
+) => {
+  if (!context.admin?.graphql) return false;
+
+  const response = await context.admin.graphql(ADMIN_SET_CUSTOMER_WISHLIST, {
+    variables: {
+      metafields: [
+        {
+          ownerId: customerId,
+          namespace: WISHLIST_NAMESPACE,
+          key: WISHLIST_KEY,
+          type: 'json',
+          value: JSON.stringify(items),
+        },
+        {
+          ownerId: customerId,
+          namespace: WISHLIST_NAMESPACE,
+          key: WISHLIST_COUNT_KEY,
+          type: 'number_integer',
+          value: String(items.length),
+        },
+      ],
+    },
+  });
+
+  const payload = await response.json();
+  const userErrors = payload?.data?.metafieldsSet?.userErrors ?? [];
+  return userErrors.length === 0;
+};
+
 export async function loader({context}: {context: any}) {
   const sessionKey = await getWishlistSessionKey(context);
 
@@ -50,7 +136,10 @@ export async function loader({context}: {context: any}) {
     return Response.json({items: []}, {status: 401});
   }
 
-  const items = normalizeWishlist(context.session.get(sessionKey) || []);
+  const customerId = sessionKey.slice(WISHLIST_SESSION_KEY_PREFIX.length);
+  const metafieldItems = await readWishlistFromCustomerMetafield(context, customerId);
+  const items =
+    metafieldItems ?? normalizeWishlist(context.session.get(sessionKey) || []);
   return Response.json({items});
 }
 
@@ -86,8 +175,15 @@ export async function action({request, context}: {request: Request; context: any
 
   context.session.set(sessionKey, nextItems);
 
+  const customerId = sessionKey.slice(WISHLIST_SESSION_KEY_PREFIX.length);
+  const didPersistToMetafield = await writeWishlistToCustomerMetafield(
+    context,
+    customerId,
+    nextItems,
+  );
+
   return Response.json(
-    {ok: true},
+    {ok: true, persisted: didPersistToMetafield ? 'metafield' : 'session'},
     {
       headers: {
         'Set-Cookie': await context.session.commit(),
