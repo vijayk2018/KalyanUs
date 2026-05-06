@@ -25,9 +25,16 @@ export function ProductItem({
   const [wishlisted, setWishlisted] = useState(false);
 
   useEffect(() => {
-    void loadWishlist().then(() => {
+    const syncWishlistedState = () => {
       setWishlisted(isInWishlist(product.id));
-    });
+    };
+
+    void loadWishlist().then(syncWishlistedState);
+    window.addEventListener('wishlistUpdated', syncWishlistedState);
+
+    return () => {
+      window.removeEventListener('wishlistUpdated', syncWishlistedState);
+    };
   }, [product.id]);
 
   const handleWishlistToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,14 +47,14 @@ export function ProductItem({
       return;
     }
 
-    addToWishlist({
+    const didAdd = addToWishlist({
       id: product.id,
       title: product.title,
       handle: product.handle,
       image: image?.url,
       price: product.priceRange?.minVariantPrice?.amount,
     });
-    setWishlisted(true);
+    setWishlisted(didAdd);
   };
 
   return (
