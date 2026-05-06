@@ -12,7 +12,11 @@ import {
 } from 'react-router';
 import type {Route} from './+types/root';
 import favicon from '~/assets/KJButterfly.png';
-import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
+import {
+  FOOTER_QUERY,
+  HEADER_METAOBJECT_MENU_QUERY,
+  HEADER_QUERY,
+} from '~/lib/fragments';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import tailwindCss from './styles/tailwind.css?url';
@@ -116,17 +120,26 @@ export async function loader(args: Route.LoaderArgs) {
 async function loadCriticalData({context}: Route.LoaderArgs) {
   const {storefront} = context;
 
-  const [header] = await Promise.all([
+  const [header, metaobjects] = await Promise.all([
     storefront.query(HEADER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
         headerMenuHandle: 'main-menu', // Adjust to your header menu handle
       },
     }),
-    // Add other queries here, so that they are loaded in parallel
+    storefront.query(HEADER_METAOBJECT_MENU_QUERY, {
+      cache: storefront.CacheLong(),
+      variables: {},
+    }),
   ]);
 
-  return {header};
+  return {
+    header: {
+      ...header,
+      // Used by `app/components/Header.tsx` to render header dropdown from metaobjects.
+      metaMenuPanels: metaobjects?.megaMenuPanels?.nodes ?? null,
+    },
+  };
 }
 
 /**

@@ -107,8 +107,8 @@ export const clearWishlistCache = () => {
   notify();
 };
 
-export const addToWishlist = (item: WishlistItem) => {
-  if (typeof window === 'undefined') return;
+export const addToWishlist = (item: WishlistItem): boolean => {
+  if (typeof window === 'undefined') return false;
   const shouldProceed = window.dispatchEvent(
     new CustomEvent('wishlist:add-attempt', {
       cancelable: true,
@@ -116,17 +116,21 @@ export const addToWishlist = (item: WishlistItem) => {
     }),
   );
 
-  if (!shouldProceed) return;
+  if (!shouldProceed) return false;
 
   const items = [...getWishlist()];
-  if (!items.some((entry) => entry.id === item.id)) {
-    wishlistCache = [item, ...items];
-    notify();
-    void persistWishlist('add', item).catch(() => {
-      wishlistCache = items;
-      notify();
-    });
+  if (items.some((entry) => entry.id === item.id)) {
+    return true;
   }
+
+  wishlistCache = [item, ...items];
+  notify();
+  void persistWishlist('add', item).catch(() => {
+    wishlistCache = items;
+    notify();
+  });
+
+  return true;
 };
 
 export const removeFromWishlist = (productId: string) => {

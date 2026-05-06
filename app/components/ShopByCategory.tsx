@@ -88,6 +88,30 @@ function hasLooseMatch(value: string, keyword: string) {
   return compactValue.includes(compactKeyword);
 }
 
+function handleMatchesCandidate(handle: string, candidate: string) {
+  const normalizedHandle = handle.toLowerCase();
+  const normalizedCandidate = candidate.toLowerCase();
+
+  // Prevent "earrings" from being captured by "ring"/"rings" handle matching.
+  if (
+    (normalizedCandidate === 'ring' || normalizedCandidate === 'rings') &&
+    normalizedHandle.includes('earring')
+  ) {
+    return false;
+  }
+
+  return (
+    normalizedHandle === normalizedCandidate ||
+    normalizedHandle.includes(normalizedCandidate) ||
+    normalizedCandidate.includes(normalizedHandle)
+  );
+}
+
+function formatCategoryTitle(title: string) {
+  const withoutPrefix = title.replace(/^category_/i, '');
+  return withoutPrefix.replace(/_/g, ' ').trim();
+}
+
 const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
   const usedIds = new Set<string>();
   const orderedCategories = CATEGORY_ORDER.map((slot) => {
@@ -95,12 +119,8 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
 
     const byHandle = categories.find((item) => {
       if (usedIds.has(item.id)) return false;
-      const itemHandle = item.handle.toLowerCase();
       return handleCandidates.some(
-        (candidate) =>
-          itemHandle === candidate ||
-          itemHandle.includes(candidate) ||
-          candidate.includes(itemHandle),
+        (candidate) => handleMatchesCandidate(item.handle, candidate),
       );
     });
     if (byHandle) {
@@ -138,11 +158,12 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
     if (!item) {
       return <div key={key} className="invisible h-full w-full " />;
     }
+    const displayTitle = formatCategoryTitle(item.title);
     const imageUrl = item.image?.url ?? item.products?.nodes?.[0]?.featuredImage?.url;
     const imageAlt =
       item.image?.altText ??
       item.products?.nodes?.[0]?.featuredImage?.altText ??
-      item.title;
+      displayTitle;
 
     return (
       <Link
@@ -160,7 +181,7 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
           />
         ) : (
           <div className="flex h-full min-h-[220px] w-full items-center justify-center rounded-xl bg-gray-200 p-4 text-center font-serif">
-            {item.title}
+            {displayTitle}
           </div>
         )}
       </Link>
