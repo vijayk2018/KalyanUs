@@ -88,6 +88,25 @@ function hasLooseMatch(value: string, keyword: string) {
   return compactValue.includes(compactKeyword);
 }
 
+function handleMatchesCandidate(handle: string, candidate: string) {
+  const normalizedHandle = handle.toLowerCase();
+  const normalizedCandidate = candidate.toLowerCase();
+
+  // Prevent "earrings" from being captured by "ring"/"rings" handle matching.
+  if (
+    (normalizedCandidate === 'ring' || normalizedCandidate === 'rings') &&
+    normalizedHandle.includes('earring')
+  ) {
+    return false;
+  }
+
+  return (
+    normalizedHandle === normalizedCandidate ||
+    normalizedHandle.includes(normalizedCandidate) ||
+    normalizedCandidate.includes(normalizedHandle)
+  );
+}
+
 function formatCategoryTitle(title: string) {
   const withoutPrefix = title.replace(/^category_/i, '');
   return withoutPrefix.replace(/_/g, ' ').trim();
@@ -100,12 +119,8 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
 
     const byHandle = categories.find((item) => {
       if (usedIds.has(item.id)) return false;
-      const itemHandle = item.handle.toLowerCase();
       return handleCandidates.some(
-        (candidate) =>
-          itemHandle === candidate ||
-          itemHandle.includes(candidate) ||
-          candidate.includes(itemHandle),
+        (candidate) => handleMatchesCandidate(item.handle, candidate),
       );
     });
     if (byHandle) {
