@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router';
 import kalyanLogo from '~/assets/kalyanLogo.svg';
+import logo12 from '~/assets/logo-12.png';
 
 // Yellow Gold assets
 import yellow1 from '~/assets/Yellow-1.webp';
@@ -25,6 +27,7 @@ import platinum3 from '~/assets/Platinum-3.webp';
 import platinum4 from '~/assets/Platinum-4.webp';
 import platinum4Alt from '~/assets/Platinum-4 (1).webp';
 import platinum42 from '~/assets/Platinum-4-2.webp';
+import platinum6 from '~/assets/Platinum-6.webp';
 import arrowIcon from '~/assets/arrow.png';
 
 // Nav arrows
@@ -187,6 +190,7 @@ const slides: Slide[] = [
       'Have been the centrepiece for adornments throughout history. Silver and Gold have been admired as jewellery & décor. While Gold takes the spotlight, silver, platinum, palladium are quite popular as well. The history of Gold finds its link to money which in course of time was replaced by currency, as we know of today; the Gold Standard was fixed that determined the value of their currencies in terms of a specified amount of gold.',
     leftImage: yellow1,
     showBrowseButton: true,
+    leftImageClassName: 'max-w-[340px] md:max-w-[390px] h-auto md:h-[480px] transform scale-x-75 scale-y-125 -ml-45 md:-ml-50',
   },
 
   /* ── 2. Gold ───────────────────────────────────────────────────────────── */
@@ -197,6 +201,7 @@ const slides: Slide[] = [
       "The word 'gold' comes from the Old English word \"geolu\" which means yellow. From the very beginning gold attracted civilizations all over the world. It has been treasured as an object of desire and beauty. Due to its golden color it often played an important role in Mythology and is considered a prized possession till date.",
     leftImage: yellow2,
     showBrowseButton: true,
+    leftImageClassName: 'max-w-[420px] max-h-[380px]',
   },
 
   /* ── 3. Gold Facts  (text-only, 4 bullets) ─────────────────────────────── */
@@ -319,7 +324,8 @@ const slides: Slide[] = [
   /* ── 14. Pt 950 Annotated Ring  (full-image — annotation baked into asset) */
   {
     layout: 'image-full',
-    leftImage: platinum3,
+    leftImage: platinum6,
+    leftImageClassName: 'w-full max-w-[1000px] h-auto max-h-[800px] object-contain block',
   },
 
   /* ── 15. Weddings Bands  (couple LEFT | text + bands image RIGHT) ──────── */
@@ -350,6 +356,7 @@ const categoryAnchors = [
    ───────────────────────────────────────────────────────────────────────────── */
 export default function MetalGuide() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<'right' | 'left'>('right');
 
   const activeCategory = useMemo(() => {
     let current = categoryAnchors[0].label;
@@ -359,17 +366,22 @@ export default function MetalGuide() {
     return current;
   }, [activeIndex]);
 
-  const nextSlide = () => setActiveIndex((p) => (p + 1) % slides.length);
-  const prevSlide = () => setActiveIndex((p) => (p - 1 + slides.length) % slides.length);
+  const nextSlide = () => { setSlideDirection('right'); setActiveIndex((p) => (p + 1) % slides.length); };
+  const prevSlide = () => { setSlideDirection('left'); setActiveIndex((p) => (p - 1 + slides.length) % slides.length); };
 
   const slide = slides[activeIndex];
 
   return (
     <section className="w-full bg-white text-[#1d1d1d]">
+      <style>{`
+        header, .lg\\:block.bg-\\[\\#650827\\] { display: none !important; }
+      `}</style>
 
       {/* ── Top Nav Bar ── */}
-      <div className="h-[64px] sm:h-[72px] bg-[#c8284d] px-3 sm:px-4 md:px-8 lg:px-16 flex items-center justify-between">
-        <img src={kalyanLogo} alt="Kalyan Jewellers" className="h-7 sm:h-9 w-auto" />
+      <div className="h-[90px] sm:h-[105px] bg-[#c8284d] px-3 sm:px-4 md:px-8 lg:pl-28 lg:pr-20 flex items-center justify-between">
+        <Link to="/">
+          <img src={logo12} alt="Kalyan Jewellers" className="h-11 sm:h-15 w-auto" />
+        </Link>
         <div className="md:hidden">
           <label htmlFor="metal-category" className="sr-only">
             Select metal category
@@ -379,7 +391,7 @@ export default function MetalGuide() {
             value={activeCategory}
             onChange={(e) => {
               const selected = categoryAnchors.find((item) => item.label === e.target.value);
-              if (selected) setActiveIndex(selected.index);
+              if (selected) { setSlideDirection(selected.index > activeIndex ? 'right' : 'left'); setActiveIndex(selected.index); }
             }}
             className="h-9 rounded bg-white/95 px-2 text-[11px] uppercase tracking-[0.08em] text-[#1d1d1d] outline-none"
           >
@@ -390,12 +402,12 @@ export default function MetalGuide() {
             ))}
           </select>
         </div>
-        <nav className="hidden md:flex items-center gap-8 text-[11px] tracking-[0.12em] uppercase text-white">
+        <nav className="hidden md:flex items-center gap-8 text-[16px] tracking-[0.12em] uppercase text-white font-medium">
           {categoryAnchors.map((item) => (
             <button
               key={item.label}
               type="button"
-              onClick={() => setActiveIndex(item.index)}
+              onClick={() => { setSlideDirection(item.index > activeIndex ? 'right' : 'left'); setActiveIndex(item.index); }}
               className={`transition border-b pb-0.5 ${activeCategory === item.label ? 'border-white' : 'border-transparent'
                 }`}
             >
@@ -406,7 +418,7 @@ export default function MetalGuide() {
       </div>
 
       {/* ── Slide Wrapper ── */}
-      <div className="relative min-h-[calc(100vh-64px)] sm:min-h-[calc(100vh-72px)] flex items-center justify-center px-[4%] sm:px-[5%]">
+      <div className="relative overflow-hidden min-h-[calc(100vh-90px)] sm:min-h-[calc(100vh-105px)] flex items-center justify-center px-[4%] sm:px-[5%]">
 
         {/* ← Prev */}
         <img
@@ -416,130 +428,172 @@ export default function MetalGuide() {
           className="absolute left-2 sm:left-[1%] z-20 h-8 w-8 sm:h-10 sm:w-10 cursor-pointer object-contain scale-x-[-1]"
         />
 
-        {/* ══════════ standard ══════════ */}
-        {slide.layout === 'standard' && (
-          <div className="w-full max-w-[1200px] grid grid-cols-1 md:grid-cols-2 gap-8 items-center py-12">
+        <div key={activeIndex} className="w-full flex-1 flex flex-col justify-center items-center" style={{ animation: `slideEnter${slideDirection === 'right' ? 'Right' : 'Left'} 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards` }}>
+          <style>{`
+            @keyframes slideEnterRight {
+              0% { opacity: 0; transform: translateX(150px) scale(0.95); }
+              100% { opacity: 1; transform: translateX(0) scale(1); }
+            }
+            @keyframes slideEnterLeft {
+              0% { opacity: 0; transform: translateX(-150px) scale(0.95); }
+              100% { opacity: 1; transform: translateX(0) scale(1); }
+            }
+          `}</style>
 
-            {/* Left: image — mix-blend-mode:multiply blends any image background to white */}
-            <div className="flex justify-center items-center">
-              {slide.leftImage && (
-                <img
-                  src={slide.leftImage}
-                  alt={slide.title ?? 'slide image'}
-                  className={`${slide.leftImageClassName ?? 'max-w-[420px] max-h-[460px]'} w-full h-auto object-contain block`}
-                  style={{ mixBlendMode: 'multiply' }}
-                />
-              )}
+          {/* ══════════ standard ══════════ */}
+          {slide.layout === 'standard' && (
+            <div className="w-full max-w-[1550px] flex flex-col md:flex-row items-center py-12 px-3 md:px-0">
+
+              {/* Left: image — mix-blend-mode:multiply blends any image background to white */}
+              <div className="w-full md:w-[45%] flex justify-center items-center">
+                {slide.leftImage && (
+                  <img
+                    src={slide.leftImage}
+                    alt={slide.title ?? 'slide image'}
+                    className={`${slide.leftImageClassName ?? 'max-w-[420px] max-h-[345px]'} w-full h-auto object-contain block`}
+                    style={{ mixBlendMode: 'multiply', maxHeight: slide.leftImageClassName ? undefined : '345px' }}
+                  />
+                )}
+              </div>
+
+              {/* Right: text content */}
+              <div className="w-full md:w-[55%] flex flex-col items-start pl-3 lg:pl-9">
+                <div className="max-w-[750px] flex flex-col items-center text-center">
+                  {slide.subtitle && (
+                    <p className="text-[13px] tracking-[0.28em] uppercase text-[#8a8a8a] ">
+                      {slide.subtitle}
+                    </p>
+                  )}
+                  {slide.title && (
+                    <h1 className="text-[32px] md:text-[38px] uppercase tracking-[0.06em] mb-6 font-light text-[#222]">
+                      {slide.title}
+                    </h1>
+                  )}
+                  {slide.description && (
+                    <p
+                      className="text-[#888] text-[15px] font-regular font-helvetica-light"
+                      style={{
+                        fontSize: '0.836vw',
+                        fontWeight: 100,
+                        lineHeight: 1.42857143,
+                      }}
+                    >
+                      {slide.description}
+                    </p>
+                  )}
+                  {slide.rightImage && (
+                    <img
+                      src={slide.rightImage}
+                      alt={`${slide.title ?? ''} detail`}
+                      className={slide.rightImageClassName ?? "mt-5 max-w-[300px] w-full h-auto max-h-[240px] object-contain block"}
+                      style={{ mixBlendMode: 'multiply' }}
+                    />
+                  )}
+                  {slide.showBrowseButton && (
+                    <button
+                      type="button"
+                      className="mt-8 border border-[#1d1d1d] px-8 py-3 text-[11px] tracking-[0.12em] uppercase hover:bg-gray-50 transition"
+                    >
+                      Browse Product
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
+          )}
 
-            {/* Right: text content */}
-            <div className="flex flex-col items-center text-center">
-              {slide.subtitle && (
-                <p className="text-[11px] tracking-[0.28em] uppercase text-[#8a8a8a] mb-2">
-                  {slide.subtitle}
-                </p>
-              )}
+          {/* ══════════ text-only ══════════ */}
+          {slide.layout === 'text-only' && (
+            <div className="w-full py-16 mx-auto flex flex-col items-center text-center">
               {slide.title && (
-                <h1 className="text-3xl md:text-4xl uppercase tracking-[0.06em] mb-5 font-light">
+                <h1 className="text-3xl md:text-[36px] uppercase tracking-[0.04em] mb-10 font-light text-[#222]">
                   {slide.title}
                 </h1>
               )}
-              {slide.description && (
-                <p className="text-[#666] text-sm leading-7 max-w-[480px]">{slide.description}</p>
+
+              {/* Bullets */}
+              {slide.bullets && (
+                <div className="w-full flex flex-col text-center">
+                  {slide.bullets.map((bullet, idx) => (
+                    <p
+                      key={idx}
+                      className={`font-helvetica-neue-thin leading-[28px] mx-auto mb-[2px] px-2 ${slide.title === 'WHITE GOLD FACTS'
+                        ? 'text-[11px] md:text-[12.5px] w-full md:whitespace-nowrap tracking-[0.01em] text-[#888] '
+                        : slide.title === 'ROSE GOLD'
+                          ? 'text-[11px] md:text-[14px] max-w-[95%] md:max-w-[850px] tracking-[0.01em] text-[#444] '
+                          : 'text-[12px] md:text-[14px] max-w-[100%] md:max-w-[1600px] text-[#888] '
+                        }`}
+                      style={{ fontWeight: 100 }}
+                    >
+
+                      * {bullet}
+                    </p>
+                  ))}
+                </div>
               )}
-              {slide.rightImage && (
-                <img
-                  src={slide.rightImage}
-                  alt={`${slide.title ?? ''} detail`}
-                  className={slide.rightImageClassName ?? "mt-5 max-w-[300px] w-full h-auto max-h-[240px] object-contain block"}
-                  style={{ mixBlendMode: 'multiply' }}
-                />
-              )}
-              {slide.showBrowseButton && (
-                <button
-                  type="button"
-                  className="mt-6 border border-[#1d1d1d] px-8 py-3 text-[11px] tracking-[0.12em] uppercase hover:bg-gray-50 transition"
-                >
-                  Browse Product
-                </button>
+
+              {/* Composition tables — Rose Gold Facts Image */}
+              {slide.tableImage && (
+                <div className="w-full flex justify-center mt-2">
+                  <img
+                    src={slide.tableImage}
+                    alt="Composition Details"
+                    className="w-full max-w-[860px] h-auto object-contain block"
+                  />
+                </div>
               )}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ══════════ text-only ══════════ */}
-        {slide.layout === 'text-only' && (
-          <div className="w-full max-w-[860px] py-16 mx-auto flex flex-col items-center text-center px-4">
-            {slide.title && (
-              <h1 className="text-3xl md:text-[36px] uppercase tracking-[0.04em] mb-10 font-light text-[#222]">
-                {slide.title}
-              </h1>
-            )}
-
-            {/* Bullets */}
-            {slide.bullets && (
-              <div className="w-full flex flex-col space-y-4 mb-8 text-center">
-                {slide.bullets.map((bullet, idx) => (
-                  <p key={idx} className="text-[#555] text-[14px] font-light leading-[26px]">
-                    * {bullet}
-                  </p>
-                ))}
-              </div>
-            )}
-
-            {/* Composition tables — Rose Gold Facts Image */}
-            {slide.tableImage && (
-              <div className="w-full flex justify-center mt-2">
-                <img
-                  src={slide.tableImage}
-                  alt="Composition Details"
-                  className="w-full h-auto object-contain block"
-                />
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ══════════ dual-info ══════════ */}
-        {slide.layout === 'dual-info' && (
-          <div className="w-full max-w-[1200px] py-12 mx-auto">
-            {slide.title && (
-              <h1 className="text-2xl md:text-3xl uppercase tracking-[0.06em] mb-8 font-light text-center">
-                {slide.title}
-              </h1>
-            )}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div className="flex justify-center">
-                <img
-                  src={slide.leftImage}
-                  alt="left visual"
-                  className="max-w-[480px] w-full h-auto object-contain block"
-                  style={{ mixBlendMode: 'multiply' }}
-                />
-              </div>
-              <div className="flex justify-center">
-                <img
-                  src={slide.rightImage}
-                  alt="right visual"
-                  className="max-w-[480px] w-full h-auto object-contain block"
-                  style={{ mixBlendMode: 'multiply' }}
-                />
+          {/* ══════════ dual-info ══════════ */}
+          {slide.layout === 'dual-info' && (
+            <div className="w-full max-w-[1200px] py-12 mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                <div className="flex justify-center">
+                  <img
+                    src={slide.leftImage}
+                    alt="left visual"
+                    className="max-w-[276px] w-full h-auto object-contain block transform scale-y-110"
+                    style={{ mixBlendMode: 'multiply' }}
+                  />
+                </div>
+                <div className="flex flex-col items-start">
+                  {slide.title && (
+                    <h1
+                      className="text-xl md:text-[24px] uppercase tracking-[0.06em] mb-4 font-helvetica-neue-thin text-left whitespace-nowrap"
+                      style={{
+                        fontWeight: 100,
+                      }}
+                    >
+                      {slide.title}
+                    </h1>
+                  )}
+                  <div className="flex justify-start w-full">
+                    <img
+                      src={slide.rightImage}
+                      alt="right visual"
+                      className="max-w-[480px] w-full h-auto object-contain block"
+                      style={{ mixBlendMode: 'multiply' }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ══════════ image-full  (Pt 950 annotated ring) ══════════ */}
-        {slide.layout === 'image-full' && (
-          <div className="w-full max-w-[900px] py-12 mx-auto flex justify-center">
-            <img
-              src={slide.leftImage}
-              alt="platinum ring"
-              className="w-full max-w-[700px] h-auto max-h-[560px] object-contain block"
-              style={{ mixBlendMode: 'multiply' }}
-            />
-          </div>
-        )}
+          {/* ══════════ image-full  (Pt 950 annotated ring) ══════════ */}
+          {slide.layout === 'image-full' && (
+            <div className="w-full max-w-[1200px] py-12 mx-auto flex justify-center">
+              <img
+                src={slide.leftImage}
+                alt="platinum ring"
+                className={slide.leftImageClassName || "w-full max-w-[700px] h-auto max-h-[560px] object-contain block"}
+                style={{ mixBlendMode: 'multiply', filter: 'brightness(1.08) contrast(1.02)' }}
+              />
+            </div>
+          )}
+
+        </div>
 
         {/* → Next */}
         <img
