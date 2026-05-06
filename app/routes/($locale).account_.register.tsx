@@ -76,7 +76,7 @@ export async function action({request, context}: {request: Request; context: any
   const configuredStoreDomain = context.env?.PUBLIC_STORE_DOMAIN || 'avi0gn-m1.myshopify.com';
   const normalizedStoreDomain = configuredStoreDomain.replace(/^https?:\/\//, '');
   const adminApiUrl = `https://${normalizedStoreDomain}/admin/api/2026-01/graphql.json`;
-  const shopifyAccessToken =
+  const shopifyAccessToken = 
     context.env?.SHOPIFY_ACCESS_TOKEN ?? context.env?.ADMIN_API_ACCESS_TOKEN;
 
   if (!shopifyAccessToken) {

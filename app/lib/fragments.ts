@@ -231,6 +231,95 @@ export const HEADER_QUERY = `#graphql
   ${MENU_FRAGMENT}
 ` as const;
 
+export const HEADER_METAOBJECT_MENU_QUERY = `#graphql
+  query HeaderMetaobjectMenu(
+    $country: CountryCode
+    $language: LanguageCode
+    $first: Int = 25
+  ) @inContext(language: $language, country: $country) {
+    megaMenuPanels: metaobjects(type: "mega_menu_panel", first: $first) {
+      nodes {
+        id
+        handle
+        menuHandle: field(key: "menu_handle") {
+          value
+        }
+        promoLink: field(key: "promo_link") {
+          value
+        }
+        promoText: field(key: "promo_text") {
+          value
+        }
+        promoImage: field(key: "promo_image") {
+          reference {
+            ... on MediaImage {
+              image {
+                url
+              }
+            }
+            ... on GenericFile {
+              url
+            }
+          }
+        }
+        enabled: field(key: "enabled") {
+          value
+        }
+        position: field(key: "position") {
+          value
+        }
+        groupsList: field(key: "groups_list") {
+          references(first: 25) {
+            nodes {
+              ... on Metaobject {
+                id
+                handle
+                title: field(key: "title") {
+                  value
+                }
+                position: field(key: "position") {
+                  value
+                }
+                items: field(key: "items") {
+                  references(first: 75) {
+                    nodes {
+                      ... on Metaobject {
+                        id
+                        handle
+                        label: field(key: "label") {
+                          value
+                        }
+                        link: field(key: "link") {
+                          value
+                        }
+                        image: field(key: "image") {
+                          reference {
+                            ... on MediaImage {
+                              image {
+                                url
+                              }
+                            }
+                            ... on GenericFile {
+                              url
+                            }
+                          }
+                        }
+                        position: field(key: "position") {
+                          value
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+` as const;
+
 export const FOOTER_QUERY = `#graphql
   query Footer(
     $country: CountryCode
