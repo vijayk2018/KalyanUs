@@ -187,7 +187,7 @@ const slides: Slide[] = [
       'Have been the centrepiece for adornments throughout history. Silver and Gold have been admired as jewellery & décor. While Gold takes the spotlight, silver, platinum, palladium are quite popular as well. The history of Gold finds its link to money which in course of time was replaced by currency, as we know of today; the Gold Standard was fixed that determined the value of their currencies in terms of a specified amount of gold.',
     leftImage: yellow1,
     showBrowseButton: true,
-    leftImageClassName: 'max-w-[340px] md:max-w-[390px] h-auto md:h-[480px] transform scale-x-75 scale-y-125',
+    leftImageClassName: 'max-w-[340px] md:max-w-[390px] h-auto md:h-[480px] transform scale-x-75 scale-y-125 -ml-45 md:-ml-50',
   },
 
   /* ── 2. Gold ───────────────────────────────────────────────────────────── */
@@ -362,8 +362,8 @@ export default function MetalGuide() {
     return current;
   }, [activeIndex]);
 
-  const nextSlide = () => {setSlideDirection('right'); setActiveIndex((p) => (p + 1) % slides.length);};
-  const prevSlide = () => {setSlideDirection('left'); setActiveIndex((p) => (p - 1 + slides.length) % slides.length);};
+  const nextSlide = () => { setSlideDirection('right'); setActiveIndex((p) => (p + 1) % slides.length); };
+  const prevSlide = () => { setSlideDirection('left'); setActiveIndex((p) => (p - 1 + slides.length) % slides.length); };
 
   const slide = slides[activeIndex];
 
@@ -382,7 +382,7 @@ export default function MetalGuide() {
             value={activeCategory}
             onChange={(e) => {
               const selected = categoryAnchors.find((item) => item.label === e.target.value);
-              if (selected) {setSlideDirection(selected.index > activeIndex ? 'right' : 'left'); setActiveIndex(selected.index);}
+              if (selected) { setSlideDirection(selected.index > activeIndex ? 'right' : 'left'); setActiveIndex(selected.index); }
             }}
             className="h-9 rounded bg-white/95 px-2 text-[11px] uppercase tracking-[0.08em] text-[#1d1d1d] outline-none"
           >
@@ -398,7 +398,7 @@ export default function MetalGuide() {
             <button
               key={item.label}
               type="button"
-              onClick={() => {setSlideDirection(item.index > activeIndex ? 'right' : 'left'); setActiveIndex(item.index);}}
+              onClick={() => { setSlideDirection(item.index > activeIndex ? 'right' : 'left'); setActiveIndex(item.index); }}
               className={`transition border-b pb-0.5 ${activeCategory === item.label ? 'border-white' : 'border-transparent'
                 }`}
             >
@@ -431,132 +431,141 @@ export default function MetalGuide() {
             }
           `}</style>
 
-        {/* ══════════ standard ══════════ */}
-        {slide.layout === 'standard' && (
-          <div className="w-full max-w-[1550px] flex flex-col md:flex-row items-center py-12 px-3 md:px-0">
+          {/* ══════════ standard ══════════ */}
+          {slide.layout === 'standard' && (
+            <div className="w-full max-w-[1550px] flex flex-col md:flex-row items-center py-12 px-3 md:px-0">
 
-            {/* Left: image — mix-blend-mode:multiply blends any image background to white */}
-            <div className="w-full md:w-[45%] flex justify-center items-center">
-              {slide.leftImage && (
-                <img
-                  src={slide.leftImage}
-                  alt={slide.title ?? 'slide image'}
-                  className={`${slide.leftImageClassName ?? 'max-w-[420px] max-h-[345px]'} w-full h-auto object-contain block`}
-                  style={{ mixBlendMode: 'multiply', maxHeight: slide.leftImageClassName ? undefined : '345px' }}
-                />
-              )}
-            </div>
-
-            {/* Right: text content */}
-            <div className="w-full md:w-[55%] flex flex-col items-start pl-3 lg:pl-9">
-              <div className="max-w-[750px] flex flex-col items-center text-center">
-                {slide.subtitle && (
-                  <p className="text-[11px] tracking-[0.28em] uppercase text-[#8a8a8a] mb-3">
-                    {slide.subtitle}
-                  </p>
-                )}
-                {slide.title && (
-                  <h1 className="text-[32px] md:text-[38px] uppercase tracking-[0.06em] mb-6 font-light text-[#222]">
-                    {slide.title}
-                  </h1>
-                )}
-                {slide.description && (
-                  <p className="text-[#666] text-[14px] leading-[28px] font-light">{slide.description}</p>
-                )}
-                {slide.rightImage && (
+              {/* Left: image — mix-blend-mode:multiply blends any image background to white */}
+              <div className="w-full md:w-[45%] flex justify-center items-center">
+                {slide.leftImage && (
                   <img
-                    src={slide.rightImage}
-                    alt={`${slide.title ?? ''} detail`}
-                    className={slide.rightImageClassName ?? "mt-5 max-w-[300px] w-full h-auto max-h-[240px] object-contain block"}
-                    style={{ mixBlendMode: 'multiply' }}
+                    src={slide.leftImage}
+                    alt={slide.title ?? 'slide image'}
+                    className={`${slide.leftImageClassName ?? 'max-w-[420px] max-h-[345px]'} w-full h-auto object-contain block`}
+                    style={{ mixBlendMode: 'multiply', maxHeight: slide.leftImageClassName ? undefined : '345px' }}
                   />
                 )}
-                {slide.showBrowseButton && (
-                  <button
-                    type="button"
-                    className="mt-8 border border-[#1d1d1d] px-8 py-3 text-[11px] tracking-[0.12em] uppercase hover:bg-gray-50 transition"
-                  >
-                    Browse Product
-                  </button>
-                )}
+              </div>
+
+              {/* Right: text content */}
+              <div className="w-full md:w-[55%] flex flex-col items-start pl-3 lg:pl-9">
+                <div className="max-w-[750px] flex flex-col items-center text-center">
+                  {slide.subtitle && (
+                    <p className="text-[13px] tracking-[0.28em] uppercase text-[#8a8a8a] ">
+                      {slide.subtitle}
+                    </p>
+                  )}
+                  {slide.title && (
+                    <h1 className="text-[32px] md:text-[38px] uppercase tracking-[0.06em] mb-6 font-light text-[#222]">
+                      {slide.title}
+                    </h1>
+                  )}
+                  {slide.description && (
+                    <p
+                      className="text-[#666] font-helvetica-neue-thin"
+                      style={{
+                        fontSize: '0.836vw',
+                        fontWeight: 100,
+                        lineHeight: 1.42857143,
+                      }}
+                    >
+                      {slide.description}
+                    </p>
+                  )}
+                  {slide.rightImage && (
+                    <img
+                      src={slide.rightImage}
+                      alt={`${slide.title ?? ''} detail`}
+                      className={slide.rightImageClassName ?? "mt-5 max-w-[300px] w-full h-auto max-h-[240px] object-contain block"}
+                      style={{ mixBlendMode: 'multiply' }}
+                    />
+                  )}
+                  {slide.showBrowseButton && (
+                    <button
+                      type="button"
+                      className="mt-8 border border-[#1d1d1d] px-8 py-3 text-[11px] tracking-[0.12em] uppercase hover:bg-gray-50 transition"
+                    >
+                      Browse Product
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ══════════ text-only ══════════ */}
-        {slide.layout === 'text-only' && (
-          <div className="w-full py-16 mx-auto flex flex-col items-center text-center">
-            {slide.title && (
-              <h1 className="text-3xl md:text-[36px] uppercase tracking-[0.04em] mb-10 font-light text-[#222]">
-                {slide.title}
-              </h1>
-            )}
+          {/* ══════════ text-only ══════════ */}
+          {slide.layout === 'text-only' && (
+            <div className="w-full py-16 mx-auto flex flex-col items-center text-center">
+              {slide.title && (
+                <h1 className="text-3xl md:text-[36px] uppercase tracking-[0.04em] mb-10 font-light text-[#222]">
+                  {slide.title}
+                </h1>
+              )}
 
-            {/* Bullets */}
-            {slide.bullets && (
-              <div className="w-full flex flex-col text-center">
-                {slide.bullets.map((bullet, idx) => (
-                  <p key={idx} className="text-[#888] text-[10px] md:text-[11px] font-light leading-[26px] whitespace-nowrap mb-[1px]">
-                    * {bullet}
-                  </p>
-                ))}
-              </div>
-            )}
+              {/* Bullets */}
+              {slide.bullets && (
+                <div className="w-full flex flex-col text-center">
+                  {slide.bullets.map((bullet, idx) => (
+                    <p key={idx} className="text-[#888] text-[10px] md:text-[11px] font-light leading-[26px] whitespace-nowrap mb-[1px]">
+                      * {bullet}
+                    </p>
+                  ))}
+                </div>
+              )}
 
-            {/* Composition tables — Rose Gold Facts Image */}
-            {slide.tableImage && (
-              <div className="w-full flex justify-center mt-2">
-                <img
-                  src={slide.tableImage}
-                  alt="Composition Details"
-                  className="w-full max-w-[860px] h-auto object-contain block"
-                />
-              </div>
-            )}
-          </div>
-        )}
+              {/* Composition tables — Rose Gold Facts Image */}
+              {slide.tableImage && (
+                <div className="w-full flex justify-center mt-2">
+                  <img
+                    src={slide.tableImage}
+                    alt="Composition Details"
+                    className="w-full max-w-[860px] h-auto object-contain block"
+                  />
+                </div>
+              )}
+            </div>
+          )}
 
-        {/* ══════════ dual-info ══════════ */}
-        {slide.layout === 'dual-info' && (
-          <div className="w-full max-w-[1200px] py-12 mx-auto">
-            {slide.title && (
-              <h1 className="text-2xl md:text-3xl uppercase tracking-[0.06em] mb-8 font-light text-center">
-                {slide.title}
-              </h1>
-            )}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div className="flex justify-center">
-                <img
-                  src={slide.leftImage}
-                  alt="left visual"
-                  className="max-w-[480px] w-full h-auto object-contain block"
-                  style={{ mixBlendMode: 'multiply' }}
-                />
-              </div>
-              <div className="flex justify-center">
-                <img
-                  src={slide.rightImage}
-                  alt="right visual"
-                  className="max-w-[480px] w-full h-auto object-contain block"
-                  style={{ mixBlendMode: 'multiply' }}
-                />
+          {/* ══════════ dual-info ══════════ */}
+          {slide.layout === 'dual-info' && (
+            <div className="w-full max-w-[1200px] py-12 mx-auto">
+              {slide.title && (
+                <h1 className="text-2xl md:text-3xl uppercase tracking-[0.06em] mb-8 font-light text-center">
+                  {slide.title}
+                </h1>
+              )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div className="flex justify-center">
+                  <img
+                    src={slide.leftImage}
+                    alt="left visual"
+                    className="max-w-[480px] w-full h-auto object-contain block"
+                    style={{ mixBlendMode: 'multiply' }}
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <img
+                    src={slide.rightImage}
+                    alt="right visual"
+                    className="max-w-[480px] w-full h-auto object-contain block"
+                    style={{ mixBlendMode: 'multiply' }}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ══════════ image-full  (Pt 950 annotated ring) ══════════ */}
-        {slide.layout === 'image-full' && (
-          <div className="w-full max-w-[900px] py-12 mx-auto flex justify-center">
-            <img
-              src={slide.leftImage}
-              alt="platinum ring"
-              className="w-full max-w-[700px] h-auto max-h-[560px] object-contain block"
-              style={{ mixBlendMode: 'multiply' }}
-            />
-          </div>
-        )}
+          {/* ══════════ image-full  (Pt 950 annotated ring) ══════════ */}
+          {slide.layout === 'image-full' && (
+            <div className="w-full max-w-[900px] py-12 mx-auto flex justify-center">
+              <img
+                src={slide.leftImage}
+                alt="platinum ring"
+                className="w-full max-w-[700px] h-auto max-h-[560px] object-contain block"
+                style={{ mixBlendMode: 'multiply' }}
+              />
+            </div>
+          )}
 
         </div>
 
