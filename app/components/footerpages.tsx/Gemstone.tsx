@@ -21,6 +21,10 @@ import cutImage from '~/assets/stone83.jpg';
 import showcaseImage from '~/assets/stone84.jpg';
 import categoryImage from '~/assets/bw.jpg';
 
+import customDiamond from '~/assets/diamond.png';
+import customPearl from '~/assets/pearl.png';
+import customEmerald from '~/assets/emerald.png';
+
 const gemstoneRows = [
   [
     { name: 'Amethyst', image: stone11 },
@@ -56,10 +60,11 @@ export default function Gemstone() {
         />
         <div className="absolute inset-0 flex items-center justify-center px-4">
           <div className="flex w-full max-w-[900px] flex-col items-center text-center">
-            <p className="font-serif text-[12px] tracking-[0.2em] text-[#3f3f3f] sm:text-[20px] sm:tracking-[0.28em] md:text-[23px]">
-              GEMSTONE EDUCATION
-            </p>
-            <div className="mt-[4px] sm:mt-[6px] h-px w-[140px] sm:w-[220px] bg-[#3f3f3f]/60" />
+            <div className="inline-block border-b border-[#3f3f3f]/60 pb-[4px] sm:pb-[6px]">
+              <p className="font-serif text-[12px] tracking-[0.2em] text-[#3f3f3f] sm:text-[20px] sm:tracking-[0.28em] md:text-[23px]">
+                GEMSTONE EDUCATION
+              </p>
+            </div>
             <p className="mt-2 sm:mt-3 font-serif text-[11px] font-semibold tracking-[0.06em] text-[#3f3f3f] sm:text-[20px] md:text-[23px]">
               WHAT ARE GEMSTONES?
             </p>
@@ -185,15 +190,30 @@ export default function Gemstone() {
 
           <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
             {[
-              { image: stone10, alt: 'Diamond size' },
-              { image: pearl, alt: 'Pearl size' },
-              { image: stone7, alt: 'Emerald size' },
+              { image: customDiamond, alt: 'Diamond size', imgClass: 'h-[80px] w-[80px] sm:h-[105px] sm:w-[105px] md:h-[135px] md:w-[135px]' },
+              { image: customPearl, alt: 'Pearl size', imgClass: 'h-[61px] w-[61px] sm:h-[76px] sm:w-[76px] md:h-[96px] md:w-[96px]' },
+              { image: customEmerald, alt: 'Emerald size', imgClass: 'h-[75px] w-[75px] sm:h-[100px] sm:w-[100px] md:h-[130px] md:w-[130px]' },
             ].map((item) => (
-              <div key={item.alt} className="flex flex-col items-center">
-                <div className="flex h-[78px] sm:h-[88px] md:h-[98px] w-full max-w-[300px] items-start justify-center border border-white/30">
-                  <p className="mt-3 text-[20px] sm:text-[24px] md:text-[30px] tracking-[0.06em] text-white/95">1 carat</p>
+              <div key={item.alt} className="relative mt-8 mb-16 sm:mb-20 flex h-[60px] sm:h-[70px] md:h-[80px] w-full max-w-[280px] md:max-w-[340px] flex-col items-center border-l border-r border-white/40 mx-auto">
+                <div className="absolute -left-px -right-px top-0 flex -translate-y-1/2 items-center">
+                  <div className="flex-1 border-t border-white/40"></div>
+                  <p className="px-3 sm:px-4 text-[18px] sm:text-[22px] md:text-[26px] tracking-[0.06em] text-white/95 leading-none">
+                    1 carat
+                  </p>
+                  <div className="flex-1 border-t border-white/40"></div>
                 </div>
-                <img src={item.image} alt={item.alt} className="-mt-2 h-[95px] w-[95px] sm:h-[108px] sm:w-[108px] md:h-[120px] md:w-[120px] object-contain" />
+
+                <div className="absolute -left-px -right-px bottom-0 flex translate-y-1/2 items-center">
+                  <div className="flex-1 border-t border-white/40"></div>
+                  <div className="flex items-center justify-center px-1 sm:px-3">
+                    <img
+                      src={item.image}
+                      alt={item.alt}
+                      className={`${item.imgClass} object-contain mix-blend-screen bg-transparent`}
+                    />
+                  </div>
+                  <div className="flex-1 border-t border-white/40"></div>
+                </div>
               </div>
             ))}
           </div>
