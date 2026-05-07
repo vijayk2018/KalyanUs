@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { Link } from 'react-router';
+import PhoneInput from 'react-phone-input-2';
 import LoginImage from '../assets/Sign-in.jpg'
 import Register from '../assets/regiteer.png'
 import GoogleImg from '../assets/google.svg';
@@ -24,15 +25,6 @@ export default function StoreAuthModal({ open, onClose }: StoreAuthModalProps) {
   const [isLoginChecking, setIsLoginChecking] = useState(false);
 
   const normalizedLoginHint = loginHint.trim();
-  const [selectedCountry, setSelectedCountry] = useState('US');
-  const [dialCode, setDialCode] = useState('+1');
-
-  const countryCodes: Record<string, string> = {
-    US: '+1',
-    IN: '+91',
-    GB: '+44',
-    AE: '+971',
-  };
 
   useEffect(() => {
     if (!open) return;
@@ -261,44 +253,37 @@ export default function StoreAuthModal({ open, onClose }: StoreAuthModalProps) {
                     }}
                     className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none focus:outline-none focus:border-[#d8dff5] focus:ring-0"
                   />
-                  <div className="relative w-full border border-[#d8dceb] rounded-md flex items-center focus-within:border-[#cf254a]">
-                    <div className="grid grid-cols-3 items-center gap-2 ">
-                      <p className='text-[#6e7191] bg-white text-[14px] absolute -top-2 left-2'>Mobile No</p>
-                      <div className="flex items-center col-span-1 flag-select">
-
-                        <select
-                          value={selectedCountry}
-                          onChange={(event) => {
-                            const code = event.target.value;
-                            setSelectedCountry(code);
-                            setDialCode(countryCodes[code] || '+1');
-                          }}
-                          className="bg-transparent text-sm text-gray-700 outline-none"
-                        >
-                          <option value="US">US</option>
-                          <option value="IN">IN</option>
-                          <option value="GB">GB</option>
-                          <option value="AE">AE</option>
-                        </select>
-                        <span className="text-sm text-gray-700 ml-1">{dialCode}</span>
-                      </div>
-                      <div className='col-span-2 border-l border-[#d8dceb]'>
-                        <input
-                          type="tel"
-                          name="phone"
-                          value={signupPhone}
-                          onChange={(event) => {
-                            setSignupPhone(event.target.value);
-                            if (inlineError) setInlineError('');
-                          }}
-                          placeholder="Phone"
-                          className="py-3 px-4 text-lg outline-none rounded-r-md placeholder:text-gray-200 w-full bg-transparent focus:outline-none focus:ring-0"
-                        />
-                      </div>
-                    </div>
+                  <div className="relative w-full">
+                    <p className='text-[#6e7191] bg-white text-[12px] absolute -top-2.5 left-2 z-10 px-1'>Mobile No.</p>
+                    <PhoneInput
+                      country={'us'}
+                      value={signupPhone}
+                      onChange={(value) => setSignupPhone(value)}
+                      specialLabel=""
+                      inputProps={{
+                        name: 'phone',
+                        required: true,
+                      }}
+                      containerStyle={{
+                        width: '100%',
+                      }}
+                      inputStyle={{
+                        width: '100%',
+                        height: '45px',
+                        fontSize: '14px',
+                        borderRadius: '6px',
+                        border: '1px solid #d8dff5',
+                      }}
+                      buttonStyle={{
+                        borderTopLeftRadius: '6px',
+                        borderBottomLeftRadius: '6px',
+                        border: '1px solid #d8dff5',
+                        backgroundColor: '#fff',
+                      }}
+                    />
                   </div>
                 </div>
-                <input type="hidden" name="dial_code" value={dialCode} />
+
                 <input type="hidden" name="return_to" value={returnTo} />
                 <div className="mt-5 flex items-center gap-2 text-[12px] text-gray-600">
                   <input
