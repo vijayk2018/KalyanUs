@@ -19,7 +19,7 @@ const items: GiftItem[] = [
 
 const GiftSection: React.FC = () => {
   return (
-    <div className="w-full bg-[#7a0019] lg:py-24 flex justify-center 2xl:px-[5rem] lg:px-[4rem] p-4 lg:p-6">
+    <div className="w-full bg-[#650827] lg:py-[7.5rem] flex justify-center 2xl:px-[7.5rem] lg:px-[6rem] p-4 lg:p-6">
       
       {/* Center Container */}
       <div className="w-full bg-[#e6d3c3] rounded-md px-4 lg:px-12 pt-6 lg:pt-12">

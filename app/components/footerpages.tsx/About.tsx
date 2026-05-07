@@ -147,13 +147,16 @@ export default function About() {
                                 <div className={`relative ${expandedTS ? 'h-auto pb-4' : 'h-40 overflow-hidden'}`}>
                                     <div className="text-sm leading-relaxed text-[#666] space-y-4">
                                         <p>
-                                            Today, when I look around me, business is all about toplines, bottomlines and market capitalisation. But Kalyan entered into business in a pre-independent India to build a better India, as our forefathers believed ethical, fair business will make India self-sufficient and strong. Personally, I believe Kalyan Jewellers&apos; major achievement is the trust we have earned from millions of people across the length and breadth of a huge subcontinent like India, and abroad in the GCC and USA.
+                                            Today, when I look around me, business is all about toplines, bottomlines and market capitalisation. But Kalyan entered into business in a pre-independent India to build a better India, as our forefathers believed ethical, fair business will make India self-sufficient and strong.
+                                        </p>
+                                        <p>
+                                            Personally, I believe Kalyan Jewellers&apos; major achievement is the trust we have earned from millions of people across the length and breadth of a huge subcontinent like India, and abroad in the GCC and USA.
                                         </p>
                                         <p>
                                             We have always believed in fair and transparent business. We have believed that the customer should be understood so well that we know his needs much before he understands them himself. We have believed that an enlightened customer is the best customer. These are the simple principles that have helped us reach where we are today.
                                         </p>
                                         <p>
-                                            Today, Kalyan Jewellers has 318 retail stores spread across INDIA, MIDDLE EAST AND USA. Pampered by your unbound love and support and with the blessings of the Almighty, we believe we are in the right path towards the accomplishment of our vision to open stores and serve customers across the world.
+                                            Today, Kalyan Jewellers has 316 retail stores spread across INDIA, MIDDLE EAST AND USA. Pampered by your unbound love and support and with the blessings of the Almighty, we believe we are in the right path towards the accomplishment of our vision to open stores and serve customers across the world.
                                         </p>
                                     </div>
                                     {!expandedTS && <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>}
@@ -191,7 +194,10 @@ export default function About() {
                                             I feel our biggest differentiator is not only the ability to understand local, think local and act local, but at the same time bring in our vast experience and sourcing strength out of operating in multiple markets. Jewellery is a complicated product, because tastes vary even within the same state.
                                         </p>
                                         <p>
-                                            What helps us here is the huge variety of products we stock from artisans across the country and even the Arab countries. We carefully and painstakingly select the designs of our products and customise them according to the demands of the consumer demography of each market we step into as India is such a vast country with diverse tastes.
+                                            What helps us here is the huge variety of products we stock from artisans across the country and even the Arab countries.
+                                        </p>
+                                        <p>
+                                            We carefully and painstakingly select the designs of our products and customise them according to the demands of the consumer demography of each market we step into as India is such a vast country with diverse tastes.
                                         </p>
                                         <p>
                                             We have something for everyone. Highly skilled craftsmen create our products along with stringent quality control measures which creates that perfection in the products we sell.
@@ -257,22 +263,22 @@ export default function About() {
                 <div className="w-full md:w-1/2 flex items-center justify-center bg-white overflow-hidden">
                     <img src={compassImg} alt="Vision Compass" className="w-full h-full object-cover drop-shadow-2xl" />
                 </div>
-                <div className="w-full md:w-1/2 bg-[#cf254a] text-white p-8 sm:p-10 md:p-16 lg:p-24 flex flex-col justify-center gap-10 sm:gap-12 md:gap-16">
+                <div className="w-full md:w-1/2 bg-[#cf254a] text-white p-8 sm:p-10 md:p-16 lg:px-12 lg:py-24 flex flex-col justify-center gap-10 sm:gap-12 md:gap-16">
                     <div className="text-center group">
                         <div className="mx-auto mb-4 flex items-center justify-center transition-transform group-hover:scale-105">
-                            <img src={visionIcon} alt="Vision Icon" className="w-7 h-7 object-contain invert brightness-0" />
+                            <img src={visionIcon} alt="Vision Icon" className="w-[35px] h-[35px] object-contain invert brightness-0" />
                         </div>
-                        <h2 className="text-3xl sm:text-4xl mb-4 font-serif tracking-wide opacity-90">Our Vision</h2>
-                        <p className="text-[15px] leading-relaxed max-w-lg mx-auto font-light opacity-90 px-4">
+                        <h2 className="text-5xl sm:text-5xl mb-4 heading-font tracking-wide opacity-90">Our Vision</h2>
+                        <p className="text-[14px] leading-relaxed mx-auto sans-font opacity-90 px-4">
                             To understand and delight the world, translating everyone&apos;s dream and personality into fine Indian jewellery, and spread the happiness from it to all.
                         </p>
                     </div>
                     <div className="text-center group">
                         <div className="mx-auto mb-4 flex items-center justify-center transition-transform group-hover:scale-105">
-                            <img src={missionIcon} alt="Mission Icon" className="w-7 h-7 object-contain invert brightness-0" />
+                            <img src={missionIcon} alt="Mission Icon" className="w-[35px] h-[35px] object-contain invert brightness-0" />
                         </div>
-                        <h2 className="text-3xl sm:text-4xl mb-4 font-serif tracking-wide opacity-90">Our Mission</h2>
-                        <p className="text-[15px] leading-relaxed max-w-md mx-auto font-light opacity-90 px-4">
+                        <h2 className="text-5xl sm:text-5xl mb-4 heading-font tracking-wide opacity-90">Our Mission</h2>
+                        <p className="text-[13px] leading-relaxed mx-auto sans-font opacity-90 px-4">
                             To give every customer much more than what he/she asks for in terms of quality, selection, value for money and customer service, by understanding local tastes and preferences and innovating constantly to eventually provide an unmatched experience in Indian jewellery shopping.
                         </p>
                     </div>
@@ -280,15 +286,15 @@ export default function About() {
             </section >
 
             {/* Network Section */}
-            <section className="pt-16 pb-24">
-                <h2 className="text-[34px] md:text-[36px] font-normal font-serif text-center mb-10 md:mb-12 text-[#333]">Our Network</h2>
+            <section className="pt-16 pb-24" style={{ fontFamily: "'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+                <h1 className="text-[22px] md:text-[45px] heading-font font-bold text-center mb-1 md:mb-2 text-[#333]">Our Network</h1>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-0 lg:px-8 max-w-[1242px] mx-auto">
                     <div className="bg-[#f8f5f2] p-10 text-center transition-transform hover:-translate-y-1">
                         <div className="h-40 md:h-44 flex items-center justify-center mb-5">
                             <img src={indiaMap} alt="India Map" className="max-h-full object-contain" />
                         </div>
-                        <h3 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">400+</h3>
-                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] leading-tight">Showroom in India</p>
+                        <h5 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">400+</h5>
+                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] sans-font leading-tight">Showroom in India</p>
                         <p className="text-[13px] text-[#666] leading-relaxed">
                             We have a strong presence across 21 states and union territories, and our 278-plus network of showrooms cover all major cities.
                         </p>
@@ -298,8 +304,8 @@ export default function About() {
                         <div className="h-40 md:h-44 flex items-center justify-center mb-5">
                             <img src={middleEastMap} alt="Middle East Map" className="max-h-full object-contain" />
                         </div>
-                        <h3 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">36+</h3>
-                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] leading-tight">Showroom in Middle East</p>
+                        <h5 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">36+</h5>
+                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] sans-font leading-tight">Showroom in Middle East</p>
                         <p className="text-[13px] text-[#666] leading-relaxed">
                             We have 36 showrooms in the GCC spread across UAE, Qatar, Kuwait and Oman.
                         </p>
@@ -309,8 +315,8 @@ export default function About() {
                         <div className="h-40 md:h-44 flex items-center justify-center mb-5">
                             <img src={usaMap} alt="USA Map" className="max-h-full object-contain" />
                         </div>
-                        <h3 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">02</h3>
-                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] leading-tight">Showroom in USA</p>
+                        <h5 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">02</h5>
+                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] sans-font leading-tight">Showroom in USA</p>
                         <p className="text-[13px] text-[#666] leading-relaxed">
                             We have 2 showrooms in the USA (New Jersey and Chicago).
                         </p>
@@ -343,28 +349,28 @@ export default function About() {
             </section >
 
             {/* Customer Stories Carousel Section */}
-            <section className="bg-[#f8f5f2] py-20 relative overflow-hidden -mx-4 sm:-mx-5 md:-mx-8 lg:-mx-[4rem] 2xl:-mx-[5rem] px-4 sm:px-5 md:px-8 lg:px-[4rem] 2xl:px-[5rem]">
+            <section className="bg-[#f8f7f1] py-20 relative overflow-hidden -mx-4 sm:-mx-5 md:-mx-8 lg:-mx-[4rem] 2xl:-mx-[5rem] px-4 sm:px-5 md:px-8 lg:px-[4rem] 2xl:px-[5rem]">
                 <div className="w-full max-w-full relative mx-auto">
-                    <h2 className="text-[34px] md:text-[36px] font-normal font-serif text-center mb-12 text-[#333]">Customer Stories</h2>
+                    <h2 className="text-[28px] md:text-[45px] heading-font text-center text-[#333]">Customer Stories</h2>
 
-                    <div className="relative group px-10 md:px-16 lg:px-20">
+                    <div className="relative group px-10 md:px-16 lg:px-20 mt-10">
                         {/* Navigation Arrows */}
                         <button
                             onClick={handlePrev}
-                            className="absolute left-0 lg:left-4 top-1/2 -translate-y-1/2 z-10 p-2 text-gray-400 hover:text-[#cf2d4c] transition-colors"
+                            className="absolute -left-2 lg:left-6 top-1/2 -translate-y-1/2 z-10 p-2 text-gray-400 hover:text-[#cf2d4c] transition-colors"
                             type="button"
                         >
-                            <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
 
                         <button
                             onClick={handleNext}
-                            className="absolute right-0 lg:right-4 top-1/2 -translate-y-1/2 z-10 p-2 text-gray-400 hover:text-[#cf2d4c] transition-colors"
+                            className="absolute -right-2 lg:right-6 top-1/2 -translate-y-1/2 z-10 p-2 text-gray-400 hover:text-[#cf2d4c] transition-colors"
                             type="button"
                         >
-                            <svg className="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5l7 7-7 7" />
                             </svg>
                         </button>
@@ -380,13 +386,13 @@ export default function About() {
                             >
                                 {tripledTestimonials.map((item, idx) => (
                                     <div key={idx} className="w-full md:w-1/3 flex-shrink-0 px-2 md:px-3">
-                                        <div className="bg-white p-5 md:p-6 shadow-sm rounded-sm text-center h-full flex flex-col justify-between">
-                                            <p className="text-[13px] leading-relaxed text-[#666] italic mb-5">
+                                        <div className="bg-white p-5 md:p-10 shadow-sm rounded-sm text-center h-full min-h-[225px] flex flex-col justify-between">
+                                            <p className="text-[14px] leading-relaxed text-[#666] italic mb-5">
                                                 &quot;{item.text}&quot;
                                             </p>
                                             <div>
-                                                <p className="font-bold text-[#333] text-[14px] mb-0.5">{item.name},</p>
-                                                <p className="text-[11px] uppercase tracking-wider text-gray-400">{item.location}</p>
+                                                <p className="font-bold text-[#333] text-[16px] mb-0.5">{item.name},</p>
+                                                <p className="text-[12px] uppercase tracking-wider text-gray-400">{item.location}</p>
                                             </div>
                                         </div>
                                     </div>

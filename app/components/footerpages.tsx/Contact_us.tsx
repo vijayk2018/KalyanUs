@@ -58,7 +58,7 @@ export default function ContactUs() {
                                     <div className="pb-1">
                                         <h3 className="mb-1.5 text-[15px] font-extrabold leading-tight tracking-tight text-[#222] sm:text-[17px]">Kalyan Jewellers (Chicago)</h3>
                                         <p className="font-serif text-[13px] leading-snug text-gray-500 sm:text-[14px]">
-                                            2858 West Devon Ave, Chicago, IL 60659
+                                            2658 West Devon Ave, Chicago, IL 60659
                                         </p>
                                     </div>
                                 </div>

@@ -30,7 +30,12 @@ export default defineConfig({
        * Include 'example-dep' in the array below.
        * @see https://vitejs.dev/config/dep-optimization-options
        */
-      include: ['set-cookie-parser', 'cookie', 'react-router'],
+      include: [
+        'react-phone-input-2',
+        'set-cookie-parser',
+        'cookie',
+        'react-router',
+      ],
     },
   },
   server: {

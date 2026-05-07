@@ -40,14 +40,14 @@ const guides: (Guide & { link: string })[] = [
 
 const JewelleryGuides: React.FC = () => {
   return (
-    <div className="flex items-center justify-between w-full py-16 2xl:px-[5rem] lg:px-[4rem] bg-[#f5f5f5]">
+    <div className="flex items-center justify-between w-full py-25 2xl:px-[5rem] lg:px-[4rem] bg-[#f5f5f5]">
       <div className="w-full flex flex-col">
         {/* HEADER */}
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-serif mb-2">
+          <h2 className="heading-font text-6xl">
             Jewellery Guides
           </h2>
-          <p className="text-gray-500 font-serif">
+          <p className="text-gray-500 font-sans py-3">
             These designs match your interest
           </p>
         </div>
