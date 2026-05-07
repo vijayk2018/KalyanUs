@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useEffect, useState } from "react"; 
-=======
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useEffect, useState } from "react";
->>>>>>> 9e0a683eb627b5885d6ecca725b3d5601aeefd75
 import { Link } from "react-router";
 import CarousalImage1 from '../assets/car1.jpg'
 import CarousalImage2 from '../assets/car2.jpg'
@@ -135,13 +130,8 @@ const TrendingCarousel: React.FC = () => {
             Trending Collections
           </p>
 
-<<<<<<< HEAD
-          <p className="text-gray-600 mb-6 font-serif">
-            Explore this season&apos;s trending collection.
-=======
           <p className="text-black mb-6 font-helvetica-light">
-            Explore this season's trending collection.
->>>>>>> 9e0a683eb627b5885d6ecca725b3d5601aeefd75
+            Explore this season&apos;s trending collection.
           </p>
           <Link
             to="/collections/trending-collections"
