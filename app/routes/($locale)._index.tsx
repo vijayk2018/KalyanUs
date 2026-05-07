@@ -56,6 +56,10 @@ async function loadCriticalData({ context }: Route.LoaderArgs) {
     asMediaImage(shop.media_2) ?? asMediaImage(shop.media2) ?? null;
   const templateMedia3 = shop.media_3?.value ?? shop.media3?.value ?? null;
   const templateMedia4 = shop.media_4?.value ?? shop.media4?.value ?? null;
+  const templateMedia5 =
+    asMediaImage((shop as any).media_5)?.url ??
+    (shop as any).media5?.value ??
+    null;
 
   console.log('Featured collection:', shop);
 
@@ -93,6 +97,7 @@ async function loadCriticalData({ context }: Route.LoaderArgs) {
     media2: templateMedia2 ?? homeMedia[1] ?? null,
     media3: templateMedia3,
     media4: templateMedia4,
+    media5: templateMedia5,
   };
 }
 
@@ -126,6 +131,7 @@ export default function Homepage() {
         media2={data.media2}
         media3={data.media3}
         media4={data.media4}
+        media5={data.media5}
         collections={data.collections}
       />
     </div>
@@ -468,10 +474,27 @@ const HOME_TEMPLATE_MEDIA_QUERY = `#graphql
       media_4: metafield(namespace: "custom", key: "media_4") {
         value
       }
+      media_5: metafield(namespace: "custom", key: "media_5") {
+        reference {
+          __typename
+          ... on MediaImage {
+            image {
+              id
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
       media3: metafield(namespace: "custom", key: "media3") {
         value
       }
       media4: metafield(namespace: "custom", key: "media4") {
+        value
+      }
+      media5: metafield(namespace: "custom", key: "media5") {
         value
       }
     }
