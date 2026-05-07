@@ -62,19 +62,19 @@ const FeedCarousel: React.FC = () => {
   return (
     <div className="w-full py-16 text-center 2xl:px-[5rem] lg:px-[4rem] bg-[#f5f5f5]">
       {/* Heading */}
-      {/* <h2 className="text-5xl font-serif mb-2">Fresh Of The feed</h2> */}
-      <p className="heading-font text-6xl ">Fresh Of The feed</p>
+      {/* <h2 className="text-5xl font-serif mb-2">Fresh Of The Feed</h2> */}
+      <p className="heading-font text-6xl ">Fresh Of The Feed</p>
 
       {/* Desktop carousel */}
       <div className="relative items-center justify-center hidden lg:flex">
         <button
           onClick={() => setIndex((prev) => (prev - 1 + posts.length) % posts.length)}
-          className="absolute 2xl:left-28 lg:left-2 z-20 bg-red-600 text-white p-1 rounded-full"
+          className="absolute left-[9%] top-1/2 -translate-y-1/2 z-30 bg-[#ff0037] text-white p-1 rounded-full shadow-lg"
         >
           <ChevronLeft />
         </button>
 
-        <div className="relative w-full h-[70vh] flex items-center justify-center">
+        <div className="relative w-full h-[60vh] flex items-center justify-center overflow-hidden">
           {posts.map((post, i) => {
             const pos = getPosition(i);
             let translateX = 0;
@@ -85,29 +85,36 @@ const FeedCarousel: React.FC = () => {
               case "center":
                 translateX = 0;
                 scale = 1.2;
+                zIndex = 2;
+                break;
+
+              case "left":
+                translateX = -315;
+                scale = 0.8;
                 zIndex = 10;
                 break;
-              case "left":
-                translateX = -GAP;
-                scale = 0.9;
-                zIndex = 5;
-                break;
+
               case "right":
-                translateX = GAP;
-                scale = 0.9;
+                translateX = 315;
+                scale = 0.8;
+                zIndex = 10;
+                break;
+
+              case "far-left":
+                translateX = -555;
+                scale = 0.7;
                 zIndex = 5;
                 break;
-              case "far-left":
-                translateX = -260 * 2;
-                scale = 0.75;
-                break;
+
               case "far-right":
-                translateX = 260 * 2;
-                scale = 0.75;
+                translateX = 555;
+                scale = 0.7;
+                zIndex = 5;
                 break;
+
               default:
                 translateX = 0;
-            }
+}
 
             return (
               <div
@@ -116,16 +123,16 @@ const FeedCarousel: React.FC = () => {
                 style={{
                   transform: `translateX(${translateX}px) scale(${scale})`,
                   zIndex,
-                  width: `${BASE_WIDTH}px`,
+                  width: `${BASE_WIDTH + 40}px`,
                 }}
               >
                 <a
                   href={post.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block bg-white rounded-2xl shadow-xl p-3 w-full h-full"
+                  className="block bg-white rounded-[24px] shadow-2xl p-4 w-full h-full"
                 >
-                  <img src={post.image} alt="" className="w-full h-full object-cover rounded-xl" />
+                  <img src={post.image} alt="" className="w-full h-full object-cover rounded-[18px]" />
                 </a>
               </div>
             );
@@ -134,7 +141,7 @@ const FeedCarousel: React.FC = () => {
 
         <button
           onClick={() => setIndex((prev) => (prev + 1) % posts.length)}
-          className="absolute 2xl:right-28 lg:right-2 z-20 bg-red-600 text-white p-1 rounded-full"
+          className="absolute right-[9%] top-1/2 -translate-y-1/2 z-30 bg-[#ff0037] text-white p-1 rounded-full shadow-lg"
         >
           <ChevronRight />
         </button>
