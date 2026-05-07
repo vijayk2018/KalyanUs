@@ -243,6 +243,10 @@ export default function Product() {
   const videoCallTimeSlots = ['11:39 pm', '3:00 pm', '12:00 pm', '5:00 pm'];
   const todayDate = useMemo(() => new Date().toISOString().split('T')[0], []);
   const {showSuccess, showError, toasts, removeToast} = useToast();
+  const selectedVariant = useOptimisticVariant(
+    product.selectedOrFirstAvailableVariant,
+    getAdjacentAndFirstAvailableVariants(product),
+  );
   const availableVideoCallTimeSlots = useMemo(() => {
     if (videoCallScheduleMode !== 'today') {
       return videoCallTimeSlots;
@@ -294,18 +298,12 @@ export default function Product() {
     ? product.showDelivery.value.toLowerCase() === 'true'
     : true;
   const saleAssistWidgetId = product.saleAssistWidgetId?.value?.trim() || '6a332aee-f9a2-4163-9fc2-a37720137da4';
-  const styleNumber = product.styleNo?.value || selectedVariant?.sku || '—';
-  const [isSkuCopied, setIsSkuCopied] = useState(false);
+  const styleNumber = product.styleNo?.value?.trim() || selectedVariant?.sku || '—';
+  const [isStyleNumberCopied, setIsStyleNumberCopied] = useState(false);
 
   const shouldShowDiamondCertificateGuide = product.diamondCertificateGuide?.value
     ? product.diamondCertificateGuide.value.toLowerCase() === 'true'
     : false;
-
-  // ✅ FIRST get variant
-  const selectedVariant = useOptimisticVariant(
-    product.selectedOrFirstAvailableVariant,
-    getAdjacentAndFirstAvailableVariants(product),
-  );
 
   useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
 
@@ -342,19 +340,36 @@ export default function Product() {
     setIsDiamondCertificateGuideOpen(true);
   };
 
-  const handleCopySku = async () => {
+  const copyTextToClipboard = async (text: string) => {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  };
+
+  const handleCopyStyleNumber = async () => {
     if (!styleNumber || styleNumber === '—') {
-      showError('SKU not available to copy.');
+      showError('Style number not available to copy.');
       return;
     }
 
     try {
-      await navigator.clipboard.writeText(styleNumber);
-      setIsSkuCopied(true);
-      showSuccess('SKU copied.');
-      window.setTimeout(() => setIsSkuCopied(false), 1500);
+      await copyTextToClipboard(styleNumber);
+      setIsStyleNumberCopied(true);
+      showSuccess('Style number copied.');
+      window.setTimeout(() => setIsStyleNumberCopied(false), 1500);
     } catch {
-      showError('Unable to copy SKU.');
+      showError('Unable to copy style number.');
     }
   };
 
@@ -1083,12 +1098,12 @@ export default function Product() {
                 <p>Style No. {styleNumber}</p>
                 <button
                   type="button"
-                  onClick={handleCopySku}
+                  onClick={() => void handleCopyStyleNumber()}
                   className="inline-flex items-center justify-center text-[#cf254a] hover:text-[#a61e3d]"
                   aria-label="Copy style number"
-                  title="Copy SKU"
+                  title="Copy style number"
                 >
-                  {isSkuCopied ? <Check size={18} /> : <Copy size={18} />}
+                  {isStyleNumberCopied ? <Check size={18} /> : <Copy size={18} />}
                 </button>
                 {shouldShowDiamondCertificateGuide ? (
                   <button

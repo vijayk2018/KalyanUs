@@ -298,9 +298,13 @@ export function Header({
               onClick={() => {
                 isUserLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true);
               }}
-              className="flex flex-col items-center text-[#202020] relative cursor-pointer hover:text-[#650827]"
+              className="group flex flex-col items-center text-[#202020] relative cursor-pointer hover:text-[#650827]"
             >
-              <img src={HeartIcon} alt={'Heart'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+              <div
+                className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+                title="Heart"
+                style={{ WebkitMaskImage: `url(${HeartIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${HeartIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+              />
               {wishlistCount > 0 && (
                 <span className="absolute top-0 right-2 z-20 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold leading-none text-white ring-1 ring-white">
                   {wishlistCount}
@@ -310,9 +314,13 @@ export function Header({
             </button>
             <NavLink
               to="/experience-centre"
-              className="flex flex-col items-center text-[#202020]"
+              className="group flex flex-col items-center text-[#202020] hover:text-[#650827]"
             >
-              <img src={StoreIcon} alt={'Store'}  className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+              <div
+                className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+                title="Store"
+                style={{ WebkitMaskImage: `url(${StoreIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${StoreIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+              />
               <span className="text-[12px] font-serif">Store</span>
             </NavLink>
             <button
@@ -321,9 +329,13 @@ export function Header({
                   ? (window.location.href = '/account')
                   : setIsStoreModalOpen(true);
               }}
-              className="flex flex-col items-center text-[#202020]"
+              className="group flex flex-col items-center text-[#202020] hover:text-[#650827]"
             >
-              <img src={UserIcon} alt={'User'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+              <div
+                className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+                title="User"
+                style={{ WebkitMaskImage: `url(${UserIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${UserIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+              />
               <span className="text-[12px] font-serif">Profile</span>
             </button>
           </div>
@@ -943,10 +955,13 @@ function HeaderCtas({
           onClick={() => {
             isLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true);
           }}
-          className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition cursor-pointer"
+          className="group flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition cursor-pointer hover:text-[#650827]"
         >
           <div className="relative flex justify-center ">
-            <img src={HeartIcon} alt={'Heart'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+            <div
+              className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+              style={{ WebkitMaskImage: `url(${HeartIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${HeartIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+            />
             {wishlistCount > 0 && (
               <span className="absolute -top-3 -right-1 z-20 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1.5 py-0.5 text-[9px] font-semibold leading-none text-white ring-1 ring-white">
                 {wishlistCount}
@@ -960,10 +975,13 @@ function HeaderCtas({
 
         <NavLink
           to="/experience-centre"
-          className="flex flex-col items-center space-x-2 text-center transition cursor-pointer"
+          className="group flex flex-col items-center space-x-2 text-center transition cursor-pointer hover:text-[#cf254a]"
         >
           <div className="flex justify-center ">
-            <img src={StoreIcon} alt={'Store'}  className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+            <div
+              className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+              style={{ WebkitMaskImage: `url(${StoreIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${StoreIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+            />
           </div>
           <p className="text-center text-[#333] 2xl:text-[12px] xl:text-[11px] lg:text-[9px] font-serif">
             Store
@@ -977,10 +995,13 @@ function HeaderCtas({
               ? (window.location.href = '/account')
               : setIsStoreModalOpen(true);
           }}
-          className="flex flex-col items-center space-x-2 text-center transition cursor-pointer"
+          className="group flex flex-col items-center space-x-2 text-center transition cursor-pointer hover:text-[#cf254a]"
         >
           <div className="">
-            <img src={UserIcon} alt={'User'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+            <div
+              className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+              style={{ WebkitMaskImage: `url(${UserIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${UserIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+            />
           </div>
           <p className="text-center text-[#333] 2xl:text-[12px] xl:text-[11px] lg:text-[10px] font-serif">
             Profile
