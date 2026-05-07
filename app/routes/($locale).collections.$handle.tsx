@@ -7,9 +7,29 @@ import {ProductItem} from '~/components/ProductItem';
 import {FilterDrawer} from '~/components/FilterDrawer';
 import type {ProductItemFragment} from 'storefrontapi.generated';
 import {SlidersHorizontal} from 'lucide-react';
-import banner from '../assets/banner2.jpg'
 import { RiFilterFill } from 'react-icons/ri';
 import {useMemo, useState} from 'react';
+
+// Banner imports
+import anokhiBanner from '../assets/Anokhi-LP.jpg';
+import apoorvaBanner from '../assets/Apoorva-LP.jpg';
+import heraBanner from '../assets/Hera-LP-Banner.jpg';
+import mudhraBanner from '../assets/Mudhra-LP_1_3.jpg';
+import nimahBanner from '../assets/Nimah-LP.jpg';
+import rangBanner from '../assets/Rang-LP.jpg';
+import tejasviBanner from '../assets/Tejasvi-LP.jpg';
+import ziahBanner from '../assets/Ziah-LP_1_1.jpg';
+
+const COLLECTION_BANNERS: Record<string, string> = {
+  anokhi: anokhiBanner,
+  apoorva: apoorvaBanner,
+  hera: heraBanner,
+  mudhra: mudhraBanner,
+  nimah: nimahBanner,
+  rang: rangBanner,
+  tejasvi: tejasviBanner,
+  ziah: ziahBanner,
+};
 
 const SORT_OPTIONS = [
   {label: 'Relevance', value: 'relevance'},
@@ -197,11 +217,22 @@ export default function Collection() {
                           
   const collectionTag = collection.title == 'FOR HER' ? 'Her' 
                             : collection.title == 'FOR HIM' ? 'Jewelry | His' 
-                            : collection.title == 'LIL ONE' ? 'Occasion | Shop | For | Kids'  
+                            : collection.title == 'LIL ONE' ? 'Occasion | Shop For | Kids'  
                             : collection.title ;
+
+  const bannerImage = COLLECTION_BANNERS[collection.handle];
 
   return (
     <>
+      {bannerImage && (
+        <div className="w-full">
+          <img
+            src={bannerImage}
+            alt={`${collection.title} collection banner`}
+            className="w-full h-auto object-cover"
+          />
+        </div>
+      )}
       {/* Desktop View */}
       <div className='bg-[#f8f7f1] flex flex-col py-8 2xl:px-[5rem] lg:px-[4rem] p-6 lg:block hidden'>
         <div className="flex items-center gap-3">

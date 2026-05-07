@@ -5,6 +5,8 @@
   font-style: normal;
 } */
 
+@import 'react-phone-input-2/lib/style.css';
+
 :root {
   --aside-width: 400px;
   --cart-aside-summary-height-with-discount: 300px;
