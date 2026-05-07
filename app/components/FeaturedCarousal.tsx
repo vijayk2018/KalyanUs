@@ -92,8 +92,8 @@ export default function FeaturedCarousel() {
     <section className="w-full py-10 bg-white overflow-hidden">
       {/* Heading */}
       <div className="text-center mb-8 px-4">
-        <p className="heading-font text-6xl text-center mb-12">Our Collections</p>
-        <p className="mt-2 text-md text-gray-500 mx-auto">
+        <p className="heading-font text-5xl text-center mb-6">Our Collections</p>
+        <p className="mt-2 mb-1 text-lg font-helvetica-light mx-auto">
           Inspired by life, crafted like a dream. This isn't just jewellery — it's your story, told in gold.
         </p>
       </div>

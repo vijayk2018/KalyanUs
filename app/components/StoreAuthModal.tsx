@@ -136,7 +136,7 @@ export default function StoreAuthModal({ open, onClose }: StoreAuthModalProps) {
 
   return (
     <div className="fixed flex justify-center items-center inset-0 z-[100] bg-black/50 p-4">
-      <div className="mx-auto w-full max-w-[840px] overflow-hidden rounded-lg bg-white shadow-2xl relative">
+      <div className="mx-auto w-full max-w-[834px] overflow-hidden rounded-lg bg-white shadow-2xl relative">
 
         <div className="absolute top-0 right-0 p-3">
           <button
@@ -150,16 +150,16 @@ export default function StoreAuthModal({ open, onClose }: StoreAuthModalProps) {
         </div>
 
         {activeView === 'login' ? (
-          <div className="grid md:grid-cols-2">
+          <div className="grid md:grid-cols-[397px_1fr]">
             <div className="hidden md:block">
               <img src={LoginImage} alt="Login banner" className="h-full w-full object-cover " />
             </div>
 
             <div className="px-6 pb-8 md:px-10  pt-8">
-              <h2 className="text-3xl text-[#cf254a]  font-light mb-5">Login</h2>
-              <p className="text-[16px] text-gray-500 mb-6 pb-3">
+              <h2 className="text-3xl text-[#cf254a] font-helvetica-light mt-4 mb-5">Login</h2>
+              <p className="text-[15px] text-gray-400 font-helvetica-light mb-6 pb-3">
                 To enjoy a seamless experience while shopping
-                <div className='px-5 border-b border-[#cf254a] w-[6rem] mt-3 '></div>
+                <div className='px-7 border-b border-[#cf254a] w-[6rem] mt-3 '></div>
               </p>
               <form onSubmit={handleLoginSubmit}>
                 <input
@@ -171,7 +171,7 @@ export default function StoreAuthModal({ open, onClose }: StoreAuthModalProps) {
                     if (inlineError) setInlineError('');
                   }}
                   placeholder="Enter E-Mail ID / Mobile number"
-                  className={`w-full rounded border border-gray-200 placeholder:text-gray-300 px-5 py-4 text-sm outline-none focus:outline-none focus:border-gray-200 focus:ring-0 ${inlineError ? 'mb-1' : 'mb-6'}`}
+                  className={`w-full rounded border border-gray-200 placeholder:text-gray-300 px-5 py-5 text-base outline-none focus:outline-none focus:border-gray-200 focus:ring-0 ${inlineError ? 'mb-1' : 'mb-6'}`}
                 />
                 {inlineError && (
                   <p className="text-[11px] text-red-500 mb-4">{inlineError}</p>
@@ -186,7 +186,7 @@ export default function StoreAuthModal({ open, onClose }: StoreAuthModalProps) {
                   name="return_to"
                   value={returnTo}
                 />
-                <button type="submit" className="w-full bg-[#cf254a] py-3 text-sm font-semibold text-white"
+                <button type="submit" className="w-full bg-[#cf254a] py-4 text-base font-semibold text-white uppercase tracking-wider"
                   disabled={isLoginChecking}
                 >
                   {isLoginChecking ? 'PLEASE WAIT...' : 'CONTINUE'}
@@ -197,11 +197,11 @@ export default function StoreAuthModal({ open, onClose }: StoreAuthModalProps) {
                 <span className="px-3 text-2xl text-[#5f678b]">OR</span>
                 <div className="h-px flex-1 bg-[#d0d4e2]" />
               </div>
-              <button type="button" className="flex items-center gap-3 justify-center w-full rounded border border-gray-200 py-3 text-sm text-gray-700"
+              <button type="button" className="flex items-center gap-3 justify-center w-full rounded border border-gray-200 py-4 text-base text-gray-700"
                 onClick={() => {
                   window.location.href = `/account/login?acr_values=provider:google&return_to=${encodeURIComponent(returnTo)}`;
                 }}>
-                <img src={GoogleImg} alt="Login banner" className="h-3 w-3 object-cover" /> <span>Login Using Google</span>
+                <img src={GoogleImg} alt="Google" className="h-5 w-5 object-contain" /> <span>Login Using Google</span>
               </button>
               <p className="mt-6 text-center text-sm text-gray-500">
                 Do not have an account?{' '}

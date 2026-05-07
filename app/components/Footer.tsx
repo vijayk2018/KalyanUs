@@ -119,7 +119,7 @@ export function Footer({
                   <div className="mx-auto grid grid-cols-1 gap-10 lg:grid-cols-3">
                     <div className="col-span-2 mx-auto grid grid-cols-1 gap-10 lg:grid-cols-5">
                       <div>
-                        <h3 className="mb-4 pb-2 font-serif text-lg font-semibold">
+                        <h3 className="mb-4 pb-2 font-helvetica-light text-lg ">
                           Who we are?
                         </h3>
                         <ul className="space-y-2 text-sm">
@@ -151,7 +151,7 @@ export function Footer({
                       </div>
 
                       <div>
-                        <h3 className="mb-4 pb-2 font-serif text-lg font-semibold">
+                        <h3 className="mb-4 pb-2 font-helvetica-light text-lg ">
                           Let us help you?
                         </h3>
                         <ul className="flex flex-col space-y-2 text-sm">
@@ -188,7 +188,7 @@ export function Footer({
                       </div>
 
                       <div>
-                        <h3 className="mb-4 pb-2 font-serif text-lg font-semibold">
+                        <h3 className="mb-4 pb-2 font-helvetica-light text-lg ">
                           Policies
                         </h3>
                         <ul className="flex flex-col space-y-2 text-sm">
@@ -225,7 +225,7 @@ export function Footer({
                       </div>
 
                       <div>
-                        <h3 className="mb-4 pb-2 font-serif text-lg font-semibold">
+                        <h3 className="mb-4 pb-2 font-helvetica-light text-lg ">
                           Useful links
                         </h3>
                         <ul className="flex flex-col space-y-2 text-sm">
@@ -250,7 +250,7 @@ export function Footer({
                     </div>
 
                     <div className="col-span-1">
-                      <h3 className="mb-4 pb-4 font-serif text-lg font-semibold">
+                      <h3 className="mb-4 pb-4 font-helvetica-light text-lg ">
                         Connect now:
                       </h3>
 

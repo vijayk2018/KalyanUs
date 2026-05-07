@@ -93,7 +93,7 @@
   font-display: swap;
 }
 
-/* Custom utility class for Helvetica Neue OTF */
+/* Custom utility classes for OTF fonts */
 @layer utilities {
   .font-helvetica-otf {
     font-family: var(--font-helvetica-otf);
@@ -101,6 +101,11 @@
   
   .font-helvetica-neue-thin {
     font-family: 'Helvetica Neue Thin', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 100;
+  }
+  
+  .font-helvetica-light {
+    font-family: 'Helvetica Neue LT Std 45 Light', 'Helvetica Neue', Arial, sans-serif;
     font-weight: 100;
   }
 }
