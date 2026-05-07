@@ -86,6 +86,7 @@ function SearchAside() {
                 ref={inputRef}
                 type="search"
                 list={queriesDatalistId}
+                maxLength={130}
               />
               &nbsp;
               <button onClick={goToSearch}>Search</button>

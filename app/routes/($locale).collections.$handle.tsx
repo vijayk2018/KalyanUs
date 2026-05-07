@@ -190,6 +190,16 @@ export default function Collection() {
     setIsSortOpen(false);
   };
 
+  const collectionTitle = collection.title == 'FOR HER' ? 'Her' 
+                            : collection.title == 'FOR HIM' ? 'His' 
+                            : collection.title == 'LIL ONE' ? 'Kids'  
+                            : collection.title ;
+                          
+  const collectionTag = collection.title == 'FOR HER' ? 'Her' 
+                            : collection.title == 'FOR HIM' ? 'Jewelry | His' 
+                            : collection.title == 'LIL ONE' ? 'Occasion | Shop | For | Kids'  
+                            : collection.title ;
+
   return (
     <>
       {/* Desktop View */}
@@ -203,8 +213,8 @@ export default function Collection() {
           >
             <RiFilterFill size={18} aria-hidden />
           </button>
-          <h1 className="text-4xl font-normal text-[#999]">
-            {collection.title}{' '}
+          <h1 className="text-4xl font-normal text-[#999] capitalize">
+            {collectionTitle.toLowerCase()} {' '}
             <span className="font-normal text-3xl text-[#000]">
               ({totalCount} items)
             </span>
@@ -224,8 +234,8 @@ export default function Collection() {
               Collection
             </Link> */}
             <span aria-hidden>|</span>
-            <span className="text-[16px] transition hover:text-[#333]">
-              {collection.title}
+            <span className="text-[16px] transition hover:text-[#333] capitalize">
+              {collectionTag.toLowerCase()}
             </span>
           </div>
 

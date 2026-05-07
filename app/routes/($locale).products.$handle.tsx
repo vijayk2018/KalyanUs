@@ -229,6 +229,9 @@ export default function Product() {
   const [callbackEmail, setCallbackEmail] = useState('');
   const [callbackPhone, setCallbackPhone] = useState('');
   const [callbackStoreLocation, setCallbackStoreLocation] = useState('');
+  const [callbackNameError, setCallbackNameError] = useState('');
+  const [callbackEmailError, setCallbackEmailError] = useState('');
+  const [callbackPhoneError, setCallbackPhoneError] = useState('');
   const [isCallbackSubmitting, setIsCallbackSubmitting] = useState(false);
   const [videoCallDate, setVideoCallDate] = useState('');
   const [videoCallTime, setVideoCallTime] = useState('');
@@ -414,6 +417,9 @@ export default function Product() {
     setCallbackEmail('');
     setCallbackPhone('');
     setCallbackStoreLocation('');
+    setCallbackNameError('');
+    setCallbackEmailError('');
+    setCallbackPhoneError('');
   };
 
   const closeVideoCallModal = () => {
@@ -430,22 +436,49 @@ export default function Product() {
 
   const handleCallbackSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const trimmedName = callbackName.trim();
+    const trimmedEmail = callbackEmail.trim();
+    const trimmedPhone = callbackPhone.trim();
+    const isValidName = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/.test(trimmedName);
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(trimmedEmail);
+    const isValidPhone = /^\d{10}$/.test(trimmedPhone);
+
+    setCallbackNameError('');
+    setCallbackEmailError('');
+    setCallbackPhoneError('');
+
     if (
-      !callbackName.trim() ||
-      !callbackEmail.trim() ||
-      !callbackPhone.trim() ||
+      !trimmedName ||
+      !trimmedEmail ||
+      !trimmedPhone ||
       !callbackStoreLocation.trim()
     ) {
       showError('Please fill all callback form fields.');
       return;
     }
+
+    if (!isValidName) {
+      setCallbackNameError('Please enter a valid name (letters, spaces, apostrophes, or hyphens only).');
+      return;
+    }
+
+    if (!isValidEmail) {
+      setCallbackEmailError('The email format is invalid.');
+      return;
+    }
+
+    if (!isValidPhone) {
+      setCallbackPhoneError('The phone number format is invalid.');
+      return;
+    }
+
     try {
       setIsCallbackSubmitting(true);
       const formData = new FormData(event.currentTarget);
       const payload = {
         name: String(formData.get('name') || ''),
-        email: String(formData.get('email') || ''),
-        phone: String(formData.get('phone') || ''),
+        email: trimmedEmail,
+        phone: trimmedPhone,
         preferred_store: String(formData.get('preferred_store') || ''),
         product_title: String(formData.get('product_title') || product.title),
         product_handle: String(formData.get('product_handle') || product.handle),
@@ -460,6 +493,16 @@ export default function Product() {
       const result = (await response.json()) as {ok?: boolean; error?: string};
 
       if (!response.ok || !result.ok) {
+        const normalizedError = (result.error || '').toLowerCase();
+        if (
+          normalizedError.includes('name') &&
+          normalizedError.includes('format')
+        ) {
+          setCallbackNameError(
+            'Please enter a valid name (letters, spaces, apostrophes, or hyphens only).',
+          );
+          return;
+        }
         showError(result.error || 'Failed to submit callback request.');
         return;
       }
@@ -494,7 +537,7 @@ export default function Product() {
       videoCallTime.trim() &&
       !availableVideoCallTimeSlots.includes(videoCallTime);
     const isPhoneTenDigits = /^\d{10}$/.test(trimmedPhone);
-    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(trimmedEmail);
 
     if (!videoCallScheduleMode) {
       setVideoCallInlineError('Please select Today or Pick A Date.');
@@ -880,7 +923,7 @@ export default function Product() {
             /> */}
 
             {/* Delivery Submit */}
-            {shouldShowDelivery ? (
+            {/* {shouldShowDelivery ? (
               <form
                 className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_240px]"
                 onSubmit={handleDeliverySubmit}
@@ -905,7 +948,7 @@ export default function Product() {
                   Submit
                 </button>
               </form>
-            ) : null}
+            ) : null} */}
 
             {/* Mobile Buttons */}
             <div className="flex items-center gap-4 md:hidden justify-center px-[2rem]">
@@ -1355,7 +1398,7 @@ export default function Product() {
           onClick={closeCallbackModal}
         >
           <div
-            className="w-full max-w-[430px] rounded-md bg-gray-100 p-5 shadow-xl"
+            className="w-full max-w-[400px]  bg-[#f1f1f1] p-[20px] shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-start justify-between">
@@ -1387,20 +1430,34 @@ export default function Product() {
                 <input
                   type="text"
                   name="name"
+                  required
                   className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                   value={callbackName}
-                  onChange={(event) => setCallbackName(event.target.value)}
+                  onChange={(event) => {
+                    setCallbackName(event.target.value);
+                    if (callbackNameError) setCallbackNameError('');
+                  }}
                 />
+                {callbackNameError ? (
+                  <p className="mt-1 text-xs text-[#cf254a]">{callbackNameError}</p>
+                ) : null}
               </div>
               <div>
                 <label className="mb-1 block text-sm text-gray-700">Email</label>
                 <input
                   type="email"
                   name="email"
+                  required
                   className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                   value={callbackEmail}
-                  onChange={(event) => setCallbackEmail(event.target.value)}
+                  onChange={(event) => {
+                    setCallbackEmail(event.target.value);
+                    if (callbackEmailError) setCallbackEmailError('');
+                  }}
                 />
+                {callbackEmailError ? (
+                  <p className="mt-1 text-xs text-[#cf254a]">{callbackEmailError}</p>
+                ) : null}
               </div>
               <div>
                 <label className="mb-1 block text-sm text-gray-700">Phone</label>
@@ -1409,16 +1466,24 @@ export default function Product() {
                   <input
                     type="tel"
                     name="phone"
+                    required
                     className="w-full text-sm focus:outline-none"
                     value={callbackPhone}
-                    onChange={(event) => setCallbackPhone(event.target.value)}
+                    onChange={(event) => {
+                      setCallbackPhone(event.target.value);
+                      if (callbackPhoneError) setCallbackPhoneError('');
+                    }}
                   />
                 </div>
+                {callbackPhoneError ? (
+                  <p className="mt-1 text-xs text-[#cf254a]">{callbackPhoneError}</p>
+                ) : null}
               </div>
               <div>
                 <label className="mb-1 block text-sm text-gray-700">Preferred Store</label>
                 <select
                   name="preferred_store"
+                  required
                   className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                   value={callbackStoreLocation}
                   onChange={(event) => setCallbackStoreLocation(event.target.value)}
