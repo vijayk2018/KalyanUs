@@ -2,6 +2,7 @@ import React, {type FormEvent, useState} from 'react';
 import { Link } from 'react-router';
 import storeImg from '~/assets/kalyan_iselin_store1.jpeg';
 import { MapPin, Map as MapIcon, X } from 'lucide-react';
+import PhoneInput from 'react-phone-input-2';
 
 const DIRECTIONS_URL =
   'https://www.google.com//maps/place/Kalyan+Jewellers/@40.5736499,-74.324300,20z/data=!4m6!3m5!1s0x89c3b78ee9083fa9:0xd904594a7f6e5ac4!8m2!3d40.5736499!4d-74.324300!16s%2Fg%2F11y8j5w1bx?entry=ttu&g_ep=EgoyMDI1MDEwNi4xIKXMDSoASAFQAw%3D%3D';
@@ -21,6 +22,9 @@ export default function BookAppointment() {
 
     const handleAppointmentSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if (!name.trim() || !email.trim() || !phone.trim()) {
+            return;
+        }
         closeAppointmentModal();
     };
 
@@ -78,7 +82,7 @@ export default function BookAppointment() {
                                     <div className="pb-1">
                                         <h3 className="mb-1.5 text-[15px] font-extrabold leading-tight tracking-tight text-[#222] sm:text-[17px]">Kalyan Jewellers (Chicago)</h3>
                                         <p className="font-serif text-[13px] leading-snug text-gray-500 sm:text-[14px]">
-                                            2858 West Devon Ave, Chicago, IL 60659
+                                            2658 West Devon Ave, Chicago, IL 60659
                                         </p>
                                     </div>
                                 </div>
@@ -156,6 +160,7 @@ export default function BookAppointment() {
                                     value={name}
                                     onChange={(event) => setName(event.target.value)}
                                     className="w-full border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
+                                    required
                                 />
                             </div>
 
@@ -166,20 +171,37 @@ export default function BookAppointment() {
                                     value={email}
                                     onChange={(event) => setEmail(event.target.value)}
                                     className="w-full border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
+                                    required
                                 />
                             </div>
 
                             <div>
                                 <label className="mb-1 block text-sm text-gray-700">Phone</label>
-                                <div className="flex items-center border border-[#CCCCCC] bg-white px-3 py-2">
-                                    <span className="mr-2 text-sm text-gray-600">+1</span>
-                                    <input
-                                        type="tel"
-                                        value={phone}
-                                        onChange={(event) => setPhone(event.target.value)}
-                                        className="w-full text-sm focus:outline-none"
-                                    />
-                                </div>
+                                <PhoneInput
+                                    country={'us'}
+                                    value={phone}
+                                    onChange={(value) => setPhone(value)}
+                                    specialLabel=""
+                                    inputProps={{
+                                        required: true,
+                                        name: 'phone',
+                                    }}
+                                    containerStyle={{
+                                        width: '100%',
+                                    }}
+                                    inputStyle={{
+                                        width: '100%',
+                                        height: '38px',
+                                        fontSize: '14px',
+                                        borderRadius: '0px',
+                                        border: '1px solid #CCCCCC',
+                                    }}
+                                    buttonStyle={{
+                                        borderRadius: '0px',
+                                        border: '1px solid #CCCCCC',
+                                        backgroundColor: '#fff',
+                                    }}
+                                />
                             </div>
 
                             <button

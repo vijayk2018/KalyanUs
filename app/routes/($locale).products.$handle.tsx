@@ -14,6 +14,7 @@ import {ProductForm} from '~/components/ProductForm';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {useState, useEffect, useRef, useMemo, type FormEvent} from 'react';
 import {ChevronUp, ChevronDown, ChevronLeft, VideoIcon, ChevronRight, StoreIcon, EyeIcon, HeartIcon, PhoneIcon, X, ShieldCheck, RefreshCcw, BadgeDollarSign, Info, MapPin, Copy, Check} from "lucide-react";
+import PhoneInput from 'react-phone-input-2';
 import ImageModal from '~/components/ImageCarousal';
 import { FaWhatsapp } from "react-icons/fa";
 import levelNew from '../assets/levelnew.png';
@@ -237,7 +238,6 @@ export default function Product() {
   const [videoCallTime, setVideoCallTime] = useState('');
   const [videoCallName, setVideoCallName] = useState('');
   const [videoCallEmail, setVideoCallEmail] = useState('');
-  const [videoCallIsdCode, setVideoCallIsdCode] = useState('+1');
   const [videoCallPhone, setVideoCallPhone] = useState('');
   const [isVideoCallSubmitting, setIsVideoCallSubmitting] = useState(false);
   const [videoCallInlineError, setVideoCallInlineError] = useState('');
@@ -1476,20 +1476,31 @@ export default function Product() {
               </div>
               <div>
                 <label className="mb-1 block text-sm text-gray-700">Phone</label>
-                <div className="flex items-center rounded border border-[#CCCCCC] bg-white px-3 py-2">
-                  <span className="mr-2 text-sm text-gray-600">+1</span>
-                  <input
-                    type="tel"
-                    name="phone"
-                    required
-                    className="w-full text-sm focus:outline-none"
-                    value={callbackPhone}
-                    onChange={(event) => {
-                      setCallbackPhone(event.target.value);
-                      if (callbackPhoneError) setCallbackPhoneError('');
-                    }}
-                  />
-                </div>
+                <PhoneInput
+                  country={'us'}
+                  value={callbackPhone}
+                  onChange={(value) => setCallbackPhone(value)}
+                  specialLabel=""
+                  inputProps={{
+                    name: 'phone',
+                    required: true,
+                  }}
+                  containerStyle={{
+                    width: '100%',
+                  }}
+                  inputStyle={{
+                    width: '100%',
+                    height: '38px',
+                    fontSize: '14px',
+                    borderRadius: '0px',
+                    border: '1px solid #CCCCCC',
+                  }}
+                  buttonStyle={{
+                    borderRadius: '0px',
+                    border: '1px solid #CCCCCC',
+                    backgroundColor: '#fff',
+                  }}
+                />
                 {callbackPhoneError ? (
                   <p className="mt-1 text-xs text-[#cf254a]">{callbackPhoneError}</p>
                 ) : null}
@@ -1640,29 +1651,33 @@ export default function Product() {
                 }}
                 className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
               />
-              <div className="flex items-center gap-2">
-                <select
-                  value={videoCallIsdCode}
-                  onChange={(event) => {
-                    setVideoCallIsdCode(event.target.value);
-                    if (videoCallInlineError) setVideoCallInlineError('');
-                  }}
-                  className="w-[130px] rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
-                >
-                  <option value="+1">+1</option>
-                  <option value="+91">+91</option>
-                  <option value="+44">+44</option>
-                  <option value="+61">+61</option>
-                </select>
-                <input
-                  type="tel"
-                  placeholder="Mobile Number"
+              <div className="w-full">
+                <PhoneInput
+                  country={'us'}
                   value={videoCallPhone}
-                  onChange={(event) => {
-                    setVideoCallPhone(event.target.value);
-                    if (videoCallInlineError) setVideoCallInlineError('');
+                  onChange={(value) => setVideoCallPhone(value)}
+                  specialLabel=""
+                  inputProps={{
+                    name: 'phone',
+                    required: true,
+                    placeholder: 'Mobile Number'
                   }}
-                  className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
+                  containerStyle={{
+                    width: '100%',
+                  }}
+                  inputStyle={{
+                    width: '100%',
+                    height: '40px',
+                    fontSize: '14px',
+                    borderRadius: '6px',
+                    border: '1px solid #CCCCCC',
+                  }}
+                  buttonStyle={{
+                    borderTopLeftRadius: '6px',
+                    borderBottomLeftRadius: '6px',
+                    border: '1px solid #CCCCCC',
+                    backgroundColor: '#fff',
+                  }}
                 />
               </div>
               <button

@@ -198,7 +198,7 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
       className="w-full bg-[#f5f5f5] lg:py-16 2xl:px-[5rem] lg:px-[4rem] p-6"
     >
       {/* Heading */}
-      <div className="flex flex-col items-center justify-center mb-12 text-center">
+      <div className="flex flex-col items-center justify-center mb-6 text-center">
         {/* <h2 className="text-5xl font-serif mb-2">
             Shop By Category
         </h2> */}

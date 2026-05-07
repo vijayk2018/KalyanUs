@@ -306,11 +306,11 @@ export function Footer({
                         </a>
                       </div>
 
-                      <div className="mb-6 max-w-[23rem] border-t-2 border-white pt-6">
-                        <p className="mb-2 font-serif text-sm text-[#999]">
+                      <div className="mb-6 max-w-[23rem] border-t-2 border-white pt-6 flex items-center gap-4">
+                        <p className="font-serif text-sm text-[#999]">
                           Follow us on:
                         </p>
-                        <div className="mt-2 flex space-x-4">
+                        <div className="flex space-x-4">
                           {SOCIAL_LINKS.map((link) => (
                             <a
                               key={link.label}

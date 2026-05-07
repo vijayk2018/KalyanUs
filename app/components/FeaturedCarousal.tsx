@@ -13,7 +13,6 @@ interface FeaturedItem {
   link: string;
 }
 
-// ─── Sample data (replace with your real FEATURED array) ─────────────────────
 const FEATURED: FeaturedItem[] = [
   {title: 'Anokhi Collection', image: featuredAnokhi, link: '/collections/anokhi'},
   {title: 'Rang Collection', image: featuredRang, link: '/collections/rang'},
@@ -22,52 +21,75 @@ const FEATURED: FeaturedItem[] = [
   {title: 'Tejasvi Collection', image: featuredTejasvi, link: '/collections/tejasvi'},
 ];
 
-// ─── Helper ───────────────────────────────────────────────────────────────────
-function wrap(index: number, length: number) {
-  return ((index % length) + length) % length;
-}
+// We duplicate items to create a seamless "infinite" feel
+const EXTENDED_FEATURED = [...FEATURED, ...FEATURED, ...FEATURED];
 
-// ─── Component ────────────────────────────────────────────────────────────────
 export default function FeaturedCarousel() {
-  const [current, setCurrent] = useState(0);
-  const [animating, setAnimating] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const animationRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const total = FEATURED.length;
-  const prev = wrap(current - 1, total);
-  const next = wrap(current + 1, total);
+  // Start at the middle set of items
+  const [current, setCurrent] = useState(total);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   const resetAutoplay = useCallback(() => {
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
-      setCurrent((prevCurrent) => wrap(prevCurrent + 1, total));
-    }, 4000);
-  }, [total]);
+      handleNext();
+    }, 5000);
+  }, [current]);
 
-  const goto = useCallback((index: number) => {
-    if (animating || index === current) return;
-    setAnimating(true);
-    setCurrent(index);
-    if (animationRef.current) clearTimeout(animationRef.current);
-    animationRef.current = setTimeout(() => setAnimating(false), 400);
-    resetAutoplay();
-  }, [animating, current, resetAutoplay]);
-
-  const goPrev = () => goto(wrap(current - 1, total));
-  const goNext = () => goto(wrap(current + 1, total));
-
-  // Auto-play
   useEffect(() => {
     resetAutoplay();
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
-      if (animationRef.current) clearTimeout(animationRef.current);
     };
   }, [current, resetAutoplay]);
 
+  // Handle seamless wrapping
+  const handleTransitionEnd = () => {
+    if (current >= total * 2) {
+      setIsTransitioning(false);
+      setCurrent(current - total);
+    } else if (current < total) {
+      setIsTransitioning(false);
+      setCurrent(current + total);
+    }
+  };
+
+  useEffect(() => {
+    if (!isTransitioning) {
+      // Small delay to allow the "jump" without transition, then re-enable
+      const raf = requestAnimationFrame(() => {
+        setIsTransitioning(true);
+      });
+      return () => cancelAnimationFrame(raf);
+    }
+  }, [isTransitioning]);
+
+  const goTo = (index: number) => {
+    // index here is the 0-total index, but we need to map it to the current visible set
+    const offset = current % total;
+    const target = current + (index - offset);
+    setIsTransitioning(true);
+    setCurrent(target);
+    resetAutoplay();
+  };
+
+  const handleNext = () => {
+    setIsTransitioning(true);
+    setCurrent((prev) => prev + 1);
+  };
+
+  const handlePrev = () => {
+    setIsTransitioning(true);
+    setCurrent((prev) => prev - 1);
+  };
+
+  const activeIndex = current % total;
+
   return (
-    <section className="w-full py-10 bg-white">
+    <section className="w-full py-10 bg-white overflow-hidden">
       {/* Heading */}
       <div className="text-center mb-8 px-4">
         <p className="heading-font text-6xl text-center mb-12">Our Collections</p>
@@ -76,123 +98,97 @@ export default function FeaturedCarousel() {
         </p>
       </div>
 
-      {/* ── DESKTOP carousel ── */}
-      <div className="hidden md:block relative w-full overflow-hidden">
-        {/*
-          Layout: [prev-peek] [center-main] [next-peek]
-          The outer container clips the side images so only a partial edge shows.
-        */}
+      {/* ── DESKTOP sliding track ── */}
+      <div className="hidden md:block relative w-full h-[550px]">
         <div
-          className="flex items-center justify-center"
-          style={{ gap: "24px" }}
+          ref={trackRef}
+          onTransitionEnd={handleTransitionEnd}
+          className={`flex ${isTransitioning ? "transition-transform duration-1000 ease-in-out" : ""}`}
+          style={{
+            transform: `translateX(calc(50% - ${970 / 2}px - ${current * (970 + 24)}px))`,
+            gap: "24px",
+            padding: "0 24px",
+          }}
         >
-          {/* LEFT PEEK — clips on the left, only right portion visible */}
-          <div
-            className="shrink-0 cursor-pointer rounded-tl-[160px] rounded-br-[160px] select-none"
-            style={{
-              width: 970,
-              height: 500,
-              overflow: "hidden",
-            }}
-            onClick={goPrev}
-            aria-label="Previous collection"
-          >
-            <img
-              src={FEATURED[prev].image}
-              alt={FEATURED[prev].title}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                transition: "opacity 0.4s ease",
-                opacity: animating ? 0.7 : 1,
+          {EXTENDED_FEATURED.map((item, index) => (
+            <div
+              key={index}
+              onClick={() => {
+                if (index === current) return;
+                setIsTransitioning(true);
+                setCurrent(index);
+                resetAutoplay();
               }}
-            />
-          </div>
-
-          {/* CENTER MAIN */}
-          <Link
-            to={FEATURED[current].link}
-            className="shrink-0 block relative rounded-tl-[160px] rounded-br-[160px] cursor-pointer select-none"
-            style={{
-              width: 970,
-              height: 500,
-              overflow: "hidden",
-              boxShadow: "0 8px 40px rgba(0,0,0,0.18)",
-              transition: "box-shadow 0.3s",
-            }}
-          >
-            <img
-              src={FEATURED[current].image}
-              alt={FEATURED[current].title}
+              className={`shrink-0 relative rounded-tl-[160px] rounded-br-[160px] cursor-pointer select-none transition-all duration-1000 ${
+                index === current ? "shadow-2xl scale-100" : "scale-95 shadow-md"
+              }`}
               style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                transition: "opacity 0.4s ease",
-                opacity: animating ? 0.7 : 1,
+                width: 970,
+                height: 500,
+                overflow: "hidden",
+                opacity: 1, // Full opacity as requested
               }}
-            />
-           
-          </Link>
-
-          {/* RIGHT PEEK — clips on the right, only left portion visible */}
-          <div
-            className="shrink-0 cursor-pointer rounded-tl-[160px] rounded-br-[160px] select-none"
-            style={{
-              width: 970,
-              height: 500,
-              overflow: "hidden",
-            }}
-            onClick={goNext}
-            aria-label="Next collection"
-          >
-            <img
-              src={FEATURED[next].image}
-              alt={FEATURED[next].title}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                transition: "opacity 0.4s ease",
-                opacity: animating ? 0.7 : 1,
-              }}
-            />
-          </div>
+            >
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-full h-full object-cover"
+              />
+              {index === current && (
+                <Link
+                  to={item.link}
+                  className="absolute inset-0 z-10"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              )}
+            </div>
+          ))}
         </div>
       </div>
 
       {/* ── MOBILE carousel ── */}
-      <div className="md:hidden mx-4 overflow-hidden rounded-tl-3xl rounded-br-3xl shadow-lg">
-        <Link to={FEATURED[current].link}>
+      <div className="md:hidden px-4">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-tl-[80px] rounded-br-[80px] shadow-lg">
           <img
-            src={FEATURED[current].image}
-            alt={FEATURED[current].title}
-            className="w-full h-64 object-cover"
-            style={{ transition: "opacity 0.4s", opacity: animating ? 0.7 : 1 }}
+            src={FEATURED[activeIndex].image}
+            alt={FEATURED[activeIndex].title}
+            className="h-full w-full object-cover"
           />
-        </Link>
+          <Link to={FEATURED[activeIndex].link} className="absolute inset-0" />
+        </div>
       </div>
 
-      {/* ── Dots + arrows ── */}
-       <div className="mt-5 flex items-center justify-center gap-3">
+      {/* ── Dots ── */}
+      <div className="mt-8 flex items-center justify-center gap-4">
         {FEATURED.map((item, i) => (
           <button
-            key={item.title}
+            key={i}
             type="button"
-            onClick={() => goto(i)}
-            aria-label={`Go to ${item.title}`}
+            onClick={() => goTo(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            className="group relative flex items-center justify-center"
             style={{
-              width: 18,
-              height: 18,
+              width: 22,
+              height: 22,
               borderRadius: "50%",
-              border: i === current ? "2px solid #bf1c47" : "2px solid #aaaaaa",
+              border: "1px solid #999",
               cursor: "pointer",
-              background: i === current ? "#bf1c47" : "transparent",
+              background: "transparent",
               transition: "all 0.3s",
               padding: 0,
             }}
-          />
+          >
+            {i === activeIndex && (
+              <div
+                style={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: "50%",
+                  background: "#bf1c47",
+                }}
+              />
+            )}
+          </button>
         ))}
       </div>
     </section>

@@ -727,7 +727,7 @@ export function HeaderMenu({
                             <img
                               src={cardImage}
                               alt={card.title}
-                              className="h-[210px] w-full rounded-md object-cover"
+                              className="h-[275px] w-full rounded-md object-cover"
                             />
                             <span className="mt-2 block text-center text-[20px] font-semibold text-[#202020]">
                               {card.title}

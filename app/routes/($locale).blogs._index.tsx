@@ -49,29 +49,42 @@ export default function Blogs() {
   const articles = featuredBlog?.articles?.nodes ?? [];
   const fallbackImages = [blogOne, blogTwo, blogThree];
 
+  // Manual sorting to match user's requested order: Rakhi, Varalakshmi, Teej
+  const desiredOrder = ['Rakhi', 'Varalakshmi', 'Teej'];
+  const sortedArticles = [...articles].sort((a, b) => {
+    const aIndex = desiredOrder.findIndex((key) => a.title.includes(key));
+    const bIndex = desiredOrder.findIndex((key) => b.title.includes(key));
+    return (aIndex === -1 ? 99 : aIndex) - (bIndex === -1 ? 99 : bIndex);
+  });
+
   return (
     <div className="w-full bg-[#f5f5f5]">
       <div className="w-full">
         <img
           src={blogMainBanner}
           alt="Blogs"
-          className="h-[270px] w-full object-cover md:h-[300px]"
+          className="h-auto w-full"
         />
       </div>
-      <div className="mx-auto max-w-[1100px] px-6 py-10 md:py-14">
+      <div className="mx-auto max-w-[1240px] px-6 py-10 md:py-14">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {articles.slice(0, 6).map((article, index) => {
-            const imageUrl = article.image?.url || fallbackImages[index % fallbackImages.length];
+          {sortedArticles.slice(0, 6).map((article, index) => {
+            const imageUrl =
+              article.image?.url || fallbackImages[index % fallbackImages.length];
             const articlePath = `/blogs/${article.blog.handle}/${article.handle}`;
 
             return (
-              <Link key={article.id} to={articlePath} className="block transition-all duration-300 hover:rounded-md hover:shadow-2xl">
+              <Link
+                key={article.id}
+                to={articlePath}
+                className="block transition-all duration-300 hover:rounded-md hover:shadow-2xl"
+              >
                 <img
                   src={imageUrl}
                   alt={article.image?.altText || article.title}
-                  className="h-[160px] w-full object-cover"
+                  className="h-[180px] w-full object-cover"
                 />
-                <p className="p-3 font-sans text-[20px] font-semibold text-black transition-all duration-300">
+                <p className="p-3 font-sans text-[22px] font-semibold text-black transition-all duration-300">
                   {article.title}
                 </p>
               </Link>
