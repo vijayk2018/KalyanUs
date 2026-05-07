@@ -229,6 +229,7 @@ export default function Product() {
   const [callbackEmail, setCallbackEmail] = useState('');
   const [callbackPhone, setCallbackPhone] = useState('');
   const [callbackStoreLocation, setCallbackStoreLocation] = useState('');
+  const [callbackNameError, setCallbackNameError] = useState('');
   const [callbackEmailError, setCallbackEmailError] = useState('');
   const [callbackPhoneError, setCallbackPhoneError] = useState('');
   const [isCallbackSubmitting, setIsCallbackSubmitting] = useState(false);
@@ -431,6 +432,7 @@ export default function Product() {
     setCallbackEmail('');
     setCallbackPhone('');
     setCallbackStoreLocation('');
+    setCallbackNameError('');
     setCallbackEmailError('');
     setCallbackPhoneError('');
   };
@@ -449,21 +451,29 @@ export default function Product() {
 
   const handleCallbackSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const trimmedName = callbackName.trim();
     const trimmedEmail = callbackEmail.trim();
     const trimmedPhone = callbackPhone.trim();
+    const isValidName = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/.test(trimmedName);
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(trimmedEmail);
     const isValidPhone = /^\d{10}$/.test(trimmedPhone);
 
+    setCallbackNameError('');
     setCallbackEmailError('');
     setCallbackPhoneError('');
 
     if (
-      !callbackName.trim() ||
+      !trimmedName ||
       !trimmedEmail ||
       !trimmedPhone ||
       !callbackStoreLocation.trim()
     ) {
       showError('Please fill all callback form fields.');
+      return;
+    }
+
+    if (!isValidName) {
+      setCallbackNameError('Please enter a valid name (letters, spaces, apostrophes, or hyphens only).');
       return;
     }
 
@@ -498,6 +508,16 @@ export default function Product() {
       const result = (await response.json()) as {ok?: boolean; error?: string};
 
       if (!response.ok || !result.ok) {
+        const normalizedError = (result.error || '').toLowerCase();
+        if (
+          normalizedError.includes('name') &&
+          normalizedError.includes('format')
+        ) {
+          setCallbackNameError(
+            'Please enter a valid name (letters, spaces, apostrophes, or hyphens only).',
+          );
+          return;
+        }
         showError(result.error || 'Failed to submit callback request.');
         return;
       }
@@ -1428,8 +1448,14 @@ export default function Product() {
                   required
                   className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
                   value={callbackName}
-                  onChange={(event) => setCallbackName(event.target.value)}
+                  onChange={(event) => {
+                    setCallbackName(event.target.value);
+                    if (callbackNameError) setCallbackNameError('');
+                  }}
                 />
+                {callbackNameError ? (
+                  <p className="mt-1 text-xs text-[#cf254a]">{callbackNameError}</p>
+                ) : null}
               </div>
               <div>
                 <label className="mb-1 block text-sm text-gray-700">Email</label>
