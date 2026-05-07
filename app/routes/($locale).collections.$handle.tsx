@@ -197,7 +197,7 @@ export default function Collection() {
                           
   const collectionTag = collection.title == 'FOR HER' ? 'Her' 
                             : collection.title == 'FOR HIM' ? 'Jewelry | His' 
-                            : collection.title == 'LIL ONE' ? 'Occasion | Shop | For | Kids'  
+                            : collection.title == 'LIL ONE' ? 'Occasion | Shop For | Kids'  
                             : collection.title ;
 
   return (

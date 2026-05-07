@@ -25,6 +25,7 @@ type MediaItem = {
   media2: Media | null;
   media3: string | null;
   media4: string | null;
+  media5?: string | null;
   collections: {
     id: string;
     title: string;
@@ -75,6 +76,7 @@ const HomePage: React.FC<HomePageProps> = ({
   media2,
   media3,
   media4,
+  media5,
   collections,
 }) => {
   const location = useLocation();
@@ -90,6 +92,7 @@ const HomePage: React.FC<HomePageProps> = ({
   const items: CarouselItem[] = useMemo(
     () =>
       [
+        media5,
         media1?.url ?? null,
         media2?.url ?? null,
         media3,
@@ -100,7 +103,7 @@ const HomePage: React.FC<HomePageProps> = ({
           image: url,
           text: "Shop 100% Natural, Certified Diamonds",
         })),
-    [media1, media2, media3, media4],
+    [media1, media2, media3, media4, media5],
   );
 
   // Auto rotate
@@ -130,7 +133,7 @@ const HomePage: React.FC<HomePageProps> = ({
 
   return (
     <>
-    <div className="relative w-full lg:h-[80vh] md:h-[40vh] h-[20vh] flex items-center justify-center overflow-hidden">
+    <div className="relative w-full lg:h-[90vh] md:h-[40vh] h-[20vh] flex items-center justify-center overflow-hidden">
       
         {/* IMAGE CAROUSEL (CLOCKWISE) */}
         <div className="absolute w-full h-full flex items-center justify-center">
