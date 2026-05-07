@@ -254,24 +254,24 @@ function SearchResultsProducts({
       {/* Header (like collection page) */}
       <div className="mt-2 flex items-center justify-between gap-4 2xl:px-[5rem] lg:px-[4rem] p-6 text-[#000] md:text-[13px]">
         <div className="flex flex-wrap items-center gap-1">
-          <Link to="/" className="transition hover:text-[#333] text-[#ccc] text-[16px]">
+          <Link to="/" className="transition hover:text-[#333] font-helvetica-light text-[16px]">
             Home
           </Link>
-          <span aria-hidden className='text-[#ccc]'>|</span>
+          <span aria-hidden className='font-helvetica-light'>|</span>
           <div
-            className="transition hover:text-[#333] text-[16px]"
+            className="transition hover:text-[#333] text-[16px] font-helvetica-light"
           >
-            Search results for:
+            Search Results For:
           </div>
-          <span className="text-[16px] transition hover:text-[#333]">
-            "{term}"
+          <span className="text-[16px] font-helvetica-light transition hover:text-[#333]">
+            '{term}'
           </span>
         </div> 
       </div>
 
-      <div className="2xl:px-[5rem] lg:px-[4rem]">
-        <h1 className="text-4xl text-[#000]">
-          Search Results for: "{term}"{' '}
+      <div className="2xl:px-[5rem] lg:px-[4rem] px-6">
+        <h1 className="text-[42px] font-helvetica-light text-[#333]">
+          Search results for: '{term}'
         </h1>
       </div>
 
@@ -285,9 +285,9 @@ function SearchResultsProducts({
           >
             <RiFilterFill size={18} aria-hidden />
           </button>
-          <h1 className="text-4xl font-normal text-[#999]">
+          <h1 className="text-4xl font-helvetica-light text-[#999]">
             
-            <span className="font-normal text-3xl text-[#000]">
+            <span className="text-3xl font-normal text-[#000] font-regular font-helvetica-otf">
               ({products.nodes.length} items)
             </span>
           </h1>
@@ -325,9 +325,9 @@ function SearchResultsProducts({
       <div className='bg-[#f8f7f1] flex flex-col py-8 2xl:px-[5rem] lg:px-[4rem] p-6 lg:hidden my-5'>
         <div className="flex items-center gap-3">
           
-          <h1 className="text-3xl font-normal text-[#999]">
+          <h1 className="text-3xl font-helvetica-light text-[#999]">
             
-            <span className="font-normal text-2xl text-[#000]">
+            <span className="text-2xl font-normal text-[#000] font-regular font-helvetica-otf">
               ({products.nodes.length} items)
             </span>
           </h1>
@@ -390,6 +390,57 @@ function SearchResultsProducts({
   );
 }
 
-function SearchResultsEmpty() {
-  return <p>No results, try a different search.</p>;
+function SearchResultsEmpty({term}: {term?: string}) {
+  if (!term) {
+    return (
+      <div className="2xl:px-[5rem] lg:px-[4rem] p-6 min-h-[50vh]">
+        <p>No results, try a different search.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-[60vh] pb-20">
+      <div className="mt-2 flex items-center justify-between gap-4 2xl:px-[5rem] lg:px-[4rem] p-6 text-[#000] md:text-[13px]">
+        <div className="flex flex-wrap items-center gap-1">
+          <Link
+            to="/"
+            className="transition hover:text-[#333] font-helvetica-light text-[16px]"
+          >
+            Home
+          </Link>
+          <span aria-hidden className="font-helvetica-light">
+            |
+          </span>
+          <div className="transition hover:text-[#333] text-[16px] font-helvetica-light">
+            Search Results For:
+          </div>
+          <span className="text-[16px] font-helvetica-light transition hover:text-[#333]">
+            '{term}'
+          </span>
+        </div>
+      </div>
+
+      <div className="2xl:px-[5rem] lg:px-[4rem] px-6">
+        <h1 className="text-[42px] font-helvetica-light text-[#333] mb-8">
+          Search results for: '{term}'
+        </h1>
+
+        {term.length > 0 && term.length < 3 ? (
+          <div className="bg-[#fcf8e3] border border-[#faebcc] p-[10px_15px] flex items-center gap-3 text-[#8a6d3b] rounded-sm mb-10 max-w-full">
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-4 h-4 text-[#8a6d3b]"
+            >
+              <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+            </svg>
+            <span className="text-[13px]">Minimum Search query length is 3</span>
+          </div>
+        ) : (
+          <p className="text-lg">No results, try a different search.</p>
+        )}
+      </div>
+    </div>
+  );
 }

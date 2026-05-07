@@ -42,11 +42,11 @@ const KeepInTouch: React.FC = () => {
               offers, or personalized assistance, we’re just a click away. Let’s stay connected!
             </p>
           </div>
-        
+
           {/* BOTTOM RED SECTION */}
           <div className="relative  text-white lg:py-16 py-3 mt-8">
 
-           
+
 
             {/* CONTENT */}
             <div className="relative z-10 mx-auto flex w-full max-w-[560px] translate-y-15 justify-center gap-7 lg:-translate-x-16">
@@ -67,7 +67,7 @@ const KeepInTouch: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
     </div>
   );
 };

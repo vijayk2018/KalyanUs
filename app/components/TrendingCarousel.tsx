@@ -1,28 +1,33 @@
+<<<<<<< HEAD
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import React, { useEffect, useState } from "react"; 
+=======
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useEffect, useState } from "react";
+>>>>>>> 9e0a683eb627b5885d6ecca725b3d5601aeefd75
 import { Link } from "react-router";
-import CarousalImage1 from '../assets/car1.jpg' 
-import CarousalImage2 from '../assets/car2.jpg' 
-import CarousalImage3 from '../assets/car3.jpg' 
-import CarousalImage4 from '../assets/car4.jpg' 
-import CarousalImage5 from '../assets/car5.jpg' 
-import CarousalImage6 from '../assets/car6.jpg' 
-import CarousalImage7 from '../assets/car7.jpg' 
+import CarousalImage1 from '../assets/car1.jpg'
+import CarousalImage2 from '../assets/car2.jpg'
+import CarousalImage3 from '../assets/car3.jpg'
+import CarousalImage4 from '../assets/car4.jpg'
+import CarousalImage5 from '../assets/car5.jpg'
+import CarousalImage6 from '../assets/car6.jpg'
+import CarousalImage7 from '../assets/car7.jpg'
 
-type Product = { 
-    id: number; 
-    name: string; 
-    image: string; 
-}; 
+type Product = {
+  id: number;
+  name: string;
+  image: string;
+};
 
-const products: Product[] = [ 
-    { id: 1, name: "Authentic Heritage Green and Red Stones Long Gold Jhumka 22 Karat", image: CarousalImage1, }, 
-    { id: 2, name: "Aesthetic Inspi Emerald and Ruby Stones Traditional Gold Bangle 22 Karat", image: CarousalImage2, }, 
-    { id: 3, name: "Divine Heritage Gold Filigree Collar Necklace 22 Karat", image: CarousalImage3, }, 
-    { id: 4, name: "Regal Bloom Red Vintage Gold Medallion Pendant 22 Karat", image: CarousalImage4, }, 
-    { id: 5, name: "Laxmi Goddess Motif Traditional Gold Necklace 22 Karat", image: CarousalImage5, }, 
-    { id: 6, name: "Krishna's Melody Red And Green Stones Antique Gold Earrings 22 Karat", image: CarousalImage6, }, 
-    { id: 7, name: "Ornament Gold Arm Vanki 22 Karat", image: CarousalImage7, }, 
+const products: Product[] = [
+  { id: 1, name: "Authentic Heritage Green and Red Stones Long Gold Jhumka 22 Karat", image: CarousalImage1, },
+  { id: 2, name: "Aesthetic Inspi Emerald and Ruby Stones Traditional Gold Bangle 22 Karat", image: CarousalImage2, },
+  { id: 3, name: "Divine Heritage Gold Filigree Collar Necklace 22 Karat", image: CarousalImage3, },
+  { id: 4, name: "Regal Bloom Red Vintage Gold Medallion Pendant 22 Karat", image: CarousalImage4, },
+  { id: 5, name: "Laxmi Goddess Motif Traditional Gold Necklace 22 Karat", image: CarousalImage5, },
+  { id: 6, name: "Krishna's Melody Red And Green Stones Antique Gold Earrings 22 Karat", image: CarousalImage6, },
+  { id: 7, name: "Ornament Gold Arm Vanki 22 Karat", image: CarousalImage7, },
 ];
 
 const toProductHandle = (name: string) =>
@@ -65,7 +70,7 @@ const TrendingCarousel: React.FC = () => {
   });
 
   return (
-    <div className="flex items-center justify-between w-full lg:py-16 2xl:px-[5rem] lg:px-[4rem] bg-[#f5f5f5]">
+    <div className="flex items-center justify-between  w-full lg:py-16 2xl:px-[5rem] lg:px-[4rem] bg-[#f5f5f5]">
       <div className="grid lg:grid-cols-5 gap-10 items-center">
         {/* LEFT - CAROUSEL */}
         <div className="lg:col-span-4">
@@ -126,12 +131,17 @@ const TrendingCarousel: React.FC = () => {
             Trending Collections
           </h2> */}
 
-                <p className="heading-font mb-4 text-6xl">
-  Trending Collections
-</p>
+          <p className="heading-font mb-4 text-6xl">
+            Trending Collections
+          </p>
 
+<<<<<<< HEAD
           <p className="text-gray-600 mb-6 font-serif">
             Explore this season&apos;s trending collection.
+=======
+          <p className="text-black mb-6 font-helvetica-light">
+            Explore this season's trending collection.
+>>>>>>> 9e0a683eb627b5885d6ecca725b3d5601aeefd75
           </p>
           <Link
             to="/collections/trending-collections"

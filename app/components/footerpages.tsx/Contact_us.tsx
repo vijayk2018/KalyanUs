@@ -7,10 +7,10 @@ export default function ContactUs() {
     return (
         <div className="bg-white min-h-screen font-serif py-8 px-4 sm:py-10 md:py-12 md:px-8 lg:px-[5rem] 2xl:px-[4rem]">
             {/* Breadcrumb - Precisely left-aligned with the card */}
-            <div className="w-full mb-12 flex items-center gap-2 text-[11px] text-[#888] sm:mb-16 md:mb-24 md:text-[12px]">
-                <Link to="/" className="hover:text-[#cf2d4c]">Home</Link>
-                <span>|</span>
-                <span className="text-[#333] font-medium">Contact Us</span>
+            <div className="w-full mb-12 flex items-center gap-1 text-[16px] font-helvetica-light sm:mb-16 md:mb-24">
+                <Link to="/" className="transition hover:text-[#333] text-black">Home</Link>
+                <span className="text-[#ccc]">|</span>
+                <span className="text-black">Contact Us</span>
             </div>
 
             {/* Main Content Card - Spread wide to match header items */}
