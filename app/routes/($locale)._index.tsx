@@ -1,22 +1,22 @@
-import {Await, useLoaderData, Link} from 'react-router';
-import type {Route} from './+types/_index';
-import {Suspense, useMemo, useState} from 'react';
-import {BiLeftArrow, BiRightArrow} from 'react-icons/bi';
-import {Image} from '@shopify/hydrogen';
+import { Await, useLoaderData, Link } from 'react-router';
+import type { Route } from './+types/_index';
+import { Suspense, useMemo, useState } from 'react';
+import { BiLeftArrow, BiRightArrow } from 'react-icons/bi';
+import { Image } from '@shopify/hydrogen';
 import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
-import {ProductItem} from '~/components/ProductItem';
-import {FilterDrawer} from '~/components/FilterDrawer';
-import {MockShopNotice} from '~/components/MockShopNotice';
+import { ProductItem } from '~/components/ProductItem';
+import { FilterDrawer } from '~/components/FilterDrawer';
+import { MockShopNotice } from '~/components/MockShopNotice';
 import { Home } from 'lucide-react';
 import HomePage from '~/components/HomePage';
 import { RiFilterFill } from 'react-icons/ri';
 import banner from '../assets/NimahBanner.jpg'
 
 export const meta: Route.MetaFunction = () => {
-  return [{title: ' Home'}];
+  return [{ title: ' Home' }];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -26,22 +26,22 @@ export async function loader(args: Route.LoaderArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return {...deferredData, ...criticalData};
+  return { ...deferredData, ...criticalData };
 }
 
 /**
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({context}: Route.LoaderArgs) {
-  const [{collections}, targeted, ringFallback, {products}, {shop}] =
+async function loadCriticalData({ context }: Route.LoaderArgs) {
+  const [{ collections }, targeted, ringFallback, { products }, { shop }] =
     await Promise.all([
-    context.storefront.query(HOME_COLLECTIONS_QUERY),
-    context.storefront.query(HOME_TARGETED_COLLECTIONS_QUERY),
-    context.storefront.query(HOME_RING_FALLBACK_QUERY),
-    context.storefront.query(HOME_MEDIA_QUERY),
-    context.storefront.query(HOME_TEMPLATE_MEDIA_QUERY),
-    // Add other queries here, so that they are loaded in parallel
+      context.storefront.query(HOME_COLLECTIONS_QUERY),
+      context.storefront.query(HOME_TARGETED_COLLECTIONS_QUERY),
+      context.storefront.query(HOME_RING_FALLBACK_QUERY),
+      context.storefront.query(HOME_MEDIA_QUERY),
+      context.storefront.query(HOME_TEMPLATE_MEDIA_QUERY),
+      // Add other queries here, so that they are loaded in parallel
     ]);
   const homeMedia = products.nodes
     .map((product: any) => product.featuredImage)
@@ -56,6 +56,10 @@ async function loadCriticalData({context}: Route.LoaderArgs) {
     asMediaImage(shop.media_2) ?? asMediaImage(shop.media2) ?? null;
   const templateMedia3 = shop.media_3?.value ?? shop.media3?.value ?? null;
   const templateMedia4 = shop.media_4?.value ?? shop.media4?.value ?? null;
+  const templateMedia5 =
+    asMediaImage((shop as any).media_5)?.url ??
+    (shop as any).media5?.value ??
+    null;
 
   console.log('Featured collection:', shop);
 
@@ -93,6 +97,7 @@ async function loadCriticalData({context}: Route.LoaderArgs) {
     media2: templateMedia2 ?? homeMedia[1] ?? null,
     media3: templateMedia3,
     media4: templateMedia4,
+    media5: templateMedia5,
   };
 }
 
@@ -101,7 +106,7 @@ async function loadCriticalData({context}: Route.LoaderArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: Route.LoaderArgs) {
+function loadDeferredData({ context }: Route.LoaderArgs) {
   const recommendedProducts = context.storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .catch((error: Error) => {
@@ -126,6 +131,7 @@ export default function Homepage() {
         media2={data.media2}
         media3={data.media3}
         media4={data.media4}
+        media5={data.media5}
         collections={data.collections}
       />
     </div>
@@ -169,46 +175,46 @@ function RecommendedProducts({
     <>
       <img src={banner} className='w-full h-full object-contained' alt='banner' />
       <div className='bg-[#f8f7f1] flex flex-col py-8 2xl:px-[5rem] lg:px-[4rem]'>
-          <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            aria-label="Filters"
+            className="p-2 rounded bg-black text-white shadow-sm"
+            onClick={() => setIsFilterOpen(true)}
+          >
+            <RiFilterFill size={18} aria-hidden />
+          </button>
+          <h1 className="text-4xl font-normal text-[#999]">
+            Bangles{' '}
+            <span className="text-3xl font-normal text-[#000] font-regular font-helvetica-otf">
+              (34 items)
+            </span>
+          </h1>
+        </div>
+
+        <div className="mt-2 flex items-center justify-between gap-4  text-[#000] md:text-[13px]">
+          <div className="flex flex-wrap items-center gap-1">
+            <Link to="/" className="transition hover:text-[#333] text-[16px]">
+              Home
+            </Link>
+            <span aria-hidden>|</span>
+            <Link to="/collections" className="transition hover:text-[#333] text-[16px]">
+              Collection
+            </Link>
+            <span aria-hidden>|</span>
+            <span className="text-[16px] transition hover:text-[#333">Bangles</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-[#000] text-lg">Sort By:</span>
             <button
               type="button"
-              aria-label="Filters"
-              className="p-2 rounded bg-black text-white shadow-sm"
-              onClick={() => setIsFilterOpen(true)}
+              className="rounded bg-transparent text-[#a30014] text-lg"
             >
-              <RiFilterFill size={18} aria-hidden />
+              Relevence
             </button>
-            <h1 className="text-4xl font-normal text-[#999]">
-              Bangles{' '}
-              <span className="font-normal text-3xl text-[#000]">
-                (34 items)
-              </span>
-            </h1>
           </div>
-  
-          <div className="mt-2 flex items-center justify-between gap-4  text-[#000] md:text-[13px]">
-            <div className="flex flex-wrap items-center gap-1">
-              <Link to="/" className="transition hover:text-[#333] text-[16px]">
-                Home
-              </Link>
-              <span aria-hidden>|</span>
-              <Link to="/collections" className="transition hover:text-[#333] text-[16px]">
-                Collection
-              </Link>
-              <span aria-hidden>|</span>
-              <span className="text-[16px] transition hover:text-[#333">Bangles</span>
-            </div>
-  
-            <div className="flex items-center gap-2">
-              <span className="text-[#000] text-lg">Sort By:</span>
-              <button
-                type="button"
-                className="rounded bg-transparent text-[#a30014] text-lg"
-              >
-                Relevance
-              </button>
-            </div>
-          </div>
+        </div>
       </div>
       {/* <div className="collection mt-[8rem] 2xl:px-[5rem] lg:px-[4rem]"></div> */}
       <section
@@ -222,8 +228,8 @@ function RecommendedProducts({
               <div className="recommended-products-grid">
                 {response
                   ? response.products.nodes.map((product) => (
-                      <ProductItem key={product.id} product={product} />
-                    ))
+                    <ProductItem key={product.id} product={product} />
+                  ))
                   : null}
               </div>
             )}
@@ -234,7 +240,7 @@ function RecommendedProducts({
       <FilterDrawer
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
-        onClearAll={() => {}}
+        onClearAll={() => { }}
         selectedCount={0}
         seeItemsCount={0}
         sections={[]}
@@ -468,10 +474,27 @@ const HOME_TEMPLATE_MEDIA_QUERY = `#graphql
       media_4: metafield(namespace: "custom", key: "media_4") {
         value
       }
+      media_5: metafield(namespace: "custom", key: "media_5") {
+        reference {
+          __typename
+          ... on MediaImage {
+            image {
+              id
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
       media3: metafield(namespace: "custom", key: "media3") {
         value
       }
       media4: metafield(namespace: "custom", key: "media4") {
+        value
+      }
+      media5: metafield(namespace: "custom", key: "media5") {
         value
       }
     }

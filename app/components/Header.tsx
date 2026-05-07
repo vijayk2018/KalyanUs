@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from 'react';
-import { Await, NavLink, useAsyncValue, useNavigation } from 'react-router';
+import { Await, NavLink, useAsyncValue, useNavigation, useSearchParams, useLocation } from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -234,6 +234,18 @@ export function Header({
   const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const navigation = useNavigation();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
+
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q) {
+      setSearchTerm(q);
+    } else if (location.pathname === '/') {
+      setSearchTerm('');
+    }
+  }, [searchParams, location.pathname]);
 
   useEffect(() => {
     const updateWishlistCount = () => {
@@ -298,9 +310,13 @@ export function Header({
               onClick={() => {
                 isUserLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true);
               }}
-              className="flex flex-col items-center text-[#202020] relative cursor-pointer hover:text-[#650827]"
+              className="group flex flex-col items-center text-[#202020] relative cursor-pointer hover:text-[#650827]"
             >
-              <img src={HeartIcon} alt={'Heart'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+              <div
+                className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+                title="Heart"
+                style={{ WebkitMaskImage: `url(${HeartIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${HeartIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+              />
               {wishlistCount > 0 && (
                 <span className="absolute top-0 right-2 z-20 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold leading-none text-white ring-1 ring-white">
                   {wishlistCount}
@@ -310,9 +326,13 @@ export function Header({
             </button>
             <NavLink
               to="/experience-centre"
-              className="flex flex-col items-center text-[#202020]"
+              className="group flex flex-col items-center text-[#202020] hover:text-[#650827]"
             >
-              <img src={StoreIcon} alt={'Store'}  className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+              <div
+                className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+                title="Store"
+                style={{ WebkitMaskImage: `url(${StoreIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${StoreIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+              />
               <span className="text-[12px] font-serif">Store</span>
             </NavLink>
             <button
@@ -321,9 +341,13 @@ export function Header({
                   ? (window.location.href = '/account')
                   : setIsStoreModalOpen(true);
               }}
-              className="flex flex-col items-center text-[#202020]"
+              className="group flex flex-col items-center text-[#202020] hover:text-[#650827]"
             >
-              <img src={UserIcon} alt={'User'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+              <div
+                className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+                title="User"
+                style={{ WebkitMaskImage: `url(${UserIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${UserIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+              />
               <span className="text-[12px] font-serif">Profile</span>
             </button>
           </div>
@@ -335,6 +359,13 @@ export function Header({
               <input
                 name="q"
                 type="search"
+                value={searchTerm}
+                onChange={(e) => {
+                  if (e.target.value.length <= 130) {
+                    setSearchTerm(e.target.value);
+                  }
+                }}
+                maxLength={130}
                 placeholder="Search entire store here..."
                 aria-label="Search entire store"
                 className="header-search-input w-full rounded-sm px-3 py-2 pr-12 text-[22px] font-serif placeholder:text-[#d5d5d5] outline-none"
@@ -452,6 +483,8 @@ export function Header({
                 wishlistCount={wishlistCount}
                 setIsWishlistOpen={setIsWishlistOpen}
                 setIsStoreModalOpen={setIsStoreModalOpen}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
               />
             </div>
             <div className=" bg-[#650827] relative">
@@ -694,7 +727,7 @@ export function HeaderMenu({
                             <img
                               src={cardImage}
                               alt={card.title}
-                              className="h-[210px] w-full rounded-md object-cover"
+                              className="h-[275px] w-full rounded-md object-cover"
                             />
                             <span className="mt-2 block text-center text-[20px] font-semibold text-[#202020]">
                               {card.title}
@@ -890,11 +923,15 @@ function HeaderCtas({
   wishlistCount,
   setIsWishlistOpen,
   setIsStoreModalOpen,
+  searchTerm,
+  setSearchTerm,
 }: Pick<HeaderProps, 'cart'> & {
   isLoggedIn: boolean;
   wishlistCount: number;
   setIsWishlistOpen: (isOpen: boolean) => void;
   setIsStoreModalOpen: (isOpen: boolean) => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
 }) {
   useEffect(() => {
     const onWishlistAddAttempt = (event: Event) => {
@@ -923,6 +960,13 @@ function HeaderCtas({
         <input
           name="q"
           type="search"
+          value={searchTerm}
+          onChange={(e) => {
+            if (e.target.value.length <= 130) {
+              setSearchTerm(e.target.value);
+            }
+          }}
+          maxLength={130}
           placeholder="Search entire store here..."
           aria-label="Search entire store"
           className="header-search-input px-4 py-2.5 pr-10 bg-white rounded-full w-full 2xl:h-[35px] xl:h-[30px] lg:h-[25px] font-serif font-normal text-[14px] outline-none placeholder:text-gray-300"
@@ -943,10 +987,13 @@ function HeaderCtas({
           onClick={() => {
             isLoggedIn ? setIsWishlistOpen(true) : setIsStoreModalOpen(true);
           }}
-          className="flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition cursor-pointer"
+          className="group flex flex-col 2xl:space-x-2 xl:space-x-1.5 lg:space-x-1 text-center transition cursor-pointer hover:text-[#650827]"
         >
           <div className="relative flex justify-center ">
-            <img src={HeartIcon} alt={'Heart'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+            <div
+              className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+              style={{ WebkitMaskImage: `url(${HeartIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${HeartIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+            />
             {wishlistCount > 0 && (
               <span className="absolute -top-3 -right-1 z-20 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1.5 py-0.5 text-[9px] font-semibold leading-none text-white ring-1 ring-white">
                 {wishlistCount}
@@ -960,10 +1007,13 @@ function HeaderCtas({
 
         <NavLink
           to="/experience-centre"
-          className="flex flex-col items-center space-x-2 text-center transition cursor-pointer"
+          className="group flex flex-col items-center space-x-2 text-center transition cursor-pointer hover:text-[#cf254a]"
         >
           <div className="flex justify-center ">
-            <img src={StoreIcon} alt={'Store'}  className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+            <div
+              className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+              style={{ WebkitMaskImage: `url(${StoreIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${StoreIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+            />
           </div>
           <p className="text-center text-[#333] 2xl:text-[12px] xl:text-[11px] lg:text-[9px] font-serif">
             Store
@@ -977,10 +1027,13 @@ function HeaderCtas({
               ? (window.location.href = '/account')
               : setIsStoreModalOpen(true);
           }}
-          className="flex flex-col items-center space-x-2 text-center transition cursor-pointer"
+          className="group flex flex-col items-center space-x-2 text-center transition cursor-pointer hover:text-[#cf254a]"
         >
           <div className="">
-            <img src={UserIcon} alt={'User'} className="text-[#333] xl:w-7 xl:h-7 lg:w-6 lg:h-6" />
+            <div
+              className="bg-[#333] group-hover:bg-[#cf254a] transition-colors xl:w-7 xl:h-7 lg:w-6 lg:h-6 w-6 h-6"
+              style={{ WebkitMaskImage: `url(${UserIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${UserIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
+            />
           </div>
           <p className="text-center text-[#333] 2xl:text-[12px] xl:text-[11px] lg:text-[10px] font-serif">
             Profile
