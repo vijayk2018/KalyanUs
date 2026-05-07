@@ -239,7 +239,8 @@ export default function Product() {
   const [videoCallPhone, setVideoCallPhone] = useState('');
   const [isVideoCallSubmitting, setIsVideoCallSubmitting] = useState(false);
   const [videoCallInlineError, setVideoCallInlineError] = useState('');
-  const videoCallTimeSlots = ['11:39 pm', '3:00 pm', '12:00 pm', '5:00 pm'];
+  const [videoCallIsdCode, setVideoCallIsdCode] = useState('+1');
+  const videoCallTimeSlots = ['12:00 pm', '3:00 pm', '5:00 pm', '11:39 pm'];
   const todayDate = useMemo(() => new Date().toISOString().split('T')[0], []);
   const { showSuccess, showError, toasts, removeToast } = useToast();
   const selectedVariant = useOptimisticVariant(
@@ -545,21 +546,21 @@ export default function Product() {
     const trimmedEmail = videoCallEmail.trim();
     const trimmedPhone = videoCallPhone.trim();
     const isPastDateSelection = videoCallScheduleMode === 'pick_date' && videoCallDate < todayDate;
-    const isPastTimeForToday =
-      videoCallScheduleMode === 'today' &&
-      videoCallTime.trim() &&
-      !availableVideoCallTimeSlots.includes(videoCallTime);
     const isPhoneTenDigits = /^\d{10}$/.test(trimmedPhone);
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(trimmedEmail);
 
     if (!videoCallScheduleMode) {
-      setVideoCallInlineError('Please select Today or Pick A Date.');
+      setVideoCallInlineError('Please select Pick A Date.');
       return;
     }
 
-    if (videoCallScheduleMode === 'today' && !videoCallTime.trim()) {
-      setVideoCallInlineError('Please select a time slot.');
-      return;
+    if (videoCallScheduleMode === 'pick_date' && videoCallDate) {
+      const selectedDate = new Date(videoCallDate);
+      const day = selectedDate.getUTCDay(); // 0 = Sunday, 1 = Monday, ...
+      if (day !== 1) {
+        setVideoCallInlineError('Only available days can be selected. Available: Monday');
+        return;
+      }
     }
 
     if (videoCallScheduleMode === 'pick_date' && !videoCallDate) {
@@ -567,7 +568,7 @@ export default function Product() {
       return;
     }
 
-    if (isPastDateSelection || isPastTimeForToday) {
+    if (isPastDateSelection) {
       setVideoCallInlineError('Please choose a current or future slot.');
       return;
     }
@@ -596,8 +597,8 @@ export default function Product() {
       setIsVideoCallSubmitting(true);
       const payload = {
         schedule_mode: videoCallScheduleMode,
-        appointment_date: videoCallScheduleMode === 'pick_date' ? videoCallDate : '',
-        appointment_time: videoCallScheduleMode === 'today' ? videoCallTime : '',
+        appointment_date: videoCallDate,
+        appointment_time: videoCallTime,
         name: trimmedName,
         email: trimmedEmail,
         isd_code: videoCallIsdCode.trim(),
@@ -1545,80 +1546,75 @@ export default function Product() {
               </button>
             </div>
 
+            {videoCallInlineError ? (
+              <div className="mx-5 mb-4">
+                <p className="rounded bg-[#f8dfe2] px-3 py-2 text-sm text-[#c63b57]">
+                  {videoCallInlineError}
+                </p>
+              </div>
+            ) : null}
+
             <p className="mb-3 text-[14px] text-gray-600 px-5">Available days: Monday</p>
 
-            <div className='px-5 flex gap-3'>
-              <button
-                type="button"
-                onClick={() => {
-                  setVideoCallScheduleMode('today');
-                  if (videoCallInlineError) setVideoCallInlineError('');
-                }}
-                className={`mb-3 rounded border px-4 py-2 text-sm ${videoCallScheduleMode === 'today'
-                  ? 'bg-[#cf254a] text-white border-[#cf254a]'
-                  : 'bg-gray-100 text-black border-[#cccccc]'
-                  }`}
-              >
-                Today
-              </button>
+            <div className='px-5 flex flex-col gap-3'>
               <button
                 type="button"
                 onClick={() => {
                   setVideoCallScheduleMode('pick_date');
                   if (videoCallInlineError) setVideoCallInlineError('');
                 }}
-                className={`mb-3 rounded border px-4 py-2 text-sm ${videoCallScheduleMode === 'pick_date'
-                  ? 'bg-[#cf254a] text-white border-[#cf254a]'
-                  : 'bg-gray-100 text-black border-[#cccccc]'
-                  }`}
+                className={`w-fit rounded border px-4 py-2 text-sm ${videoCallScheduleMode === 'pick_date' ? 'bg-[#cf254a] text-white border-[#cf254a]' : 'bg-gray-100 text-black border-[#cccccc]'}`}
               >
                 Pick A Date
               </button>
             </div>
 
             <form className="space-y-3 px-5" onSubmit={handleVideoCallSubmit}>
-              {videoCallInlineError ? (
-                <p className="rounded bg-[#f8dfe2] px-3 py-2 text-sm text-[#c63b57]">
-                  {videoCallInlineError}
-                </p>
-              ) : null}
 
-              {videoCallScheduleMode === 'today' ? (
-                <div className="mb-1 flex flex-wrap gap-3">
-                  {availableVideoCallTimeSlots.map((slot) => (
-                    <button
-                      key={slot}
-                      type="button"
-                      onClick={() => {
-                        setVideoCallTime(slot);
-                        if (videoCallInlineError) setVideoCallInlineError('');
-                      }}
-                      className={`rounded border px-4 py-2 text-sm ${videoCallTime === slot
-                        ? 'border-[#cf254a] bg-[#cf254a] text-white'
-                        : 'border-[#cccccc] bg-white text-black'
-                        }`}
-                    >
-                      {slot}
-                    </button>
-                  ))}
-                  {availableVideoCallTimeSlots.length === 0 ? (
-                    <p className="text-xs text-gray-600">
-                      No slots available for today. Please pick a date.
-                    </p>
-                  ) : null}
-                </div>
-              ) : null}
               {videoCallScheduleMode === 'pick_date' ? (
-                <input
-                  type="date"
-                  min={todayDate}
-                  value={videoCallDate}
-                  onChange={(event) => {
-                    setVideoCallDate(event.target.value);
-                    if (videoCallInlineError) setVideoCallInlineError('');
-                  }}
-                  className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
-                />
+                <div className="space-y-3">
+                  <input
+                    type="date"
+                    min={todayDate}
+                    value={videoCallDate}
+                    onChange={(event) => {
+                      const newDate = event.target.value;
+                      setVideoCallDate(newDate);
+                      if (newDate) {
+                        const selectedDate = new Date(newDate);
+                        const day = selectedDate.getUTCDay();
+                        if (day !== 1) {
+                          setVideoCallInlineError('Only available days can be selected. Available: Monday');
+                        } else {
+                          setVideoCallInlineError('');
+                        }
+                      } else {
+                        setVideoCallInlineError('');
+                      }
+                    }}
+                    className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
+                  />
+                  {videoCallDate && new Date(videoCallDate).getUTCDay() === 1 && (
+                    <div className="flex flex-wrap gap-3">
+                      {availableVideoCallTimeSlots.map((slot) => (
+                        <button
+                          key={slot}
+                          type="button"
+                          onClick={() => {
+                            setVideoCallTime(slot);
+                            if (videoCallInlineError) setVideoCallInlineError('');
+                          }}
+                          className={`rounded border px-4 py-2 text-sm ${videoCallTime === slot
+                            ? 'border-[#cf254a] bg-[#cf254a] text-white'
+                            : 'border-[#cccccc] bg-white text-black'
+                            }`}
+                        >
+                          {slot}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ) : null}
               <input
                 type="text"
@@ -1702,7 +1698,7 @@ export default function Product() {
               <img
                 src={certificateGuideImage}
                 alt="Diamond certificate guide"
-                className="mx-auto h-auto max-h-[70vh] w-full object-contain"
+                className=" mx-auto h-auto max-h-[90vh] w-full object-contain scale-125"
               />
             </div>
           </div>
