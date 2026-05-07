@@ -1,5 +1,5 @@
-import {redirect, useLoaderData} from 'react-router';
-import type {Route} from './+types/products.$handle';
+import { redirect, useLoaderData } from 'react-router';
+import type { Route } from './+types/products.$handle';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -8,12 +8,12 @@ import {
   getAdjacentAndFirstAvailableVariants,
   useSelectedOptionInUrlParam,
 } from '@shopify/hydrogen';
-import {ProductPrice} from '~/components/ProductPrice';
-import {ProductImage} from '~/components/ProductImage';
-import {ProductForm} from '~/components/ProductForm';
-import {redirectIfHandleIsLocalized} from '~/lib/redirect';
-import {useState, useEffect, useRef, useMemo, type FormEvent} from 'react';
-import {ChevronUp, ChevronDown, ChevronLeft, VideoIcon, ChevronRight, StoreIcon, EyeIcon, HeartIcon, PhoneIcon, X, ShieldCheck, RefreshCcw, BadgeDollarSign, Info, MapPin, Copy, Check} from "lucide-react";
+import { ProductPrice } from '~/components/ProductPrice';
+import { ProductImage } from '~/components/ProductImage';
+import { ProductForm } from '~/components/ProductForm';
+import { redirectIfHandleIsLocalized } from '~/lib/redirect';
+import { useState, useEffect, useRef, useMemo, type FormEvent } from 'react';
+import { ChevronUp, ChevronDown, ChevronLeft, VideoIcon, ChevronRight, StoreIcon, EyeIcon, HeartIcon, PhoneIcon, X, ShieldCheck, RefreshCcw, BadgeDollarSign, Info, MapPin, Copy, Check } from "lucide-react";
 import PhoneInput from 'react-phone-input-2';
 import ImageModal from '~/components/ImageCarousal';
 import { FaWhatsapp } from "react-icons/fa";
@@ -23,15 +23,15 @@ import Forever from '../assets/forever.svg';
 import Exchange from '../assets/exchange.svg';
 import ProductInformation from '../assets/search.svg'
 import certificateGuideImage from '../assets/CertificateDetails.jpg';
-import {useToast} from '~/components/useToast';
+import { useToast } from '~/components/useToast';
 import { ToastContainer } from '~/components/Toast';
 import { addToWishlist, isInWishlist, loadWishlist, removeFromWishlist } from '~/lib/wishlist';
-import {SaleAssistButton} from '~/components/SaleAssistButton';
+import { SaleAssistButton } from '~/components/SaleAssistButton';
 import { SaleAssistFloatingButton } from '~/components/SaleAssistFloatingButton';
 
-export const meta: Route.MetaFunction = ({data}) => {
+export const meta: Route.MetaFunction = ({ data }) => {
   return [
-    {title: ` ${data?.product.title ?? ''}`},
+    { title: ` ${data?.product.title ?? ''}` },
     {
       rel: 'canonical',
       href: `/products/${data?.product.handle}`,
@@ -46,34 +46,34 @@ export async function loader(args: Route.LoaderArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return {...deferredData, ...criticalData};
+  return { ...deferredData, ...criticalData };
 }
 
 /**
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
-  const {handle} = params;
-  const {storefront} = context;
+async function loadCriticalData({ context, params, request }: Route.LoaderArgs) {
+  const { handle } = params;
+  const { storefront } = context;
 
   if (!handle) {
     throw new Error('Expected product handle to be defined');
   }
 
-  const [{product}] = await Promise.all([
+  const [{ product }] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
-      variables: {handle, selectedOptions: getSelectedProductOptions(request)},
+      variables: { handle, selectedOptions: getSelectedProductOptions(request) },
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
 
   if (!product?.id) {
-    throw new Response(null, {status: 404});
+    throw new Response(null, { status: 404 });
   }
 
   // The API handle might be localized, so redirect to the localized handle
-  redirectIfHandleIsLocalized(request, {handle, data: product});
+  redirectIfHandleIsLocalized(request, { handle, data: product });
 
   return {
     product,
@@ -85,7 +85,7 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context, params}: Route.LoaderArgs) {
+function loadDeferredData({ context, params }: Route.LoaderArgs) {
   // Put any API calls that is not critical to be available on first page render
   // For example: product reviews, product recommendations, social feeds.
 
@@ -109,27 +109,25 @@ const parseTabRows = (rawValue: string | null | undefined): TabRow[] => {
       const [labelPart, ...valueParts] = line.split('|');
       const label = labelPart?.trim() ?? '';
       const value = valueParts.join('|').trim();
-      return {label, value: value || '—'};
+      return { label, value: value || '—' };
     })
     .filter((item) => item.label.length > 0);
 };
 
-const TabContent = ({tabData}: {tabData: TabRow[]}) => (
+const TabContent = ({ tabData }: { tabData: TabRow[] }) => (
   <div className="bg-[#fdfaf5] rounded-lg p-4 text-sm text-gray-700 space-y-3">
     {tabData.map((item, index) => (
       <div
         key={index}
-        className={`flex justify-between pb-2 ${
-          index !== tabData.length - 1 ? "border-b" : ""
-        } ${item.highlight ? "font-semibold text-base pt-3" : ""}`}
+        className={`flex justify-between pb-2 ${index !== tabData.length - 1 ? "border-b" : ""
+          } ${item.highlight ? "font-semibold text-base pt-3" : ""}`}
       >
         <span className="text-black font-semibold">{item.label}:</span>
         <span
-          className={`font-medium ${
-            item.label.toLowerCase() === 'total price'
-              ? 'font-semibold text-black'
-              : ''
-          }`}
+          className={`font-medium ${item.label.toLowerCase() === 'total price'
+            ? 'font-semibold text-black'
+            : ''
+            }`}
         >
           {item.label.toLowerCase() === 'diamond price' ? (
             <DiamondPriceValue value={item.value} />
@@ -142,7 +140,7 @@ const TabContent = ({tabData}: {tabData: TabRow[]}) => (
   </div>
 );
 
-const DiamondPriceValue = ({value}: {value: string}) => {
+const DiamondPriceValue = ({ value }: { value: string }) => {
   const currencyMatches =
     value.match(/[₹$]\s?\d+(?:,\d{3})*(?:\.\d+)?/g) || [];
 
@@ -159,7 +157,7 @@ const DiamondPriceValue = ({value}: {value: string}) => {
 };
 
 export default function Product() {
-  const {product} = useLoaderData<typeof loader>();
+  const { product } = useLoaderData<typeof loader>();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const reviewFormRef = useRef<HTMLDivElement | null>(null);
@@ -177,7 +175,7 @@ export default function Product() {
     }
 
     try {
-      const parsedJson = JSON.parse(rawValue) as {value?: string | number};
+      const parsedJson = JSON.parse(rawValue) as { value?: string | number };
       const ratingFromJson = Number(parsedJson?.value);
       if (!Number.isNaN(ratingFromJson)) {
         return Math.min(5, Math.max(0, ratingFromJson));
@@ -241,9 +239,10 @@ export default function Product() {
   const [videoCallPhone, setVideoCallPhone] = useState('');
   const [isVideoCallSubmitting, setIsVideoCallSubmitting] = useState(false);
   const [videoCallInlineError, setVideoCallInlineError] = useState('');
-  const videoCallTimeSlots = ['11:39 pm', '3:00 pm', '12:00 pm', '5:00 pm'];
+  const [videoCallIsdCode, setVideoCallIsdCode] = useState('+1');
+  const videoCallTimeSlots = ['12:00 pm', '3:00 pm', '5:00 pm', '11:39 pm'];
   const todayDate = useMemo(() => new Date().toISOString().split('T')[0], []);
-  const {showSuccess, showError, toasts, removeToast} = useToast();
+  const { showSuccess, showError, toasts, removeToast } = useToast();
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
     getAdjacentAndFirstAvailableVariants(product),
@@ -288,9 +287,9 @@ export default function Product() {
   const summaryStats = useMemo(
     () =>
       [
-        {label: 'Metal', value: product.metal?.value},
-        {label: 'Diamond', value: product.diamond?.value},
-        {label: 'Gemstone', value: product.gemstone?.value},
+        { label: 'Metal', value: product.metal?.value },
+        { label: 'Diamond', value: product.diamond?.value },
+        { label: 'Gemstone', value: product.gemstone?.value },
       ].filter((item) => Boolean(item.value?.trim())),
     [product.metal?.value, product.diamond?.value, product.gemstone?.value],
   );
@@ -405,7 +404,7 @@ export default function Product() {
         method: 'POST',
         body: payload,
       });
-      const result = (await response.json()) as {ok?: boolean; error?: string};
+      const result = (await response.json()) as { ok?: boolean; error?: string };
 
       if (!response.ok || !result.ok) {
         showError(result.error || 'Failed to submit review.');
@@ -413,7 +412,7 @@ export default function Product() {
       }
 
       setReviewSuccessBanner('You submitted your review for moderation.');
-      window.scrollTo({top: 0, behavior: 'smooth'});
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setReviewNickname('');
       setReviewSummary('');
       setReviewText('');
@@ -502,10 +501,10 @@ export default function Product() {
 
       const response = await fetch('/api/callback', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const result = (await response.json()) as {ok?: boolean; error?: string};
+      const result = (await response.json()) as { ok?: boolean; error?: string };
 
       if (!response.ok || !result.ok) {
         const normalizedError = (result.error || '').toLowerCase();
@@ -547,21 +546,21 @@ export default function Product() {
     const trimmedEmail = videoCallEmail.trim();
     const trimmedPhone = videoCallPhone.trim();
     const isPastDateSelection = videoCallScheduleMode === 'pick_date' && videoCallDate < todayDate;
-    const isPastTimeForToday =
-      videoCallScheduleMode === 'today' &&
-      videoCallTime.trim() &&
-      !availableVideoCallTimeSlots.includes(videoCallTime);
     const isPhoneTenDigits = /^\d{10}$/.test(trimmedPhone);
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(trimmedEmail);
 
     if (!videoCallScheduleMode) {
-      setVideoCallInlineError('Please select Today or Pick A Date.');
+      setVideoCallInlineError('Please select Pick A Date.');
       return;
     }
 
-    if (videoCallScheduleMode === 'today' && !videoCallTime.trim()) {
-      setVideoCallInlineError('Please select a time slot.');
-      return;
+    if (videoCallScheduleMode === 'pick_date' && videoCallDate) {
+      const selectedDate = new Date(videoCallDate);
+      const day = selectedDate.getUTCDay(); // 0 = Sunday, 1 = Monday, ...
+      if (day !== 1) {
+        setVideoCallInlineError('Only available days can be selected. Available: Monday');
+        return;
+      }
     }
 
     if (videoCallScheduleMode === 'pick_date' && !videoCallDate) {
@@ -569,7 +568,7 @@ export default function Product() {
       return;
     }
 
-    if (isPastDateSelection || isPastTimeForToday) {
+    if (isPastDateSelection) {
       setVideoCallInlineError('Please choose a current or future slot.');
       return;
     }
@@ -598,8 +597,8 @@ export default function Product() {
       setIsVideoCallSubmitting(true);
       const payload = {
         schedule_mode: videoCallScheduleMode,
-        appointment_date: videoCallScheduleMode === 'pick_date' ? videoCallDate : '',
-        appointment_time: videoCallScheduleMode === 'today' ? videoCallTime : '',
+        appointment_date: videoCallDate,
+        appointment_time: videoCallTime,
         name: trimmedName,
         email: trimmedEmail,
         isd_code: videoCallIsdCode.trim(),
@@ -611,10 +610,10 @@ export default function Product() {
 
       const response = await fetch('/api/video-call', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const result = (await response.json()) as {ok?: boolean; error?: string};
+      const result = (await response.json()) as { ok?: boolean; error?: string };
 
       if (!response.ok || !result.ok) {
         setVideoCallInlineError(result.error || 'Failed to submit video call request.');
@@ -659,8 +658,12 @@ export default function Product() {
 
   return (
     <div className='bg-[#fdfaf5] 2xl:px-[5rem] lg:px-[4rem]'>
-      <p className='text-[14px] text-gray-400 px-6 pt-4 font-sans'><a href='/'> Home</a> | <span className='text-black'>{product.title}</span></p>
-      
+      <div className='text-[14px] px-6 pt-4 font-helvetica-light flex items-center gap-1'>
+        <a href='/' className="transition hover:text-[#333] text-black">Home</a>
+        <span className="text-[#ccc]">|</span>
+        <span className='text-black'>{product.title}</span>
+      </div>
+
       {reviewSuccessBanner ? (
         <div className="mx-6 mt-4 flex items-center gap-3 bg-[#e2ede2] px-4 py-3 text-[#14813f]">
           <span className="text-lg leading-none">✓</span>
@@ -669,10 +672,10 @@ export default function Product() {
       ) : null}
 
       <div className="mx-auto px-6 py-10 w-full flex flex-col lg:flex-row lg:gap-[5rem] items-center">
-        
+
         {/* LEFT SIDE */}
         <div className="flex gap-4 items-center justify-center w-full lg:w-[55%]">
-        
+
           {/* LEFT: Thumbnail Carousel */}
           <div className="hidden lg:flex flex-col gap-3 max-h-[500px] overflow-y-auto pr-2 justify-items-start">
             <div className="flex flex-col items-center gap-2">
@@ -697,11 +700,10 @@ export default function Product() {
                       src={img.url}
                       onClick={() => setCurrentIndex(actualIndex)}
                       className={`w-30 h-30 object-contain border rounded cursor-pointer transition-all duration-200
-                      ${
-                        currentIndex === actualIndex
+                      ${currentIndex === actualIndex
                           ? "border-red-500 "
                           : "border-gray-300"
-                      }`}
+                        }`}
                       alt={img.altText || `Product image ${actualIndex + 1}`}
                     />
                   );
@@ -714,7 +716,7 @@ export default function Product() {
                 className="p-2 bg-white shadow rounded-full hover:bg-gray-100 disabled:opacity-30"
                 disabled={startIndex + visibleCount >= images.length}
               >
-                 <ChevronDown size={20} />
+                <ChevronDown size={20} />
               </button>
             </div>
           </div>
@@ -774,9 +776,8 @@ export default function Product() {
                     key={`dot-${index}`}
                     type="button"
                     onClick={() => setCurrentIndex(index)}
-                    className={`h-2 w-2 rounded-full transition ${
-                      index === currentIndex ? 'bg-[#cf254a]' : 'bg-gray-300'
-                    }`}
+                    className={`h-2 w-2 rounded-full transition ${index === currentIndex ? 'bg-[#cf254a]' : 'bg-gray-300'
+                      }`}
                     aria-label={`Go to image ${index + 1}`}
                   />
                 ))}
@@ -807,7 +808,7 @@ export default function Product() {
             {/* SKU + Rating + Review */}
             <div className="flex items-start justify-between">
               <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 text-[18px] text-black">
-                <span className="font-sans">SKU {styleNumber}</span>
+                <span className="font-helvetica-light">SKU {styleNumber}</span>
                 <div className="flex items-center gap-3">
                   <div
                     className="flex items-center gap-1 text-2xl"
@@ -817,7 +818,7 @@ export default function Product() {
                         : 'No rating yet'
                     }
                   >
-                    {Array.from({length: 5}).map((_, i) => {
+                    {Array.from({ length: 5 }).map((_, i) => {
                       if (productRating === null) {
                         return (
                           <span key={`star-${i}`} className="text-gray-300">
@@ -846,20 +847,20 @@ export default function Product() {
                     })}
                   </div>
                   {productRating !== null ? (
-                    <span className="text-sm text-gray-600 font-sans">
+                    <span className="text-sm text-gray-600 font-helvetica-light">
                       {productRating.toFixed(1)}
                     </span>
                   ) : null}
                   <button
                     type="button"
                     onClick={scrollToReviewForm}
-                    className="hover:underline hover:text-black font-sans cursor-pointer"
+                    className="hover:underline hover:text-black font-helvetica-light  cursor-pointer"
                   >
                     Write a review
                   </button>
                 </div>
               </div>
-              
+
             </div>
 
             {/* Price Section */}
@@ -887,21 +888,20 @@ export default function Product() {
                 </div>
               )}
 
-              
+
             </div>
 
             {/* Product Summary */}
             <div>
-              <h3 className="text-2xl font-medium mb-3 font-sans">Product Summary</h3>
+              <h3 className="text-2xl font-normal mb-3 font-helvetica-light">Product Summary</h3>
 
               <div
-                className={`bg-white rounded-xl p-4 grid text-center text-sm ${
-                  summaryStats.length === 1
-                    ? 'grid-cols-1'
-                    : summaryStats.length === 2
-                      ? 'grid-cols-2 divide-x'
-                      : 'grid-cols-3 divide-x'
-                }`}
+                className={`bg-white rounded-xl p-4 grid text-center text-sm ${summaryStats.length === 1
+                  ? 'grid-cols-1'
+                  : summaryStats.length === 2
+                    ? 'grid-cols-2 divide-x'
+                    : 'grid-cols-3 divide-x'
+                  }`}
               >
                 {summaryStats.map((item) => (
                   <div key={item.label}>
@@ -926,7 +926,7 @@ export default function Product() {
               <p className="text-lg font-semibold text-gray-500 mt-2">
                 <div
                   className="text-gray-600 text-lg font-semibold font-sans"
-                  dangerouslySetInnerHTML={{__html: product.descriptionHtml}}
+                  dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
                 />
               </p>
             </div>
@@ -980,11 +980,10 @@ export default function Product() {
               </button> */}
               <button
                 onClick={handleWishlist}
-                className={`border p-2 rounded-lg  w-[52px] h-[52px] flex items-center justify-center cursor-pointer justify-self-start ${
-                  wishlisted
-                    ? "bg-red-500 text-white"
-                    : "border-red-300 text-red-500 hover:bg-red-50"
-                }`}
+                className={`border p-2 rounded-lg  w-[52px] h-[52px] flex items-center justify-center cursor-pointer justify-self-start ${wishlisted
+                  ? "bg-red-500 text-white"
+                  : "border-red-300 text-red-500 hover:bg-red-50"
+                  }`}
               >
                 <HeartIcon size={18} fill={wishlisted ? "white" : "none"} />
               </button>
@@ -1008,7 +1007,7 @@ export default function Product() {
               >
                 <span className="text-lg font-medium uppercase font-sans">Schedule a Video Call</span>
               </button>
-              
+
 
               <div className="text-[#000000] flex items-center justify-center gap-2">
                 <StoreIcon size={22} />
@@ -1035,11 +1034,10 @@ export default function Product() {
               </button> */}
               <button
                 onClick={handleWishlist}
-                className={`border p-2 rounded-lg max-w-15 flex items-center justify-center cursor-pointer ${
-                  wishlisted
-                    ? "bg-red-500 text-white"
-                    : "border-red-300 text-red-500 hover:bg-red-50"
-                }`}
+                className={`border p-2 rounded-lg max-w-15 flex items-center justify-center cursor-pointer ${wishlisted
+                  ? "bg-red-500 text-white"
+                  : "border-red-300 text-red-500 hover:bg-red-50"
+                  }`}
               >
                 <HeartIcon size={24} fill={wishlisted ? "white" : "none"} />
               </button>
@@ -1063,24 +1061,24 @@ export default function Product() {
             </div>
 
             <div className="hidden md:grid grid-cols-2 gap-4">
-              
-                <button
-                  type="button"
-                  onClick={() => setIsVideoCallOpen(true)}
-                  className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer"
-                >
-                  <span className="text-lg font-medium uppercase font-sans">Schedule a Video Call</span>
-                </button>
-              
+
+              <button
+                type="button"
+                onClick={() => setIsVideoCallOpen(true)}
+                className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer"
+              >
+                <span className="text-lg font-medium uppercase font-sans">Schedule a Video Call</span>
+              </button>
+
               <button className="border border-[#cf254a] text-[#cf254a] rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-[#f4cfd3] cursor-pointer">
                 <span className="text-lg font-medium uppercase font-sans">Find in Store</span>
               </button>
             </div>
 
-            
+
 
           </div>
-          
+
 
         </div>
 
@@ -1114,7 +1112,7 @@ export default function Product() {
               </p>
 
               {/* Style Number */}
-              <div className="flex flex-wrap items-center gap-3 text-lg font-medium text-red-500 font-sans">
+              <div className="flex flex-wrap items-center gap-3 text-lg font-thin text-red-500 font-helvetica-light">
                 <p>Style No. {styleNumber}</p>
                 <button
                   type="button"
@@ -1141,7 +1139,7 @@ export default function Product() {
                 {product.shortDescription?.value || product.description}
               </p>
             </div>
-          
+
             {/* Tabs */}
             <div
               ref={productTabsRef}
@@ -1152,44 +1150,40 @@ export default function Product() {
               <div className="hidden lg:flex gap-4 py-2 text-sm flex-wrap">
                 <button
                   onClick={() => setActiveTab("summary")}
-                  className={`px-4 py-2 rounded-md font-sans font-semibold text-[16px] ${
-                    activeTab === "summary"
-                      ? "bg-[#cf254a] text-white"
-                      : "text-black"
-                  }`}
+                  className={`px-4 py-2 rounded-md font-sans font-semibold text-[16px] ${activeTab === "summary"
+                    ? "bg-[#cf254a] text-white"
+                    : "text-black"
+                    }`}
                 >
                   Product Summary
                 </button>
 
                 <button
                   onClick={() => setActiveTab("diamond")}
-                  className={`px-4 py-2 rounded-md  font-sans font-semibold text-[16px] ${
-                    activeTab === "diamond"
-                      ? "bg-[#cf254a] text-white"
-                      : "text-black"
-                  }`}
+                  className={`px-4 py-2 rounded-md  font-sans font-semibold text-[16px] ${activeTab === "diamond"
+                    ? "bg-[#cf254a] text-white"
+                    : "text-black"
+                    }`}
                 >
                   Diamond / Gemstone Details
                 </button>
 
                 <button
                   onClick={() => setActiveTab("metal")}
-                  className={`px-4 py-2 rounded-md font-semibold text-[16px] ${
-                    activeTab === "metal"
-                      ? "bg-[#cf254a] text-white"
-                      : "text-black"
-                  }`}
+                  className={`px-4 py-2 rounded-md font-semibold text-[16px] ${activeTab === "metal"
+                    ? "bg-[#cf254a] text-white"
+                    : "text-black"
+                    }`}
                 >
                   Metal Details
                 </button>
 
                 <button
                   onClick={() => setActiveTab("price")}
-                  className={`px-4 py-2 rounded-md font-sans font-semibold text-[16px] ${
-                    activeTab === "price"
-                      ? "bg-[#cf254a] text-white"
-                      : "text-black"
-                  }`}
+                  className={`px-4 py-2 rounded-md font-sans font-semibold text-[16px] ${activeTab === "price"
+                    ? "bg-[#cf254a] text-white"
+                    : "text-black"
+                    }`}
                 >
                   Price Breakup
                 </button>
@@ -1210,17 +1204,16 @@ export default function Product() {
             <div className="lg:hidden space-y-4">
               <div className="flex flex-col gap-2 text-sm">
                 {[
-                  {key: 'summary', label: 'Product Summary'},
-                  {key: 'diamond', label: 'Diamond / Gemstone Details'},
-                  {key: 'metal', label: 'Metal Details'},
-                  {key: 'price', label: 'Price Breakup'},
+                  { key: 'summary', label: 'Product Summary' },
+                  { key: 'diamond', label: 'Diamond / Gemstone Details' },
+                  { key: 'metal', label: 'Metal Details' },
+                  { key: 'price', label: 'Price Breakup' },
                 ].map((tab) => (
                   <div key={tab.key} className="space-y-2">
                     <button
                       onClick={() => setActiveTab(tab.key)}
-                      className={`w-full px-3 py-2 rounded-md text-left font-sans font-semibold text-[16px] ${
-                        activeTab === tab.key ? 'bg-[#cf254a] text-white' : 'text-black'
-                      }`}
+                      className={`w-full px-3 py-2 rounded-md text-left font-sans font-semibold text-[16px] ${activeTab === tab.key ? 'bg-[#cf254a] text-white' : 'text-black'
+                        }`}
                     >
                       {tab.label}
                     </button>
@@ -1553,83 +1546,75 @@ export default function Product() {
               </button>
             </div>
 
+            {videoCallInlineError ? (
+              <div className="mx-5 mb-4">
+                <p className="rounded bg-[#f8dfe2] px-3 py-2 text-sm text-[#c63b57]">
+                  {videoCallInlineError}
+                </p>
+              </div>
+            ) : null}
+
             <p className="mb-3 text-[14px] text-gray-600 px-5">Available days: Monday</p>
 
-            <div className='px-5 flex gap-3'>
-              <button
-                type="button"
-                onClick={() => {
-                  setVideoCallScheduleMode('today');
-                  if (videoCallInlineError) setVideoCallInlineError('');
-                }}
-                className={`mb-3 rounded border px-4 py-2 text-sm ${
-                  videoCallScheduleMode === 'today'
-                    ? 'bg-[#cf254a] text-white border-[#cf254a]'
-                    : 'bg-gray-100 text-black border-[#cccccc]'
-                }`}
-              >
-                Today
-              </button>
+            <div className='px-5 flex flex-col gap-3'>
               <button
                 type="button"
                 onClick={() => {
                   setVideoCallScheduleMode('pick_date');
                   if (videoCallInlineError) setVideoCallInlineError('');
                 }}
-                className={`mb-3 rounded border px-4 py-2 text-sm ${
-                  videoCallScheduleMode === 'pick_date'
-                    ? 'bg-[#cf254a] text-white border-[#cf254a]'
-                    : 'bg-gray-100 text-black border-[#cccccc]'
-                }`}
+                className={`w-fit rounded border px-4 py-2 text-sm ${videoCallScheduleMode === 'pick_date' ? 'bg-[#cf254a] text-white border-[#cf254a]' : 'bg-gray-100 text-black border-[#cccccc]'}`}
               >
                 Pick A Date
               </button>
             </div>
 
             <form className="space-y-3 px-5" onSubmit={handleVideoCallSubmit}>
-              {videoCallInlineError ? (
-                <p className="rounded bg-[#f8dfe2] px-3 py-2 text-sm text-[#c63b57]">
-                  {videoCallInlineError}
-                </p>
-              ) : null}
-              
-              {videoCallScheduleMode === 'today' ? (
-                <div className="mb-1 flex flex-wrap gap-3">
-                  {availableVideoCallTimeSlots.map((slot) => (
-                    <button
-                      key={slot}
-                      type="button"
-                      onClick={() => {
-                        setVideoCallTime(slot);
-                        if (videoCallInlineError) setVideoCallInlineError('');
-                      }}
-                      className={`rounded border px-4 py-2 text-sm ${
-                        videoCallTime === slot
-                          ? 'border-[#cf254a] bg-[#cf254a] text-white'
-                          : 'border-[#cccccc] bg-white text-black'
-                      }`}
-                    >
-                      {slot}
-                    </button>
-                  ))}
-                  {availableVideoCallTimeSlots.length === 0 ? (
-                    <p className="text-xs text-gray-600">
-                      No slots available for today. Please pick a date.
-                    </p>
-                  ) : null}
-                </div>
-              ) : null}
+
               {videoCallScheduleMode === 'pick_date' ? (
-                <input
-                  type="date"
-                  min={todayDate}
-                  value={videoCallDate}
-                  onChange={(event) => {
-                    setVideoCallDate(event.target.value);
-                    if (videoCallInlineError) setVideoCallInlineError('');
-                  }}
-                  className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
-                />
+                <div className="space-y-3">
+                  <input
+                    type="date"
+                    min={todayDate}
+                    value={videoCallDate}
+                    onChange={(event) => {
+                      const newDate = event.target.value;
+                      setVideoCallDate(newDate);
+                      if (newDate) {
+                        const selectedDate = new Date(newDate);
+                        const day = selectedDate.getUTCDay();
+                        if (day !== 1) {
+                          setVideoCallInlineError('Only available days can be selected. Available: Monday');
+                        } else {
+                          setVideoCallInlineError('');
+                        }
+                      } else {
+                        setVideoCallInlineError('');
+                      }
+                    }}
+                    className="w-full rounded border border-[#CCCCCC] bg-white px-3 py-2 text-sm focus:outline-none"
+                  />
+                  {videoCallDate && new Date(videoCallDate).getUTCDay() === 1 && (
+                    <div className="flex flex-wrap gap-3">
+                      {availableVideoCallTimeSlots.map((slot) => (
+                        <button
+                          key={slot}
+                          type="button"
+                          onClick={() => {
+                            setVideoCallTime(slot);
+                            if (videoCallInlineError) setVideoCallInlineError('');
+                          }}
+                          className={`rounded border px-4 py-2 text-sm ${videoCallTime === slot
+                            ? 'border-[#cf254a] bg-[#cf254a] text-white'
+                            : 'border-[#cccccc] bg-white text-black'
+                            }`}
+                        >
+                          {slot}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ) : null}
               <input
                 type="text"
@@ -1713,7 +1698,7 @@ export default function Product() {
               <img
                 src={certificateGuideImage}
                 alt="Diamond certificate guide"
-                className="mx-auto h-auto max-h-[70vh] w-full object-contain"
+                className=" mx-auto h-auto max-h-[90vh] w-full object-contain scale-125"
               />
             </div>
           </div>

@@ -1,28 +1,28 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
-import CarousalImage1 from '../assets/car1.jpg' 
-import CarousalImage2 from '../assets/car2.jpg' 
-import CarousalImage3 from '../assets/car3.jpg' 
-import CarousalImage4 from '../assets/car4.jpg' 
-import CarousalImage5 from '../assets/car5.jpg' 
-import CarousalImage6 from '../assets/car6.jpg' 
-import CarousalImage7 from '../assets/car7.jpg' 
+import CarousalImage1 from '../assets/car1.jpg'
+import CarousalImage2 from '../assets/car2.jpg'
+import CarousalImage3 from '../assets/car3.jpg'
+import CarousalImage4 from '../assets/car4.jpg'
+import CarousalImage5 from '../assets/car5.jpg'
+import CarousalImage6 from '../assets/car6.jpg'
+import CarousalImage7 from '../assets/car7.jpg'
 
-type Product = { 
-    id: number; 
-    name: string; 
-    image: string; 
-}; 
+type Product = {
+  id: number;
+  name: string;
+  image: string;
+};
 
-const products: Product[] = [ 
-    { id: 1, name: "Authentic Heritage Green and Red Stones Long Gold Jhumka 22 Karat", image: CarousalImage1, }, 
-    { id: 2, name: "Aesthetic Inspi Emerald and Ruby Stones Traditional Gold Bangle 22 Karat", image: CarousalImage2, }, 
-    { id: 3, name: "Divine Heritage Gold Filigree Collar Necklace 22 Karat", image: CarousalImage3, }, 
-    { id: 4, name: "Regal Bloom Red Vintage Gold Medallion Pendant 22 Karat", image: CarousalImage4, }, 
-    { id: 5, name: "Laxmi Goddess Motif Traditional Gold Necklace 22 Karat", image: CarousalImage5, }, 
-    { id: 6, name: "Krishna's Melody Red And Green Stones Antique Gold Earrings 22 Karat", image: CarousalImage6, }, 
-    { id: 7, name: "Ornament Gold Arm Vanki 22 Karat", image: CarousalImage7, }, 
+const products: Product[] = [
+  { id: 1, name: "Authentic Heritage Green and Red Stones Long Gold Jhumka 22 Karat", image: CarousalImage1, },
+  { id: 2, name: "Aesthetic Inspi Emerald and Ruby Stones Traditional Gold Bangle 22 Karat", image: CarousalImage2, },
+  { id: 3, name: "Divine Heritage Gold Filigree Collar Necklace 22 Karat", image: CarousalImage3, },
+  { id: 4, name: "Regal Bloom Red Vintage Gold Medallion Pendant 22 Karat", image: CarousalImage4, },
+  { id: 5, name: "Laxmi Goddess Motif Traditional Gold Necklace 22 Karat", image: CarousalImage5, },
+  { id: 6, name: "Krishna's Melody Red And Green Stones Antique Gold Earrings 22 Karat", image: CarousalImage6, },
+  { id: 7, name: "Ornament Gold Arm Vanki 22 Karat", image: CarousalImage7, },
 ];
 
 const toProductHandle = (name: string) =>
@@ -65,7 +65,7 @@ const TrendingCarousel: React.FC = () => {
   });
 
   return (
-    <div className="flex items-center justify-between w-full lg:py-16 2xl:px-[5rem] lg:px-[4rem] bg-[#f5f5f5]">
+    <div className="flex items-center justify-between  w-full lg:py-16 2xl:px-[5rem] lg:px-[4rem] bg-[#f5f5f5]">
       <div className="grid lg:grid-cols-5 gap-10 items-center">
         {/* LEFT - CAROUSEL */}
         <div className="lg:col-span-4">
@@ -83,16 +83,15 @@ const TrendingCarousel: React.FC = () => {
                   <Link
                     key={item.id}
                     to={`/products/${toProductHandle(item.name)}`}
-                    className={`flex flex-col items-center transition-all duration-300 ${
-                      isCenter ? "opacity-100 scale-100" : "opacity-40 scale-90"
-                    }`}
+                    className={`flex flex-col items-center transition-all duration-300 ${isCenter ? "opacity-100 scale-100" : "opacity-40 scale-90"
+                      }`}
                   >
                     <img
                       src={item.image}
                       alt={item.name}
                       className="2xl:w-64 2xl:h-64 lg:w-48 lg:h-48 w-56 h-56 object-contain"
                     />
-                    <p className="2xl:text-[20px] lg:text-[18px] text-[12px] text-center mt-2 2xl:w-56 lg:w-40 font-serif">
+                    <p className="2xl:text-[20px] lg:text-[18px] text-[12px] text-center mt-2 2xl:w-56 lg:w-40 ">
                       {item.name}
                     </p>
                   </Link>
@@ -116,11 +115,11 @@ const TrendingCarousel: React.FC = () => {
             Trending Collections
           </h2> */}
 
-                <p className="heading-font mb-4 text-6xl">
-  Trending Collections
-</p>
+          <p className="heading-font mb-4 text-6xl">
+            Trending Collections
+          </p>
 
-          <p className="text-gray-600 mb-6 font-serif">
+          <p className="text-black mb-6 font-helvetica-light">
             Explore this season's trending collection.
           </p>
           <Link

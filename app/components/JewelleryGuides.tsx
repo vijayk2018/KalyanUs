@@ -47,7 +47,7 @@ const JewelleryGuides: React.FC = () => {
           <h2 className="heading-font text-6xl">
             Jewellery Guides
           </h2>
-          <p className="text-gray-500 font-sans py-3">
+          <p className="text-black font-helvetica-light py-3">
             These designs match your interest
           </p>
         </div>

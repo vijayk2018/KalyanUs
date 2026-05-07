@@ -30,17 +30,17 @@ const KeepInTouch: React.FC = () => {
             </p>
 
             {/* Paragraph */}
-            <p className=" mt-3 lg:text-[12px] text-[12px] tracking-wide font-serif lg:text-center text-left">
+            <p className=" mt-3 lg:text-[12px] text-[12px] tracking-wide font-helvetica-light lg:text-center text-left">
               We’re always here to guide you every step of the way. Whether it’s
-              new collections,<br/> special offers, or personalized assistance, we’re
+              new collections,<br /> special offers, or personalized assistance, we’re
               just a click away. Let’s stay connected!
             </p>
           </div>
-        
+
           {/* BOTTOM RED SECTION */}
           <div className="relative  text-white lg:py-16 py-3 mt-8">
 
-           
+
 
             {/* CONTENT */}
             <div className="relative z-10 flex justify-center gap-5">
@@ -61,7 +61,7 @@ const KeepInTouch: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
     </div>
   );
 };

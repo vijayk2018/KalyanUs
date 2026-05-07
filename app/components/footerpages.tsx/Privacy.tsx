@@ -5,12 +5,12 @@ export default function Privacy() {
     return (
         <div className="bg-white min-h-screen pt-8 pb-16 sm:pt-10 sm:pb-20 md:pt-12 md:pb-24 font-sans text-[#222]">
             <div className="w-[80%] mx-auto">
-                <div className="mb-6 text-[12px] sm:text-[13px] text-[#666]">
-                    <Link to="/" className="hover:underline text-[#555]">
+                <div className="mb-6 flex items-center gap-1 text-[16px] font-helvetica-light">
+                    <Link to="/" className="transition hover:text-[#333] text-black">
                         Home
                     </Link>
-                    <span className="mx-2">{'>'}</span>
-                    <span className="text-[#222]">KALYAN JEWELLERS PRIVACY POLICY</span>
+                    <span className="text-[#ccc]">|</span>
+                    <span className="text-black uppercase">Kalyan Jewellers Privacy Policy</span>
                 </div>
 
                 {/* Header */}
