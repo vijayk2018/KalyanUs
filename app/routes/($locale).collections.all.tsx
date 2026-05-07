@@ -182,9 +182,9 @@ export default function Collection() {
           >
             <RiFilterFill size={18} aria-hidden />
           </button>
-          <h1 className="text-4xl font-normal text-[#999]">
+          <h1 className="text-4xl font-helvetica-light text-[#999]">
             Bangles{' '}
-            <span className="font-normal text-3xl text-[#000]">
+            <span className="text-3xl font-normal text-[#000] font-regular font-helvetica-otf">
               (34 items)
             </span>
           </h1>
@@ -192,18 +192,18 @@ export default function Collection() {
 
         <div className="mt-2 flex items-center justify-between gap-4  text-[#000] md:text-[13px]">
           <div className="flex flex-wrap items-center gap-1">
-            <Link to="/" className="transition hover:text-[#333] text-[16px]">
+            <Link to="/" className="transition hover:text-[#333] text-[16px] font-helvetica-light">
               Home
             </Link>
-            <span aria-hidden>|</span>
+            <span aria-hidden className="font-helvetica-light text-[#ccc]">|</span>
             <Link
               to="/#shop-by-category"
-              className="transition hover:text-[#333] text-[16px]"
+              className="transition hover:text-[#333] text-[16px] font-helvetica-light"
             >
               Collection
             </Link>
-            <span aria-hidden>|</span>
-            <span className="text-[16px] transition hover:text-[#333]">Bangles</span>
+            <span aria-hidden className="font-helvetica-light text-[#ccc]">|</span>
+            <span className="text-[16px] font-helvetica-light transition hover:text-[#333]">Bangles</span>
           </div>
 
           <div className="relative flex items-center gap-2">

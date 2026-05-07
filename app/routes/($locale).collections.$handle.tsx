@@ -1,14 +1,14 @@
-import {Link, redirect, useLoaderData, useSearchParams} from 'react-router';
-import type {Route} from './+types/collections.$handle';
-import {Analytics, getPaginationVariables, Image} from '@shopify/hydrogen';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
-import {redirectIfHandleIsLocalized} from '~/lib/redirect';
-import {ProductItem} from '~/components/ProductItem';
-import {FilterDrawer} from '~/components/FilterDrawer';
-import type {ProductItemFragment} from 'storefrontapi.generated';
-import {SlidersHorizontal} from 'lucide-react';
+import { Link, redirect, useLoaderData, useSearchParams } from 'react-router';
+import type { Route } from './+types/collections.$handle';
+import { Analytics, getPaginationVariables, Image } from '@shopify/hydrogen';
+import { PaginatedResourceSection } from '~/components/PaginatedResourceSection';
+import { redirectIfHandleIsLocalized } from '~/lib/redirect';
+import { ProductItem } from '~/components/ProductItem';
+import { FilterDrawer } from '~/components/FilterDrawer';
+import type { ProductItemFragment } from 'storefrontapi.generated';
+import { SlidersHorizontal } from 'lucide-react';
 import { RiFilterFill } from 'react-icons/ri';
-import {useMemo, useState} from 'react';
+import { useMemo, useState } from 'react';
 
 // Banner imports
 import anokhiBanner from '../assets/Anokhi-LP.jpg';
@@ -32,15 +32,15 @@ const COLLECTION_BANNERS: Record<string, string> = {
 };
 
 const SORT_OPTIONS = [
-  {label: 'Relevance', value: 'relevance'},
-  {label: "What's new", value: 'whats-new'},
-  {label: 'Price - Low To High', value: 'price-asc'},
-  {label: 'Price - High To Low', value: 'price-desc'},
+  { label: 'Relevance', value: 'relevance' },
+  { label: "What's new", value: 'whats-new' },
+  { label: 'Price - Low To High', value: 'price-asc' },
+  { label: 'Price - High To Low', value: 'price-desc' },
 ] as const;
 
 function isAvailabilityFilterInput(filterInput: string) {
   try {
-    const parsed = JSON.parse(filterInput) as {available?: boolean};
+    const parsed = JSON.parse(filterInput) as { available?: boolean };
     return typeof parsed.available === 'boolean';
   } catch {
     return false;
@@ -50,19 +50,19 @@ function isAvailabilityFilterInput(filterInput: string) {
 function getSortVariables(sortParam: string | null) {
   switch (sortParam) {
     case 'whats-new':
-      return {sortKey: 'CREATED', reverse: true};
+      return { sortKey: 'CREATED', reverse: true };
     case 'price-asc':
-      return {sortKey: 'PRICE', reverse: false};
+      return { sortKey: 'PRICE', reverse: false };
     case 'price-desc':
-      return {sortKey: 'PRICE', reverse: true};
+      return { sortKey: 'PRICE', reverse: true };
     case 'relevance':
     default:
-      return {sortKey: 'MANUAL', reverse: false};
+      return { sortKey: 'MANUAL', reverse: false };
   }
 }
 
-export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: ` ${data?.collection.title ?? ''} Collection`}];
+export const meta: Route.MetaFunction = ({ data }) => {
+  return [{ title: ` ${data?.collection.title ?? ''} Collection` }];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -72,16 +72,16 @@ export async function loader(args: Route.LoaderArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return {...deferredData, ...criticalData};
+  return { ...deferredData, ...criticalData };
 }
 
 /**
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
-  const {handle} = params;
-  const {storefront} = context;
+async function loadCriticalData({ context, params, request }: Route.LoaderArgs) {
+  const { handle } = params;
+  const { storefront } = context;
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 20,
   });
@@ -103,7 +103,7 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
     throw redirect('/collections');
   }
 
-  const [{collection}] = await Promise.all([
+  const [{ collection }] = await Promise.all([
     storefront.query(COLLECTION_QUERY, {
       variables: {
         handle,
@@ -123,7 +123,7 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   }
 
   // The API handle might be localized, so redirect to the localized handle
-  redirectIfHandleIsLocalized(request, {handle, data: collection});
+  redirectIfHandleIsLocalized(request, { handle, data: collection });
 
   return {
     collection,
@@ -135,12 +135,12 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: Route.LoaderArgs) {
+function loadDeferredData({ context }: Route.LoaderArgs) {
   return {};
 }
 
 export default function Collection() {
-  const {collection} = useLoaderData<typeof loader>();
+  const { collection } = useLoaderData<typeof loader>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -210,15 +210,15 @@ export default function Collection() {
     setIsSortOpen(false);
   };
 
-  const collectionTitle = collection.title == 'FOR HER' ? 'Her' 
-                            : collection.title == 'FOR HIM' ? 'His' 
-                            : collection.title == 'LIL ONE' ? 'Kids'  
-                            : collection.title ;
-                          
-  const collectionTag = collection.title == 'FOR HER' ? 'Her' 
-                            : collection.title == 'FOR HIM' ? 'Jewelry | His' 
-                            : collection.title == 'LIL ONE' ? 'Occasion | Shop | For | Kids'  
-                            : collection.title ;
+  const collectionTitle = collection.title == 'FOR HER' ? 'Her'
+    : collection.title == 'FOR HIM' ? 'His'
+      : collection.title == 'LIL ONE' ? 'Kids'
+        : collection.title;
+
+  const collectionTag = collection.title == 'FOR HER' ? 'Her'
+    : collection.title == 'FOR HIM' ? 'Jewelry | His'
+      : collection.title == 'LIL ONE' ? 'Occasion | Shop | For | Kids'
+        : collection.title;
 
   const bannerImage = COLLECTION_BANNERS[collection.handle];
 
@@ -244,9 +244,9 @@ export default function Collection() {
           >
             <RiFilterFill size={18} aria-hidden />
           </button>
-          <h1 className="text-4xl font-normal text-[#999] capitalize">
+          <h1 className="text-4xl font-helvetica-light text-[#999] capitalize">
             {collectionTitle.toLowerCase()} {' '}
-            <span className="font-normal text-3xl text-[#000]">
+            <span className="text-3xl font-normal text-[#000] font-regular font-helvetica-otf">
               ({totalCount} items)
             </span>
           </h1>
@@ -254,18 +254,11 @@ export default function Collection() {
 
         <div className="mt-2 flex items-center justify-between gap-4  text-[#000] md:text-[13px]">
           <div className="flex flex-wrap items-center gap-1">
-            <Link to="/" className="transition hover:text-[#333] text-[16px]">
+            <Link to="/" className="transition hover:text-[#333] text-[16px] font-helvetica-light">
               Home
             </Link>
-            {/* <span aria-hidden>|</span>
-            <Link
-              to="/#shop-by-category"
-              className="transition hover:text-[#333] text-[16px]"
-            >
-              Collection
-            </Link> */}
-            <span aria-hidden>|</span>
-            <span className="text-[16px] transition hover:text-[#333] capitalize">
+            <span aria-hidden className="font-helvetica-light text-[#ccc]">|</span>
+            <span className="text-[16px] font-helvetica-light transition hover:text-[#333] capitalize">
               {collectionTag.toLowerCase()}
             </span>
           </div>
@@ -302,9 +295,9 @@ export default function Collection() {
       <div className='bg-[#f8f7f1] flex flex-col py-8 2xl:px-[5rem] lg:px-[4rem] p-6 lg:hidden '>
         <div className="flex items-center gap-3">
 
-          <h1 className="text-3xl font-normal text-[#999]">
+          <h1 className="text-3xl font-helvetica-light text-[#999]">
             {collection.title}{' '}
-            <span className="font-normal text-2xl text-[#000]">
+            <span className="text-2xl font-normal text-[#000] font-regular font-helvetica-otf">
               ({totalCount} items)
             </span>
           </h1>
@@ -312,18 +305,11 @@ export default function Collection() {
 
         <div className="mt-2 flex flex-col gap-4  text-[#000] md:text-[13px]">
           <div className="flex flex-wrap items-center gap-1">
-            <Link to="/" className="transition hover:text-[#333] text-[16px]">
+            <Link to="/" className="transition hover:text-[#333] text-[16px] font-helvetica-light">
               Home
             </Link>
-            {/* <span aria-hidden>|</span>
-            <Link
-              to="/#shop-by-category"
-              className="transition hover:text-[#333] text-[16px]"
-            >
-              Collection
-            </Link> */}
-            <span aria-hidden>|</span>
-            <span className="text-[16px] transition hover:text-[#333]">
+            <span aria-hidden className="font-helvetica-light text-[#ccc]">|</span>
+            <span className="text-[16px] font-helvetica-light transition hover:text-[#333]">
               {collection.title}
             </span>
           </div>
@@ -389,7 +375,7 @@ export default function Collection() {
           connection={collection.products}
           resourcesClassName="products-grid"
         >
-          {({node: product, index}) => (
+          {({ node: product, index }) => (
             <ProductItem
               key={product.id}
               product={product}
