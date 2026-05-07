@@ -21,9 +21,7 @@ import cutImage from '~/assets/stone83.jpg';
 import showcaseImage from '~/assets/stone84.jpg';
 import categoryImage from '~/assets/bw.jpg';
 
-import customDiamond from '~/assets/diamond.png';
-import customPearl from '~/assets/pearl.png';
-import customEmerald from '~/assets/emerald.png';
+import gemstoneSizeBg from '~/assets/gemstone-size.png';
 
 const gemstoneRows = [
   [
@@ -178,8 +176,13 @@ export default function Gemstone() {
         </div>
       </section>
 
-      <section className="w-full bg-black">
-        <div className="w-full bg-[radial-gradient(circle_at_center,#4a4a4a_0%,#1d1d1d_55%,#050505_100%)] px-[5%] py-8 text-white">
+      <section className="relative w-full overflow-hidden" style={{ minHeight: '500px' }}>
+        <img
+          src={gemstoneSizeBg}
+          alt="Gemstone size background"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="relative z-10 px-[5%] pt-10 sm:pt-14 md:pt-16 pb-48 sm:pb-56 md:pb-64 text-white">
           <h3 className="text-center text-[22px] sm:text-[28px] md:text-[34px] font-light tracking-[0.08em]">GEMSTONE SIZE</h3>
           <p className="mx-auto mt-3 max-w-[1450px] text-center text-[12px] sm:text-[14px] md:text-[18px] leading-[1.55] sm:leading-[1.65] text-white/85">
             Like any jewellery products, a larger piece costs higher than a smaller one. The size increases the density of the stone which
@@ -187,36 +190,6 @@ export default function Gemstone() {
             and its weight is measured in carats. In India gemstones are measures in 'rati' , a Sanskrit word describing the weight of
             gemstones. One rati is equal to 0.91carats (1 Rati = 0.91ct).
           </p>
-
-          <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
-            {[
-              { image: customDiamond, alt: 'Diamond size', imgClass: 'h-[80px] w-[80px] sm:h-[105px] sm:w-[105px] md:h-[135px] md:w-[135px]' },
-              { image: customPearl, alt: 'Pearl size', imgClass: 'h-[61px] w-[61px] sm:h-[76px] sm:w-[76px] md:h-[96px] md:w-[96px]' },
-              { image: customEmerald, alt: 'Emerald size', imgClass: 'h-[75px] w-[75px] sm:h-[100px] sm:w-[100px] md:h-[130px] md:w-[130px]' },
-            ].map((item) => (
-              <div key={item.alt} className="relative mt-8 mb-16 sm:mb-20 flex h-[60px] sm:h-[70px] md:h-[80px] w-full max-w-[280px] md:max-w-[340px] flex-col items-center border-l border-r border-white/40 mx-auto">
-                <div className="absolute -left-px -right-px top-0 flex -translate-y-1/2 items-center">
-                  <div className="flex-1 border-t border-white/40"></div>
-                  <p className="px-3 sm:px-4 text-[18px] sm:text-[22px] md:text-[26px] tracking-[0.06em] text-white/95 leading-none">
-                    1 carat
-                  </p>
-                  <div className="flex-1 border-t border-white/40"></div>
-                </div>
-
-                <div className="absolute -left-px -right-px bottom-0 flex translate-y-1/2 items-center">
-                  <div className="flex-1 border-t border-white/40"></div>
-                  <div className="flex items-center justify-center px-1 sm:px-3">
-                    <img
-                      src={item.image}
-                      alt={item.alt}
-                      className={`${item.imgClass} object-contain mix-blend-screen bg-transparent`}
-                    />
-                  </div>
-                  <div className="flex-1 border-t border-white/40"></div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
