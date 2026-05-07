@@ -286,64 +286,64 @@ export default function About() {
             </section >
 
             {/* Network Section */}
-            <section className="pt-16 pb-24" style={{ fontFamily: "'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
-                <h1 className="text-[22px] md:text-[45px] heading-font font-bold text-center mb-1 md:mb-2 text-[#333]">Our Network</h1>
+            <section className="pt-16 pb-16" style={{ fontFamily: "'Helvetica Neue LT Std', 'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+                <h1 className="text-[22px] md:text-[45px] heading-font text-center mb-1 md:mb-2 text-[#333]">Our Network</h1>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-0 lg:px-8 max-w-[1242px] mx-auto">
                     <div className="bg-[#f8f5f2] p-10 text-center transition-transform hover:-translate-y-1">
-                        <div className="h-40 md:h-44 flex items-center justify-center mb-5">
-                            <img src={indiaMap} alt="India Map" className="max-h-full object-contain" />
+                        <div className="h-44 md:h-52 flex items-center justify-center mb-5">
+                            <img src={indiaMap} alt="India Map" className="max-h-full object-contain scale-110" />
                         </div>
                         <h5 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">400+</h5>
-                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] sans-font leading-tight">Showroom in India</p>
-                        <p className="text-[13px] text-[#666] leading-relaxed">
+                        <p className="text-[17px] md:text-[24px] mb-2 text-[#333] font-helvetica-light ">Showroom in India</p>
+                        <p className="text-[15px] text-[#181717] font-helvetica-light leading-relaxed">
                             We have a strong presence across 21 states and union territories, and our 278-plus network of showrooms cover all major cities.
                         </p>
                     </div>
 
                     <div className="bg-[#f8f5f2] p-10 text-center transition-transform hover:-translate-y-1">
-                        <div className="h-40 md:h-44 flex items-center justify-center mb-5">
-                            <img src={middleEastMap} alt="Middle East Map" className="max-h-full object-contain" />
+                        <div className="h-44 md:h-52 flex items-center justify-center mb-5">
+                            <img src={middleEastMap} alt="Middle East Map" className="max-h-full object-contain scale-110" />
                         </div>
                         <h5 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">36+</h5>
-                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] sans-font leading-tight">Showroom in Middle East</p>
-                        <p className="text-[13px] text-[#666] leading-relaxed">
+                        <p className="text-[18px] md:text-[24px] mb-2 text-[#333] font-helvetica-light leading-tight">Showroom in Middle East</p>
+                        <p className="text-[15px] text-[#181717] font-helvetica-light leading-relaxed">
                             We have 36 showrooms in the GCC spread across UAE, Qatar, Kuwait and Oman.
                         </p>
                     </div>
 
                     <div className="bg-[#f8f5f2] p-10 text-center transition-transform hover:-translate-y-1">
-                        <div className="h-40 md:h-44 flex items-center justify-center mb-5">
-                            <img src={usaMap} alt="USA Map" className="max-h-full object-contain" />
+                        <div className="h-44 md:h-52 flex items-center justify-center mb-5">
+                            <img src={usaMap} alt="USA Map" className="max-h-full object-contain scale-110" />
                         </div>
                         <h5 className="text-[34px] md:text-[36px] font-semibold text-[#cf2d4c] mb-1 leading-none">02</h5>
-                        <p className="text-[22px] md:text-[24px] mb-2 text-[#333] sans-font leading-tight">Showroom in USA</p>
-                        <p className="text-[13px] text-[#666] leading-relaxed">
+                        <p className="text-[18px] md:text-[24px] mb-2 text-[#333] font-helvetica-light leading-tight">Showroom in USA</p>
+                        <p className="text-[15px] text-[#181717] font-helvetica-light leading-relaxed">
                             We have 2 showrooms in the USA (New Jersey and Chicago).
                         </p>
                     </div>
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-5 md:gap-8 mt-12 md:mt-16 pt-8 md:pt-12 border-t border-gray-100 w-full px-[10%] mx-auto">
-                    <div className="text-center px-2 md:px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[18%] after:h-[64%] after:w-px after:bg-gray-200">
-                        <p className="text-[34px] md:text-[36px] font-medium text-[#cf2d4c] mb-1 leading-none">32 <span className="text-[16px] md:text-[17px] font-normal text-[#333]">Years</span></p>
-                        <p className="text-[22px] md:text-[24px] leading-tight text-[#666] font-normal">Since Formation</p>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 mt-12 md:mt-20 pt-8 md:pt-16 border-t border-gray-100 w-[94%] mx-auto font-helvetica-light">
+                    <div className="text-center px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[10%] after:h-[80%] after:w-px after:bg-gray-200">
+                        <p className="text-[36px] md:text-[45px] font-bold text-[#cf2d4c] mb-1 leading-none flex items-baseline justify-center gap-1">32 <span className="text-[18px] md:text-[20px] font-helvetica-light text-[#333]">Years</span></p>
+                        <p className="text-[20px] md:text-[24px] tracking-tight leading-tight text-[#000] font-normal mt-2">Since Formation</p>
                     </div>
-                    <div className="text-center px-2 md:px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[18%] after:h-[64%] after:w-px after:bg-gray-200">
-                        <p className="text-[34px] md:text-[36px] font-medium text-[#cf2d4c] mb-1 leading-none">1K+ <span className="text-[16px] md:text-[17px] font-normal text-[#333]">My Kalyan</span></p>
-                        <p className="text-[22px] md:text-[24px] leading-tight text-[#666] font-normal">Grassroots Stores</p>
+                    <div className="text-center px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[10%] after:h-[80%] after:w-px after:bg-gray-200">
+                        <p className="text-[36px] md:text-[45px] font-bold text-[#cf2d4c] mb-1 leading-none flex items-baseline justify-center gap-1">1K+ <span className="text-[18px] md:text-[20px] font-normal text-[#333]">My Kalyan</span></p>
+                        <p className="text-[20px] md:text-[24px] tracking-tight leading-tight text-[#000] font-normal mt-2">Grassroots Stores</p>
                     </div>
-                    <div className="text-center px-2 md:px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[18%] after:h-[64%] after:w-px after:bg-gray-200">
-                        <p className="text-[34px] md:text-[36px] font-medium text-[#cf2d4c] mb-1 leading-none">21 <span className="text-[16px] md:text-[17px] font-normal text-[#333]">States</span></p>
-                        <p className="text-[22px] md:text-[24px] leading-tight text-[#666] font-normal">&amp; Union Territories in India</p>
+                    <div className="text-center px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[10%] after:h-[80%] after:w-px after:bg-gray-200">
+                        <p className="text-[36px] md:text-[45px] font-bold text-[#cf2d4c] mb-1 leading-none flex items-baseline justify-center gap-1">21 <span className="text-[18px] md:text-[20px] font-normal text-[#333]">States</span></p>
+                        <p className="text-[14px] md:text-[18px] tracking-tight leading-tight text-[#000] font-normal whitespace-nowrap mt-2">&amp; Union Territories in India</p>
                     </div>
-                    <div className="text-center px-2 md:px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[18%] after:h-[64%] after:w-px after:bg-gray-200">
-                        <p className="text-[34px] md:text-[36px] font-medium text-[#cf2d4c] mb-1 leading-none">6</p>
-                        <p className="text-[22px] md:text-[24px] leading-tight text-[#666] font-normal">Countries</p>
+                    <div className="text-center px-4 relative after:hidden md:after:block after:absolute after:right-0 after:top-[10%] after:h-[80%] after:w-px after:bg-gray-200">
+                        <p className="text-[36px] md:text-[45px] font-bold text-[#cf2d4c] mb-1 leading-none">6</p>
+                        <p className="text-[20px] md:text-[24px] tracking-tight leading-tight text-[#000] font-normal mt-2">Countries</p>
                     </div>
-                    <div className="text-center px-2 md:px-4">
-                        <p className="text-[34px] md:text-[36px] font-medium text-[#cf2d4c] mb-1 leading-none">13K+</p>
-                        <p className="text-[22px] md:text-[24px] leading-tight text-[#666] font-normal">Employees</p>
+                    <div className="text-center px-4">
+                        <p className="text-[36px] md:text-[45px] font-bold text-[#cf2d4c] mb-1 leading-none">13K+</p>
+                        <p className="text-[20px] md:text-[24px] tracking-tight leading-tight text-[#000] font-normal mt-2">Employees</p>
                     </div>
                 </div>
             </section >

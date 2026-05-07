@@ -119,7 +119,7 @@ export function Footer({
                   <div className="mx-auto grid grid-cols-1 gap-10 lg:grid-cols-3">
                     <div className="col-span-2 mx-auto grid grid-cols-1 gap-10 lg:grid-cols-5">
                       <div>
-                        <h3 className="mb-4 pb-2 font-serif text-lg font-semibold">
+                        <h3 className="mb-4 pb-2 font-helvetica-light text-lg ">
                           Who we are?
                         </h3>
                         <ul className="space-y-2 text-sm">

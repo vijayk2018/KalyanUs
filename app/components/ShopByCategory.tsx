@@ -205,7 +205,7 @@ const ShopByCategory: React.FC<ShopByCategoryProps> = ({categories}) => {
         <p className="heading-font text-6xl">
           Shop By Category
         </p>
-        <p className="mt-4 max-w-4xl text-center text-[19px] font-normal leading-[1.3] text-[#444]"style={{ fontFamily: '"Helvetica Neue LT Std", sans-serif' }}>
+        <p className="font-helvetica-light mt-4 max-w-4xl text-center text-[19px] leading-[1.3] text-[#000]">
           Explore an array of beautiful jewelry designed to suit every style.
           <br />
           Shop your favourite categories and find the perfect piece to make any moment special.
