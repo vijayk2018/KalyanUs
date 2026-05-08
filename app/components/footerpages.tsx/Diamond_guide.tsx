@@ -651,8 +651,11 @@ A solitaire is not only a timeless symbol of love, but also an undeniably elegan
                         <div className="mt-16 flex justify-center">
                             <button
                                 type="button"
+                                onClick={() =>
+                                    window.open('/collections/view-all-jewelry', '_blank')
+                                }
                                 className="bg-[#BF1C47] text-white px-10 md:px-14 py-3.5 rounded-md text-[13px] font-bold tracking-[0.1em] uppercase hover:bg-[#9a1539] transition-colors shadow-sm"
-                            >
+                                >
                                 CONTINUE SHOPPING
                             </button>
                         </div>
