@@ -45,7 +45,7 @@ export async function action({request, context}: {request: Request; context: any
 
   const payload = {
     name: String(body.name ?? '').trim(),
-    phone: String(body.phone ?? '').trim(),
+    phone: String(body.phone ?? '').replace(/\D/g, ''),
     email: String(body.email ?? '').trim(),
     message: String(body.message ?? 'Callback request').trim(),
     created_at: String(body.created_at ?? new Date().toISOString()).trim(),
@@ -71,7 +71,7 @@ export async function action({request, context}: {request: Request; context: any
     );
   }
 
-  const isValidPhone = /^\d{10}$/.test(payload.phone);
+  const isValidPhone = /^\d{10,15}$/.test(payload.phone);
   if (!isValidPhone) {
     return Response.json(
       {ok: false, error: 'The phone number format is invalid.'},

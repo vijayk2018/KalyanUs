@@ -252,20 +252,33 @@ export function Header({
       const items = getWishlist();
       setWishlistCount(items.length);
     };
+    const refreshWishlistFromServer = () => {
+      if (!isUserLoggedIn) return;
+      void loadWishlist().then(updateWishlistCount);
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        refreshWishlistFromServer();
+      }
+    };
 
     void loadWishlist().then(updateWishlistCount);
 
     window.addEventListener('wishlistUpdated', updateWishlistCount);
+    window.addEventListener('focus', refreshWishlistFromServer);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       window.removeEventListener('wishlistUpdated', updateWishlistCount);
+      window.removeEventListener('focus', refreshWishlistFromServer);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, []);
+  }, [isUserLoggedIn]);
 
   useEffect(() => {
     let isMounted = true;
 
-    isLoggedIn.then((value) => {
+    void isLoggedIn.then((value) => {
       if (isMounted) setIsUserLoggedIn(value);
     });
 
@@ -318,7 +331,7 @@ export function Header({
                 style={{ WebkitMaskImage: `url(${HeartIcon})`, WebkitMaskSize: 'contain', WebkitMaskPosition: 'center', WebkitMaskRepeat: 'no-repeat', maskImage: `url(${HeartIcon})`, maskSize: 'contain', maskPosition: 'center', maskRepeat: 'no-repeat' }}
               />
               {wishlistCount > 0 && (
-                <span className="absolute top-0 right-2 z-20 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold leading-none text-white ring-1 ring-white">
+                <span className="absolute top-3 right-2 z-20 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold leading-none text-white ring-1 ring-white">
                   {wishlistCount}
                 </span>
               )}
