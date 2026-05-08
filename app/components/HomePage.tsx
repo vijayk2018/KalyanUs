@@ -169,7 +169,7 @@ const HomePage: React.FC<HomePageProps> = ({
         })}
         </div>
         {/* CONTROLS */}
-        <div className="absolute top-1/2 left-0 w-full flex justify-between px-6 -translate-y-1/2">
+        <div className="absolute top-1/2 left-0 w-full flex justify-between px-6 -translate-y-1/2 z-20 pointer-events-auto">
         <button
             onClick={() =>
             items.length > 0
@@ -177,7 +177,7 @@ const HomePage: React.FC<HomePageProps> = ({
               : null
             }
             disabled={items.length === 0}
-            className="lg:p-4 p-2 border-2 border-white text-white rounded-full "
+            className="lg:p-4 p-2 border-2 border-white text-white rounded-full pointer-events-auto "
         >
             <BiLeftArrow />
         </button>
@@ -189,7 +189,7 @@ const HomePage: React.FC<HomePageProps> = ({
                 : null
             }
             disabled={items.length === 0}
-            className="lg:p-4 p-2 border-2 border-white text-white rounded-full"
+            className="lg:p-4 p-2 border-2 border-white text-white rounded-full pointer-events-auto"
         >
             <BiRightArrow />
         </button>
