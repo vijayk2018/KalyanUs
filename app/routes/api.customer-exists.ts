@@ -34,7 +34,7 @@ export async function action({request, context}: {request: Request; context: any
   const normalizedStoreDomain = configuredStoreDomain.replace(/^https?:\/\//, '');
   const adminApiUrl = `https://${normalizedStoreDomain}/admin/api/2026-01/graphql.json`;
   const shopifyAccessToken =  
-    SHOPIFY_ACCESS_TOKEN ?? context.env?.ADMIN_API_ACCESS_TOKEN;
+    context.env?.SHOPIFY_ACCESS_TOKEN ?? context.env?.ADMIN_API_ACCESS_TOKEN;
 
   if (!shopifyAccessToken) {
     return Response.json(
