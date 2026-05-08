@@ -133,7 +133,7 @@ const HomePage: React.FC<HomePageProps> = ({
 
   return (
     <>
-    <div className="relative w-full lg:h-[90vh] md:h-[40vh] h-[20vh] flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-[100vh] flex items-center justify-center overflow-hidden">
       
         {/* IMAGE CAROUSEL (CLOCKWISE) */}
         <div className="absolute w-full h-full flex items-center justify-center">
