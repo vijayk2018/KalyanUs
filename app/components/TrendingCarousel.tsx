@@ -1,5 +1,5 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useEffect, useState } from "react"; 
 import { Link } from "react-router";
 import CarousalImage1 from '../assets/car1.jpg'
 import CarousalImage2 from '../assets/car2.jpg'
@@ -76,22 +76,33 @@ const TrendingCarousel: React.FC = () => {
             </button>
 
             {/* ITEMS */}
-            <div className="flex gap-8 items-center">
+            <div className="flex items-start gap-8">
               {visibleItems.map((item, i) => {
                 const isCenter = i === 1 || i === 2; // middle two images emphasized
                 return (
                   <Link
                     key={item.id}
                     to={`/products/${toProductHandle(item.name)}`}
-                    className={`flex flex-col items-center transition-all duration-300 ${isCenter ? "opacity-100 scale-100" : "opacity-40 scale-90"
-                      }`}
+                    className={`group flex flex-col items-center transition-all duration-300 hover:opacity-100 ${
+                      isCenter ? "opacity-100 scale-100" : "opacity-40 scale-90"
+                    }`}
                   >
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="2xl:w-64 2xl:h-64 lg:w-48 lg:h-48 w-56 h-56 object-contain"
-                    />
-                    <p className="2xl:text-[20px] lg:text-[18px] text-[12px] text-center mt-2 2xl:w-56 lg:w-40 ">
+                    <div className="relative flex h-56 w-56 items-center justify-center bg-white lg:h-48 lg:w-48 2xl:h-64 2xl:w-64">
+                      <ArrowUpRight
+                        className="absolute right-1 top-2 z-10 text-black opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                        size={18}
+                        strokeWidth={1.8}
+                      />
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="2xl:w-64 2xl:h-64 lg:w-48 lg:h-48 w-56 h-56 object-contain"
+                      />
+                    </div>
+                    <p
+                      className="mt-2 w-40 whitespace-normal text-left text-[0.9375vw] font-light normal-case leading-[1.14583vw] text-black hover:underline 2xl:w-56"
+                      style={{fontFamily: '"Helvetica Neue LT Std 45 Light", sans-serif'}}
+                    >
                       {item.name}
                     </p>
                   </Link>
@@ -120,7 +131,7 @@ const TrendingCarousel: React.FC = () => {
           </p>
 
           <p className="text-black mb-6 font-helvetica-light">
-            Explore this season's trending collection.
+            Explore this season&apos;s trending collection.
           </p>
           <Link
             to="/collections/trending-collections"

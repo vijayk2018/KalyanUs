@@ -133,12 +133,12 @@ const HomePage: React.FC<HomePageProps> = ({
 
   return (
     <>
-    <div className="relative w-full lg:h-[90vh] md:h-[40vh] h-[20vh] flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-[100vh] flex items-center justify-center overflow-hidden">
       
         {/* IMAGE CAROUSEL (CLOCKWISE) */}
         <div className="absolute w-full h-full flex items-center justify-center">
         {items.map((item, i) => {
-          const isActive = i === 0; // since getImageIndex(0) is always the current
+          const isActive = i === 0; // getImageIndex(0) is always the current slide
           const currentItem = items[getImageIndex(i)];
           const isVideo =
             currentItem.image.includes("youtube.com") ||
@@ -150,7 +150,9 @@ const HomePage: React.FC<HomePageProps> = ({
               key={i}
               src={getYouTubeEmbedUrl(currentItem.image)}
               title={`carousel-video-${i}`}
-              className={`absolute w-full h-full transition-opacity duration-700 pointer-events-none`}
+              className={`absolute w-full h-full transition-opacity duration-700 pointer-events-none ${
+                isActive ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
@@ -159,13 +161,15 @@ const HomePage: React.FC<HomePageProps> = ({
               key={i}
               src={currentItem.image}
               alt=""
-              className={`absolute w-full h-full object-cover shadow-lg transition-opacity duration-700 `}
+              className={`absolute w-full h-full object-cover shadow-lg transition-opacity duration-700 ${
+                isActive ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
             />
           );
         })}
         </div>
         {/* CONTROLS */}
-        <div className="absolute top-1/2 left-0 w-full flex justify-between px-6 -translate-y-1/2">
+        <div className="absolute top-1/2 left-0 w-full flex justify-between px-6 -translate-y-1/2 z-20 pointer-events-auto">
         <button
             onClick={() =>
             items.length > 0
@@ -173,7 +177,7 @@ const HomePage: React.FC<HomePageProps> = ({
               : null
             }
             disabled={items.length === 0}
-            className="lg:p-4 p-2 border-2 border-white text-white rounded-full "
+            className="lg:p-4 p-2 border-2 border-white text-white rounded-full pointer-events-auto "
         >
             <BiLeftArrow />
         </button>
@@ -185,7 +189,7 @@ const HomePage: React.FC<HomePageProps> = ({
                 : null
             }
             disabled={items.length === 0}
-            className="lg:p-4 p-2 border-2 border-white text-white rounded-full"
+            className="lg:p-4 p-2 border-2 border-white text-white rounded-full pointer-events-auto"
         >
             <BiRightArrow />
         </button>
