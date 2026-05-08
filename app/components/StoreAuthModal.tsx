@@ -23,6 +23,12 @@ export default function StoreAuthModal({ open, onClose }: StoreAuthModalProps) {
   const [inlineError, setInlineError] = useState('');
   const [returnTo, setReturnTo] = useState('/');
   const [isLoginChecking, setIsLoginChecking] = useState(false);
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    terms: ''
+  });
 
   const normalizedLoginHint = loginHint.trim();
 
@@ -115,21 +121,17 @@ export default function StoreAuthModal({ open, onClose }: StoreAuthModalProps) {
   };
 
   const handleSignupSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (!signupName.trim()) {
-      event.preventDefault();
-      setInlineError('Please enter full name.');
-      return;
-    }
+    const newErrors = {
+      name: !signupName.trim() ? 'This field is required' : '',
+      email: !signupEmail.trim() ? 'This field is required' : (isValidEmail(signupEmail.trim()) ? '' : 'Please enter a valid email address.'),
+      phone: !signupPhone.trim() ? 'This field is required' : '',
+      terms: !acceptTerms ? 'Please accept Terms of Use and Privacy Policy.' : ''
+    };
 
-    if (!isValidEmail(signupEmail.trim())) {
-      event.preventDefault();
-      setInlineError('Please enter a valid email address.');
-      return;
-    }
+    setErrors(newErrors);
 
-    if (!acceptTerms) {
+    if (newErrors.name || newErrors.email || newErrors.phone || newErrors.terms) {
       event.preventDefault();
-      setInlineError('Please accept Terms of Use and Privacy Policy.');
       return;
     }
   };
@@ -220,45 +222,54 @@ export default function StoreAuthModal({ open, onClose }: StoreAuthModalProps) {
             </div>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2">
-            <div className="hidden md:block">
-              <img src={Register} alt="Signup banner" className="h-full w-full object-contain" />
+          <div className="grid md:grid-cols-[397px_1fr]">
+            <div className="hidden md:block overflow-hidden">
+              <img src={Register} alt="Signup banner" className="h-full w-full object-cover object-center scale-[1.02]" />
             </div>
-            <div className="px-6 pb-8 md:px-10 pt-8 mt-8">
+            <div className="pl-6 pr-6 pb-8 md:pl-10 md:pr-6 flex flex-col pt-25">
               <form
                 method="post"
                 action="/account/register"
                 onSubmit={handleSignupSubmit}
               >
                 <div className="space-y-4">
-                  <input
-                    type="text"
-                    name="full_name"
-                    placeholder="Enter Full Name"
-                    value={signupName}
-                    onChange={(event) => {
-                      setSignupName(event.target.value);
-                      if (inlineError) setInlineError('');
-                    }}
-                    className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none focus:outline-none focus:border-[#d8dff5] focus:ring-0"
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={signupEmail}
-                    onChange={(event) => {
-                      setSignupEmail(event.target.value);
-                      if (inlineError) setInlineError('');
-                    }}
-                    className="w-full rounded border border-[#d8dff5] placeholder:text-gray-200 px-4 py-3 outline-none focus:outline-none focus:border-[#d8dff5] focus:ring-0"
-                  />
+                  <div className="w-full">
+                    <input
+                      type="text"
+                      name="full_name"
+                      placeholder="Enter Full Name"
+                      value={signupName}
+                      onChange={(event) => {
+                        setSignupName(event.target.value);
+                        if (errors.name) setErrors({ ...errors, name: '' });
+                      }}
+                      className={`w-full h-[56px] rounded border border-gray-200 placeholder:text-gray-300 px-5 outline-none focus:outline-none focus:border-gray-200 focus:ring-0 ${errors.name ? 'border-red-500' : ''}`}
+                    />
+                    {errors.name && <p className="text-[11px] text-red-500 mt-1">{errors.name}</p>}
+                  </div>
+                  <div className="w-full">
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      value={signupEmail}
+                      onChange={(event) => {
+                        setSignupEmail(event.target.value);
+                        if (errors.email) setErrors({ ...errors, email: '' });
+                      }}
+                      className={`w-full h-[56px] rounded border border-gray-200 placeholder:text-gray-300 px-5 outline-none focus:outline-none focus:border-gray-200 focus:ring-0 ${errors.email ? 'border-red-500' : ''}`}
+                    />
+                    {errors.email && <p className="text-[11px] text-red-500 mt-1">{errors.email}</p>}
+                  </div>
                   <div className="relative w-full">
                     <p className='text-[#6e7191] bg-white text-[12px] absolute -top-2.5 left-2 z-10 px-1'>Mobile No.</p>
                     <PhoneInput
                       country={'us'}
                       value={signupPhone}
-                      onChange={(value) => setSignupPhone(value)}
+                      onChange={(value) => {
+                        setSignupPhone(value);
+                        if (errors.phone) setErrors({ ...errors, phone: '' });
+                      }}
                       specialLabel=""
                       inputProps={{
                         name: 'phone',
@@ -269,54 +280,58 @@ export default function StoreAuthModal({ open, onClose }: StoreAuthModalProps) {
                       }}
                       inputStyle={{
                         width: '100%',
-                        height: '45px',
+                        height: '56px',
                         fontSize: '14px',
                         borderRadius: '6px',
-                        border: '1px solid #d8dff5',
+                        border: errors.phone ? '1px solid #ef4444' : '1px solid #e5e7eb',
                       }}
                       buttonStyle={{
                         borderTopLeftRadius: '6px',
                         borderBottomLeftRadius: '6px',
-                        border: '1px solid #d8dff5',
+                        border: errors.phone ? '1px solid #ef4444' : '1px solid #e5e7eb',
                         backgroundColor: '#fff',
                       }}
                     />
+                    {errors.phone && <p className="text-[11px] text-red-500 mt-1">{errors.phone}</p>}
                   </div>
                 </div>
 
                 <input type="hidden" name="return_to" value={returnTo} />
-                <div className="mt-5 flex items-center gap-2 text-[12px] text-gray-600">
-                  <input
-                    type="checkbox"
-                    name="accept_terms"
-                    checked={acceptTerms}
-                    onChange={(event) => {
-                      setAcceptTerms(event.target.checked);
-                      if (inlineError) setInlineError('');
-                    }}
-                    className="h-4 w-4 accent-[#cf254a]"
-                  />
-                  <p>
-                    I agree to the{' '}
-                    <Link
-                      to="/terms-and-conditions"
-                      onClick={onClose}
-                      className="text-[#cf254a] underline underline-offset-2"
-                    >
-                      Terms of Use
-                    </Link>{' '}
-                    &{' '}
-                    <Link
-                      to="/privacy-policy"
-                      onClick={onClose}
-                      className="text-[#cf254a] underline underline-offset-2"
-                    >
-                      Privacy Policy
-                    </Link>
-                  </p>
+                <div className="mt-10">
+                  <div className="flex items-center gap-2 text-[12px] text-gray-600">
+                    <input
+                      type="checkbox"
+                      name="accept_terms"
+                      checked={acceptTerms}
+                      onChange={(event) => {
+                        setAcceptTerms(event.target.checked);
+                        if (errors.terms) setErrors({ ...errors, terms: '' });
+                      }}
+                      className="h-4 w-4 accent-[#cf254a]"
+                    />
+                    <p>
+                      I agree to the{' '}
+                      <Link
+                        to="/terms-and-conditions"
+                        onClick={onClose}
+                        className="text-[#cf254a] underline underline-offset-2"
+                      >
+                        Terms of Use
+                      </Link>{' '}
+                      &{' '}
+                      <Link
+                        to="/privacy-policy"
+                        onClick={onClose}
+                        className="text-[#cf254a] underline underline-offset-2"
+                      >
+                        Privacy Policy
+                      </Link>
+                    </p>
+                  </div>
+                  {errors.terms && <p className="text-[11px] text-red-500 mt-1">{errors.terms}</p>}
                 </div>
-                <button type="submit" className="mt-6 w-full bg-[#cf254a] py-3 text-sm font-semibold text-white">
-                  REGISTER
+                <button type="submit" className="mt-20 w-full bg-[#cf254a] py-4 text-base font-semibold text-white uppercase tracking-wider">
+                  SEND OTP
                 </button>
               </form>
               <p className="mt-6 text-center text-sm text-gray-500">

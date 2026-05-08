@@ -1684,22 +1684,22 @@ export default function Product() {
           onClick={() => setIsDiamondCertificateGuideOpen(false)}
         >
           <div
-            className="relative w-full max-w-[480px] rounded-md bg-white p-4 shadow-xl"
+            className="relative w-full max-w-[525px] bg-[#f1f1f1] p-8 shadow-xl"
             onClick={(event) => event.stopPropagation()}
           >
             <button
               type="button"
               onClick={() => setIsDiamondCertificateGuideOpen(false)}
-              className="absolute right-3 top-3 rounded p-1 text-gray-600 transition hover:bg-gray-100 hover:text-black"
+              className="absolute right-4 top-4 rounded p-1 text-gray-500 transition hover:bg-gray-200 hover:text-black"
               aria-label="Close diamond certificate guide"
             >
-              <X size={20} />
+              <X size={24} />
             </button>
-            <div className="m-5">
+            <div className="mt-4">
               <img
                 src={certificateGuideImage}
                 alt="Diamond certificate guide"
-                className=" mx-auto h-auto max-h-[90vh] w-full object-contain scale-125"
+                className="mx-auto h-auto max-h-[90vh] w-full object-contain"
               />
             </div>
           </div>
