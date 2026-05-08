@@ -48,7 +48,7 @@ const gemstoneRows = [
 
 export default function Gemstone() {
   return (
-    <div className="w-full bg-[#f4f7fa] text-[#1f1f1f]">
+    <div className="w-full bg-[#ffffff] text-[#1f1f1f] flex flex-col gap-y-4">
       <section className="relative w-full overflow-hidden" style={{ aspectRatio: '1024 / 283' }}>
         <img
           src={gemstoneHero}
