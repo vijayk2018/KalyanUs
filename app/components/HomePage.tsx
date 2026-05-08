@@ -138,7 +138,7 @@ const HomePage: React.FC<HomePageProps> = ({
         {/* IMAGE CAROUSEL (CLOCKWISE) */}
         <div className="absolute w-full h-full flex items-center justify-center">
         {items.map((item, i) => {
-          const isActive = i === 0; // since getImageIndex(0) is always the current
+          const isActive = i === 0; // getImageIndex(0) is always the current slide
           const currentItem = items[getImageIndex(i)];
           const isVideo =
             currentItem.image.includes("youtube.com") ||
@@ -150,7 +150,9 @@ const HomePage: React.FC<HomePageProps> = ({
               key={i}
               src={getYouTubeEmbedUrl(currentItem.image)}
               title={`carousel-video-${i}`}
-              className={`absolute w-full h-full transition-opacity duration-700 pointer-events-none`}
+              className={`absolute w-full h-full transition-opacity duration-700 pointer-events-none ${
+                isActive ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
@@ -159,7 +161,9 @@ const HomePage: React.FC<HomePageProps> = ({
               key={i}
               src={currentItem.image}
               alt=""
-              className={`absolute w-full h-full object-cover shadow-lg transition-opacity duration-700 `}
+              className={`absolute w-full h-full object-cover shadow-lg transition-opacity duration-700 ${
+                isActive ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
             />
           );
         })}
