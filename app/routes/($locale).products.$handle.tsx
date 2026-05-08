@@ -453,9 +453,10 @@ export default function Product() {
     const trimmedName = callbackName.trim();
     const trimmedEmail = callbackEmail.trim();
     const trimmedPhone = callbackPhone.trim();
+    const normalizedPhone = trimmedPhone.replace(/\D/g, '');
     const isValidName = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/.test(trimmedName);
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(trimmedEmail);
-    const isValidPhone = /^\d{10}$/.test(trimmedPhone);
+    const isValidPhone = /^\d{10,15}$/.test(normalizedPhone);
 
     setCallbackNameError('');
     setCallbackEmailError('');
@@ -464,7 +465,7 @@ export default function Product() {
     if (
       !trimmedName ||
       !trimmedEmail ||
-      !trimmedPhone ||
+      !normalizedPhone ||
       !callbackStoreLocation.trim()
     ) {
       showError('Please fill all callback form fields.');
@@ -492,7 +493,7 @@ export default function Product() {
       const payload = {
         name: String(formData.get('name') || ''),
         email: trimmedEmail,
-        phone: trimmedPhone,
+        phone: normalizedPhone,
         preferred_store: String(formData.get('preferred_store') || ''),
         product_title: String(formData.get('product_title') || product.title),
         product_handle: String(formData.get('product_handle') || product.handle),
@@ -641,9 +642,11 @@ export default function Product() {
   const handleWishlist = () => {
     if (wishlisted) {
       removeFromWishlist(productId);
-      // showSuccess("Removed from wishlist");
-    } else {
-      addToWishlist({
+      setWishlisted(false);
+      return;
+    }
+
+    const didAdd = addToWishlist({
         id: product.id,
         title: product.title,
         handle: product.handle,
@@ -651,9 +654,7 @@ export default function Product() {
         price: selectedVariant?.price?.amount,
         variantId: selectedVariant?.id,
       });
-    }
-
-    setWishlisted(!wishlisted);
+    setWishlisted(didAdd);
   };
 
   return (

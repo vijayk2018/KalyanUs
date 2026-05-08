@@ -55,7 +55,10 @@ const fetchWishlist = async (): Promise<WishlistItem[]> => {
   return normalizeWishlist(payload.items ?? []);
 };
 
-const persistWishlist = async (operation: 'add' | 'remove', item: WishlistItem) => {
+const persistWishlist = async (
+  operation: 'add' | 'remove',
+  item: WishlistItem,
+): Promise<WishlistItem[]> => {
   const response = await fetch('/api/wishlist', {
     method: 'POST',
     credentials: 'include',
@@ -66,6 +69,9 @@ const persistWishlist = async (operation: 'add' | 'remove', item: WishlistItem) 
   if (!response.ok) {
     throw new Error('Unable to update wishlist');
   }
+
+  const payload = (await response.json()) as {items?: unknown};
+  return normalizeWishlist(payload.items ?? []);
 };
 
 export const loadWishlist = async () => {
@@ -125,10 +131,15 @@ export const addToWishlist = (item: WishlistItem): boolean => {
 
   wishlistCache = [item, ...items];
   notify();
-  void persistWishlist('add', item).catch(() => {
-    wishlistCache = items;
-    notify();
-  });
+  void persistWishlist('add', item)
+    .then((serverItems) => {
+      wishlistCache = serverItems;
+      notify();
+    })
+    .catch(() => {
+      wishlistCache = items;
+      notify();
+    });
 
   return true;
 };
@@ -141,10 +152,15 @@ export const removeFromWishlist = (productId: string) => {
   wishlistCache = previous.filter((item) => item.id !== productId);
   notify();
 
-  void persistWishlist('remove', targetItem).catch(() => {
-    wishlistCache = previous;
-    notify();
-  });
+  void persistWishlist('remove', targetItem)
+    .then((serverItems) => {
+      wishlistCache = serverItems;
+      notify();
+    })
+    .catch(() => {
+      wishlistCache = previous;
+      notify();
+    });
 };
 
 export const isInWishlist = (productId: string) => {
